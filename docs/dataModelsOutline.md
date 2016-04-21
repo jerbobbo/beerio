@@ -1,8 +1,5 @@
 **Product**
 
-**
-**
-
 Name
 
 Description
@@ -13,10 +10,8 @@ Price
 
 Reviews [array of reviews]
 
-**Order**
 
-**
-**
+**Order**
 
 User ID
 
@@ -42,10 +37,8 @@ Sales Tax
 
 Status -- Cart, Ordered, Shipped
 
-**Line Item**
 
-**
-**
+**Line Item**
 
 Product ID
 
@@ -53,10 +46,8 @@ Unit Price
 
 Quantity
 
-**Review**
 
-**
-**
+**Review**
 
 Product ID
 
@@ -64,10 +55,8 @@ User ID
 
 Reviewer Name (for non users)
 
-**Users**
 
-**
-**
+**Users**
 
 User Name
 
@@ -75,10 +64,8 @@ isAdmin
 
 Default Address
 
-**Address**
 
-**
-**
+**Address**
 
 Street address
 
