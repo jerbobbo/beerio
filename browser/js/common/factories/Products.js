@@ -5,7 +5,7 @@ app.factory('Product', function($http) {
 
   productObj = {
     getAll: function() {
-      $http.get('/api/products')
+      return $http.get('/api/products')
         .then(function(products) {
           angular.copy(products.data, _productCache);
           return _productCache;
@@ -13,7 +13,7 @@ app.factory('Product', function($http) {
     },
 
     getOne: function(id) {
-      $http.get('/api/products/' + id)
+      return $http.get('/api/products/' + id)
         .then(function(product) {
           return product.data;
         });

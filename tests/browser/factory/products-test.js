@@ -1,6 +1,4 @@
 'use strict';
-var expect = chai.expect;
-
 // Name: String
 // Description: String
 // Category : array of category refIDs
@@ -10,27 +8,26 @@ var expect = chai.expect;
 
 describe('Product factory', function() {
 
-  beforeEach(module('fsaPreBuilt'));
-
   var Product;
   var $httpBackend;
   var fakeResProduct;
 
+  beforeEach(module('fsaPreBuilt'));
+
   beforeEach(inject(function($injector) {
-
+    console.log($injector)
     Product = $injector.get('Product');
-
     $httpBackend = $injector.get('$httpBackend');
-
-    fakeResProduct = {
-      _id: 'xyz1231123',
-      name: 'Cerveza',
-      category: 'IPA',
-      price: 10,
-      reviews: ['123xz']
-    };
-
   }));
+
+  fakeResProduct = {
+    _id: 'xyz1231123',
+    name: 'Cerveza',
+    category: 'IPA',
+    price: 10,
+    reviews: ['123xz']
+  };
+
 
   afterEach(function() {
     try {
