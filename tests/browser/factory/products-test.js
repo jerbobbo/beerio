@@ -1,23 +1,16 @@
-'use strict';
-// Name: String
-// Description: String
-// Category : array of category refIDs
-// Price:  Number
-// Reviews:  [array of review refIDs]
-// imageUrl: String
-
 describe('Product factory', function() {
-
-  var Product;
-  var $httpBackend;
-  var fakeResProduct;
-
   beforeEach(module('fsaPreBuilt'));
 
-  beforeEach(inject(function($injector) {
-    console.log($injector)
-    Product = $injector.get('Product');
-    $httpBackend = $injector.get('$httpBackend');
+  var $httpBackend;
+  var $rootScope;
+  beforeEach('Get tools', inject(function (_$httpBackend_, _$rootScope_) {
+    $httpBackend = _$httpBackend_;
+    $rootScope = _$rootScope_;
+  }));
+
+  var Product;
+  beforeEach('Get factories', inject(function (_Product_) {
+    Product = _Product_;
   }));
 
   fakeResProduct = {
@@ -27,16 +20,6 @@ describe('Product factory', function() {
     price: 10,
     reviews: ['123xz']
   };
-
-
-  afterEach(function() {
-    try {
-      $httpBackend.verifyNoOutstandingExpectation(false);
-      $httpBackend.verifyNoOutstandingRequest();
-    } catch (err) {
-      this.test.error(err);
-    }
-  });
 
   it('should be an object', function() {
     expect(Product).to.be.an('object');

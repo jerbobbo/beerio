@@ -1,4 +1,3 @@
-'use strict';
 app.factory('Product', function($http) {
   var productObj;
   var _productCache = [];
