@@ -1,54 +1,27 @@
-// Instantiate all models
+var expect = require('chai').expect;
+var request = require('supertest');
 var mongoose = require('mongoose');
 require('../../../server/db/models');
-var User = mongoose.model('User');
 
-var expect = require('chai').expect;
 
-var dbURI = 'mongodb://localhost:27017/testingDB';
-var clearDB = require('mocha-mongoose')(dbURI);
+// var dbURI = 'mongodb://localhost:27017/testingDB';
+// var clearDB = require('mocha-mongoose')(dbURI);
 
-var supertest = require('supertest');
 var app = require('../../../server/app');
 
-var seedOrders = function () {
-    var newUser = new User(
-        {
-            email: 'andrew@fsa.com',
-            password: 'password'
+describe('Order-cart routes', function(){
+
+  describe('get orders', function(done){
+    request(app)
+      .get('/api/orders')
+      .expect(200)
+      .end(function(err, res) {
+        console.log(res);
+          if (err) return done(err);
+          //expect(err).to.equal(null);
+          console.log(res);
+          //expect(res.body.success).to.equal(true);
+          done();
         });
-    return newUser.save(function(err){
-        var order1 = new Order({
-            user: newUser._id,
-            status: 'cart'
-          });
-        return order1.save();
-    })
-};
-
-describe('Orders Route', function () {
-
-  beforeEach('Establish DB connection', function (done) {
-    if (mongoose.connection.db) return done();
-    mongoose.connect(dbURI, done);
   });
-
-
-  afterEach('Clear test database', function (done) {
-    clearDB(done);
-  });
-
-
-  describe('get request', function () {
-
-    beforeEach('Create a user and an order', function (done) {
-     seedOrders().then(function(res){
-      done();
-     })
-    });
-
-  /// no clue!
-
-  });
-
 });
