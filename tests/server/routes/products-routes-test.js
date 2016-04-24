@@ -1,5 +1,6 @@
 // var expect = require('chai').expect;
 var supertest = require('supertest');
+var expect = require('chai').expect;
 var mongoose = require('mongoose');
 var Product = mongoose.model('Product');
 var dbURI = 'mongodb://localhost:27017/testingDB';
@@ -17,15 +18,19 @@ describe('products route', function() {
     clearDB(done);
   });
 
-  it('responds with 404 if route does not exixst on api.products', function(done) {
+  it('responds with 404 if route does not exist on api/products', function(done) {
     agent
       .get('/api/products/kljasd')
       .expect(404, done);
   });
 
-  it('responds with 200 when retriving api.products', function(done) {
+  it('responds with 200 and an array when retriving api/products', function(done) {
     agent
       .get('/api/products')
-      .expect(200, done);
+      .expect(200).end(function(err, resp) {
+        if (err) return done(err);
+        expect(resp.body).to.be.an('array');
+        done();
+      });
   });
 });
