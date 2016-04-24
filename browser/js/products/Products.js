@@ -1,3 +1,21 @@
+app.config(function($stateProvider) {
+  $stateProvider.state('products', {
+    url: '/products',
+    templateUrl: '/js/products/products.html',
+    controller: 'ProductCtrl',
+    resolve: {
+      products: function(ProductFactory) {
+        return ProductFactory.getAll();
+      }
+    }
+  })
+})
+
+app.controller('ProductCtrl', function($scope, products) {
+  $scope.products = products;
+
+});
+
 app.factory('ProductFactory', function($http) {
   var productObj;
   var _productCache = [];
