@@ -26,8 +26,10 @@ var Product = mongoose.model('Product');
 
 var wipeCollections = function () {
     var removeUsers = User.remove({});
+    var removeProducts = Product.remove({});
     return Promise.all([
-        removeUsers
+        removeUsers,
+        removeProducts
     ]);
 };
 
