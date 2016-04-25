@@ -76,12 +76,12 @@ router.put('/:orderId', function(req, res, next) {
       if (shippingAddress) {
         if (order.shippingAddress) {
           // if it exists in the order already then just modify
-          order.shippingAddress.type = shippingAddress.type;
-          order.shippingAddress.street = shippingAddress.street;
-          order.shippingAddress.city = shippingAddress.city;
-          order.shippingAddress.state = shippingAddress.state;
+          order.shippingAddress.type    = shippingAddress.type;
+          order.shippingAddress.street  = shippingAddress.street;
+          order.shippingAddress.city    = shippingAddress.city;
+          order.shippingAddress.state   = shippingAddress.state;
           order.shippingAddress.country = shippingAddress.country;
-          order.shippingAddress.postal = shippingAddress.postal;
+          order.shippingAddress.postal  = shippingAddress.postal;
         } else {
           // we need to create a new address model to insert
           order.shippingAddress = new Address(shippingAddress);
@@ -90,12 +90,12 @@ router.put('/:orderId', function(req, res, next) {
       }
       if (billingAddress) {
         if (order.billingAddress) {
-          order.billingAddress.type = billingAddress.type;
-          order.billingAddress.street = billingAddress.street;
-          order.billingAddress.city = billingAddress.city;
-          order.billingAddress.state = billingAddress.state;
+          order.billingAddress.type    = billingAddress.type;
+          order.billingAddress.street  = billingAddress.street;
+          order.billingAddress.city    = billingAddress.city;
+          order.billingAddress.state   = billingAddress.state;
           order.billingAddress.country = billingAddress.country;
-          order.billingAddress.postal = billingAddress.postal;
+          order.billingAddress.postal  = billingAddress.postal;
         } else {
           order.billingAddress = new Address(billingAddress);
         }
