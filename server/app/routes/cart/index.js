@@ -16,8 +16,8 @@ router.post('/:productId', function(req, res, next) {
       return Lineitem.create( {productId: req.params.productId} );
     })
     .then(function(newItem) {
-      console.log('new item: ', newItem);
       cart.lineitems.push(newItem._id);
+      cart.save();
       res.send(newItem);
     })
     .catch(res.json);
