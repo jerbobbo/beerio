@@ -33,5 +33,20 @@ router.get('/:order_id', function(req, res) {
   }
 });
 
+router.post('/', function(req, res, next) {
+  Order.create(req.body)
+    .then(function(order){
+      return Order.findById(order._id)
+        .populate('user')
+        .populate('lineitems')
+        .populate('shippingAddress')
+        .populate('billingAddress');
+    })
+    .then(function(populatedOrder) {
+      res.json(populatedOrder);
+    })
+    .catch(console.error);
+  
+});
 
 module.exports = router;
