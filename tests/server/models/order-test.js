@@ -1,5 +1,5 @@
 var dbURI    = 'mongodb://localhost:27017/testingDB';
-var clearDB  = require('mocha-mongoose')(dbURI); 
+var clearDB  = require('mocha-mongoose')(dbURI);
 
 var sinon    = require('sinon');
 var expect   = require('chai').expect;
@@ -36,7 +36,7 @@ describe('Order Model', function () {
         return User.create({
           email: 'test@test.com',
         })
-      })  
+      })
       .then(function(user) {
         _user = user;
         return Order.create({
