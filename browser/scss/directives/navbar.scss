@@ -36,13 +36,20 @@ navbar {
       background: none;
     }
   }
-
+  .cart-button {
+    border: 1px solid black;
+    margin-top: 10px;
+    background: none;
+    outline: none !important;
+    margin-right: 20px;
+  }
   .login-button {
     float: right;
     border: 1px solid black;
     margin-top: 10px;
     background: none;
     outline: none !important;
+    margin-right: 20px;
   }
 
   .welcome {
