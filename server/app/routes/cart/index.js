@@ -3,6 +3,17 @@ var router = require('express').Router();
 var Order = require('mongoose').model('Order');
 var Lineitem = require('mongoose').model('Lineitem');
 
+router.get('/', function(req, res, next) {
+  if (req.user) {
+    Order.findOne( {user: req.user._id, status: 'cart'} )
+    .then(function(cart) {
+      res.send(cart);
+    });
+  } else {
+    res.sendStatus(401);
+  }
+});
+
 router.post('/:productId', function(req, res, next) {
   var cart = {};
   if (req.user) {
@@ -18,6 +29,7 @@ router.post('/:productId', function(req, res, next) {
     .then(function(newItem) {
       cart.lineitems.push(newItem._id);
       cart.save();
+      console.log('cart after saving: ', cart);
       res.send(newItem);
     })
     .catch(res.json);

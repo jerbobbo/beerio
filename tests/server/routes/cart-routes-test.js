@@ -49,15 +49,15 @@ describe('Cart routes', function(){
       price: 3.99
     };
 
-    beforeEach('Create a user', function (done) {
+    before('Create a user', function (done) {
       User.create(userInfo, done);
     });
 
-    beforeEach('Create a product', function (done) {
+    before('Create a product', function (done) {
       Product.create(productInfo, done);
     });
 
-    beforeEach('Create loggedIn user agent and authenticate', function (done) {
+    before('Create loggedIn user agent and authenticate', function (done) {
       loggedInAgent = supertest.agent(app);
       loggedInAgent.post('/login').send(userInfo).end(done);
     });
@@ -71,7 +71,14 @@ describe('Cart routes', function(){
           done();
         });
       });
+    });
 
+    it('should have one item in the cart', function(done) {
+      loggedInAgent.get('/api/cart').expect(200).end(function(err, response) {
+        if (err) return done(err);
+        expect(response.body.listitems.length).to.equal(1);
+        done();
+      });
     });
 
 
