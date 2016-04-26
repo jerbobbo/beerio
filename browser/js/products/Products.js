@@ -14,6 +14,12 @@ app.config(function($stateProvider) {
 app.controller('ProductCtrl', function($scope, products) {
   $scope.products = products;
 
+  var setUser = function () {
+      AuthService.getLoggedInUser().then(function (user) {
+          scope.user = user;
+      });
+  };
+
 });
 
 app.factory('ProductFactory', function($http) {
