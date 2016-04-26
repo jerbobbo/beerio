@@ -17,7 +17,6 @@ app.controller('CartCtrl', function($scope, cart) {
 
   $scope.quantityChange = function(lineitem) {
     // save to factory and model
-    
   }
 });
 
