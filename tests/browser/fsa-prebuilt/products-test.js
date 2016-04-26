@@ -1,5 +1,5 @@
 describe('Product factory', function() {
-  beforeEach(module('fsaPreBuilt'));
+  beforeEach(module('FullstackGeneratedApp'));
   var $httpBackend;
   var Product;
   beforeEach('Get tools', inject(function(_$httpBackend_) {

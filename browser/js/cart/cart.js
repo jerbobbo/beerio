@@ -2,29 +2,35 @@ app.config(function($stateProvider) {
   $stateProvider.state('cart', {
     url: '/cart',
     templateUrl: '/js/cart/cart.html',
-    controller: 'CartCtrl'
+    controller: 'CartCtrl',
+    resolve: {
+      cart: function(CartFactory) {
+        return CartFactory.fetchCart();
+      }
+    }
   })
 })
 
-app.controller('CartCtrl', function($scope) {
+app.controller('CartCtrl', function($scope, cart) {
   // dummy data here
-  $scope.cart = 
-  [
-  {
-    _id: 12312512323,
-    name: "Cerveza",
-    price: 3.99,
-    quantity: 4
-  },
-  {
-    _id: 123125123123,
-    name: "Budweiser",
-    price: 3.99,
-    quantity: 4
-  }];
+  $scope.cart = cart;
 
   $scope.quantityChange = function(lineitem) {
     // save to factory and model
     
   }
+});
+
+
+app.factory('CartFactory', function($http) {
+
+  var cartObj = {};
+  cartObj.fetchCart = function() {
+    return $http.get('/api/cart')
+      .then(function(response) {
+        return response.data;
+      });
+  };
+
+  return cartObj;
 });
