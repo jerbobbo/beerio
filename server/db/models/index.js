@@ -3,4 +3,5 @@
 // anywhere the User model needs to be used.
 require('./user');
 require('./order');
+require('./address');
 require('./product');
