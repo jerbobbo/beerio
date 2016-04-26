@@ -9,7 +9,7 @@
 				Price:{{product.price}}
 				<br>
 				<hr>
-				<button ng-disabled="!user" type="button" class="btn btn-primary">Add to cart</button>
+				<button ng-disabled="isLoggedIn" type="button" class="btn btn-primary" ng-click="addToCart(product)">Add to cart</button>
 			</div>
 		</div>
 	</div>

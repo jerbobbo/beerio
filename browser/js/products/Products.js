@@ -6,19 +6,22 @@ app.config(function($stateProvider) {
     resolve: {
       products: function(ProductFactory) {
         return ProductFactory.getAll();
+      },
+      isLoggedIn: function(AuthService) {
+        return AuthService.isAuthenticated();
       }
     }
   })
 })
 
-app.controller('ProductCtrl', function($scope, products) {
+app.controller('ProductCtrl', function($scope, products, isLoggedIn) {
   $scope.products = products;
 
-  var setUser = function () {
-      AuthService.getLoggedInUser().then(function (user) {
-          scope.user = user;
-      });
-  };
+  $scope.isLoggedIn = isLoggedIn;
+
+  $scope.addToCart = function(product) {
+    // send over via cart factory?
+  }
 
 });
 
