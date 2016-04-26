@@ -38,4 +38,19 @@ router.post('/:productId', function(req, res, next) {
   }
 });
 
+router.put('/:lineItemId', function(req, res, next) {
+  if (req.user) {
+    Lineitem.findById(req.params.lineItemId)
+    .then(function(lineItem) {
+      lineItem.quantity = req.body.quantity;
+      return lineItem.save();
+    })
+    .then(function(lineItem) {
+      res.send(lineItem);
+    });
+  } else {
+    res.sendStatus(401);
+  }
+});
+
 module.exports = router;
