@@ -1,14 +1,14 @@
 app.config(function($stateProvider) {
   $stateProvider.state('cart', {
     url: '/cart',
-    templateUrl: '/js/cart/cart.html',
+    templateUrl: 'js/cart/cart.html',
     controller: 'CartCtrl'
   })
 })
 
-app.controller('CartCtrl', function($scope) {
+app.controller('CartCtrl', function($scope,$state) {
   // dummy data here
-  $scope.cart = 
+  $scope.cart =
   [
   {
     _id: 12312512323,
@@ -25,6 +25,6 @@ app.controller('CartCtrl', function($scope) {
 
   $scope.quantityChange = function(lineitem) {
     // save to factory and model
-    
+
   }
 });
