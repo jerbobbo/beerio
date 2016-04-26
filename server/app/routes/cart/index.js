@@ -53,4 +53,15 @@ router.put('/:lineItemId', function(req, res, next) {
   }
 });
 
+router.delete('/:lineItemId', function(req, res, next) {
+  if (req.user) {
+    Lineitem.remove( {_id: req.params.lineItemId} )
+    .then(function(lineItem) {
+      res.send(lineItem);
+    });
+  } else {
+    res.sendStatus(401);
+  }
+});
+
 module.exports = router;
