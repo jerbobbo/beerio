@@ -1,0 +1,20 @@
+<div class="container">
+  <div ng-repeat="lineitem in cart">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{lineitem.product.name}}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="pull-left">
+          Name: {{lineitem.name}}   ||   
+          Price: {{lineitem.price}}
+        </div>
+        <div class="pull-right">
+            <span>Quantity: <input ng-model="lineitem.quantity"></input></span>
+            <button type="button" ng-click="quantityChange(lineitem)" class="btn btn-primary">update</button>
+          <button type="button" class="btn btn-danger">remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,7 +11,6 @@ var lineitemSchema = new mongoose.Schema({
   }
 });
 
-
 var orderSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId, ref: 'User'
@@ -30,6 +29,9 @@ var orderSchema = new mongoose.Schema({
     required: true,
     default: 'cart'
   }
+},
+{
+  timestamps: true
 });
 
 mongoose.model('Lineitem', lineitemSchema);
