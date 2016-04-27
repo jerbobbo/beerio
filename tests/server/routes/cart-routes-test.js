@@ -125,7 +125,7 @@ describe('Cart routes', function(){
       .expect(200)
       .end(function(err, response) {
         if (err) return err;
-        expect(response.body.listitems.length).to.equal(1);
+        expect(response.body.listItems.length).to.equal(1);
       });
     });
 

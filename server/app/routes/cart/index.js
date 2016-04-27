@@ -1,7 +1,7 @@
 'use strict';
 var router = require('express').Router();
 var Cart = require('mongoose').model('Cart');
-var Cartitem = require('mongoose').model('CartItem');
+var CartItem = require('mongoose').model('CartItem');
 
 router.get('/', function(req, res, next) {
   if (req.user) {
@@ -9,6 +9,7 @@ router.get('/', function(req, res, next) {
       path: 'productId'
     }})
     .then(function(cart) {
+      console.log('FOUND CART', cart)
       res.send(cart);
     })
     .catch(next);
@@ -18,7 +19,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  var cart, newCartitem;
+  var cart, newCartItem;
   // need to send back quantity
   if (req.user) {
     Cart.findOne( {user: req.user._id} ).populate( { path: 'cartItems'})
@@ -48,11 +49,12 @@ router.post('/', function(req, res, next) {
           productId: req.body._id,
           quantity: req.body.quantity
         });
-        cart.cartItems.push(newCartitem);
+        cart.cartItems.push(newCartItem);
       }
-      return cart.populate('lineitems').save();
+      return cart.populate('lineItems').save();
     })
     .then(function(_cart) {
+      console.log('NEW CART', _cart)
       res.json(_cart);
     })
     .catch(res.json);
@@ -63,7 +65,7 @@ router.post('/', function(req, res, next) {
 
 router.put('/:cartItemId', function(req, res, next) {
   if (req.user) {
-    Cartitem.findById(req.params.cartItemId)
+    CartItem.findById(req.params.cartItemId)
     .then(function(cartItem) {
       cartItem.quantity = req.body.quantity;
       return cartItem.save();
@@ -79,7 +81,7 @@ router.put('/:cartItemId', function(req, res, next) {
 
 router.delete('/:cartItemId', function(req, res, next) {
   if (req.user) {
-    Cartitem.remove( {_id: req.params.cartItemId} )
+    CartItem.remove( {_id: req.params.cartItemId} )
     .then(function(cartItem) {
       res.send(cartItem);
     })

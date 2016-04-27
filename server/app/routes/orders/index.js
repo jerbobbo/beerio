@@ -40,7 +40,7 @@ router.post('/', function(req, res, next) {
     .then(function(order){
       return Order.findById(order._id)
         .populate('user')
-        .populate('lineitems')
+        .populate('lineItems')
         .populate('shippingAddress')
         .populate('billingAddress');
     })
@@ -51,25 +51,25 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:orderId', function(req, res, next) {
-  var lineitems       = req.body.lineitems,
+  var lineItems       = req.body.lineItems,
       shippingAddress = req.body.shippingAddress,
       billingAddress  = req.body.billingAddress;
 
   Order.findById(req.params.orderId)
-    .populate('user lineitems shippingAddress billingAddress')
+    .populate('user lineItems shippingAddress billingAddress')
     .then(function(order){
-      if (lineitems) {
-        lineitems.forEach(function(lineitem) {
-          var searchedLineItem = order.lineitems.filter(function(_orderlineitem) {
-            return _orderlineitem.productId.toString() === lineitem.productId.toString();
+      if (lineItems) {
+        lineItems.forEach(function(lineItem) {
+          var searchedLineItem = order.lineItems.filter(function(_orderlineItem) {
+            return _orderlineItem.productId.toString() === lineItem.productId.toString();
           })[0];
           if (searchedLineItem){
             // it already exists so we're just updating quantity
-            searchedLineItem.quantity = lineitem.quantity;
+            searchedLineItem.quantity = lineItem.quantity;
           } else {
-            // lineitem doesn't exist tso we'll create a new lineitem 
+            // lineItem doesn't exist tso we'll create a new lineItem 
             // and push it into the order model
-            order.lineitems.push(new LineItem(lineitem));
+            order.lineItems.push(new LineItem(lineItem));
           }  
         })
       }
