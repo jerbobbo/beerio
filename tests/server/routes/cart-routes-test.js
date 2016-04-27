@@ -48,33 +48,41 @@ describe('Cart routes', function(){
       name: 'Budweiser',
       price: 3.99
     };
-
-    before('Create a user', function (done) {
-      User.create(userInfo, done);
+    var _user, _product;
+    beforeEach('Create a user', function (done) {
+      User.create(userInfo)
+        .then(function(user) {
+          _user = userInfo;
+          done();
+        });
     });
 
-    before('Create a product', function (done) {
-      Product.create(productInfo, done);
+    beforeEach('Create a product', function (done) {
+      Product.create(productInfo).then(function(product){
+        _product = product;
+        done();
+      });
     });
-
-    before('Create loggedIn user agent and authenticate', function (done) {
-      loggedInAgent = supertest.agent(app);
-      loggedInAgent.post('/login').send(userInfo).end(done);
+    var _loggedInAgent;
+    beforeEach('Create loggedIn user agent and authenticate', function (done) {
+      _loggedInAgent = supertest.agent(app);
+      _loggedInAgent.post('/login').send(_user).end(done);
     });
 
     it('should add a Budweiser when POST route called with product ID', function (done) {
-      Product.findOne({name: 'Budweiser'})
-      .then(function(product) {
-        loggedInAgent.post('/api/cart/' + product._id).expect(200).end(function (err, response) {
+      _loggedInAgent.post('/api/cart/' + _product._id)
+        .expect(200)
+        .end(function (err, response) {
           if (err) return done(err);
-          expect(response.body.productId).to.equal(product._id.toString());
+          expect(response.body.productId).to.equal(_product._id.toString());
           done();
         });
-      });
     });
 
-    it('should have one item in the cart', function(done) {
-      loggedInAgent.get('/api/cart').expect(200).end(function(err, response) {
+    it('should have one item in the cart', function() {
+      _loggedInAgent.get('/api/cart')
+      .expect(200)
+      .end(function(err, response) {
         if (err) return done(err);
         expect(response.body.listitems.length).to.equal(1);
         done();
