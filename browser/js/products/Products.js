@@ -29,7 +29,7 @@ app.config(function($stateProvider) {
 
 })
 
-app.controller('ProductCtrl', function($scope, products, isLoggedIn, $stateParams) {
+app.controller('ProductCtrl', function($scope, products, isLoggedIn) {
   $scope.products = products;
 
   $scope.isLoggedIn = isLoggedIn;
