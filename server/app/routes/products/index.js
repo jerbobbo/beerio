@@ -12,7 +12,7 @@ router.get('/', function(req, res) {
     });
 });
 
-router.get('/products/:id', function(req, res) {
+router.get('/:id', function(req, res) {
   Product.findById(req.params.id)
     .then(function(product) {
       res.json(product);

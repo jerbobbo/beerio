@@ -54,15 +54,19 @@ var seedProducts = function() {
     var products = [
         {
             name: 'Cerveza con Cebollo',
-            price: 10
+            price: 10,
+            description:'Twee YOLO banjo fashion axe, intelligentsia lumbersexual iPhone gochujang church-key. Pabst man bun craft beer whatever, single-origin coffee meditation farm-to-table'
         },
         {
             name: 'Duff Beer',
-            price: 5
+            price: 5,
+            description:'Twee YOLO banjo fashion axe, intelligentsia lumbersexual iPhone gochujang church-key. Pabst man bun craft beer whatever, single-origin coffee meditation farm-to-table'
         },
         {
             name: 'Wicked Smaht IPA',
-            price: 7
+            price: 7,
+            description:'Twee YOLO banjo fashion axe, intelligentsia lumbersexual iPhone gochujang church-key. Pabst man bun craft beer whatever, single-origin coffee meditation farm-to-table',
+            imageUrl: 'https://placebear.com/300/600'
         }
     ];
 
