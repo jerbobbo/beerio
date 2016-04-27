@@ -8,6 +8,12 @@ var lineitemSchema = new mongoose.Schema({
   quantity: {
     type: Number,
     default: 1
+  },
+  name: {
+    type: String
+  },
+  price: {
+    type: Number
   }
 });
 
@@ -16,7 +22,8 @@ var orderSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, ref: 'User'
   },
   lineitems: [{
-    type: mongoose.Schema.Types.ObjectId, ref: 'Lineitem'
+    type: mongoose.Schema.Types.ObjectId, ref: 'Lineitem',
+    price: Number
   }],
   shippingAddress: {
     type: mongoose.Schema.Types.ObjectId, ref: 'Address'

@@ -72,7 +72,6 @@ describe('Orders API', function() {
         return Order.create(_orderToBeCreated);
       })
       .then(function(createdOrder) {
-        console.log('this is the loaded created order', createdOrder);
         _createdOrder = createdOrder
         done();
       })

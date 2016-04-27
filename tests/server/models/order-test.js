@@ -29,7 +29,9 @@ describe('Order Model', function () {
     beforeEach(function (done) {
       return Lineitem.create({
         productId: null,
-        quantity: 3
+        quantity: 3,
+        name: 'budweiser',
+        price: 2.99
       })
       .then(function(lineitem) {
         _lineitem = lineitem;
@@ -53,7 +55,6 @@ describe('Order Model', function () {
         done();
       })
       .catch(function(err) {
-        console.log('there was an error: ',err);
         done();
       })
     });
@@ -61,6 +62,7 @@ describe('Order Model', function () {
     it('should be an actual order', function () {
       expect(_order).to.exist;
       expect(_order.lineitems[0].quantity).to.equal(3);
+      expect(_order.lineitems[0].price).to.equal(2.99);
     });
 
     afterEach(function (done) {

@@ -6,6 +6,8 @@ var mongoose = require('mongoose');
 require('../../../server/db/models');
 var User = mongoose.model('User');
 var Order = mongoose.model('Order');
+var Cart = mongoose.model('Cart');
+var Cartitem = mongoose.model('Cartitem');
 var Product = mongoose.model('Product');
 
 
@@ -48,11 +50,12 @@ describe('Cart routes', function(){
       name: 'Budweiser',
       price: 3.99
     };
-    var _user, _product;
+
+    var _user, _product, _cartitem, _cart;
     beforeEach('Create a user', function (done) {
       User.create(userInfo)
         .then(function(user) {
-          _user = userInfo;
+          _user = user;
           done();
         });
     });
@@ -63,18 +66,56 @@ describe('Cart routes', function(){
         done();
       });
     });
+
+    beforeEach('create a cartitem',function (done) {
+      Cartitem.create({
+        productId: _product._id,
+        quantity: 2,
+        price: _product.price
+      })
+      .then(function(cartitem) {
+        _cartitem = cartitem;
+        done();
+      })
+    });
+    beforeEach('create a cart with a cartitem',function (done) {
+      Cart.create({
+        user: _user._id
+      })
+      .then(function(cart) {
+        cart.cartitems.push(_cartitem);
+        return cart.save();
+      })
+      .then(function(savedcart) {
+        _cart = savedcart;
+        done();
+      })
+      .catch(console.error);
+    });
     var _loggedInAgent;
     beforeEach('Create loggedIn user agent and authenticate', function (done) {
       _loggedInAgent = supertest.agent(app);
-      _loggedInAgent.post('/login').send(_user).end(done);
+      _loggedInAgent.post('/login').send(userInfo).end(done);
     });
 
     it('should add a Budweiser when POST route called with product ID', function (done) {
-      _loggedInAgent.post('/api/cart/' + _product._id)
+      _loggedInAgent.post('/api/cart/')
+        .send(_product)
         .expect(200)
         .end(function (err, response) {
           if (err) return done(err);
-          expect(response.body.productId).to.equal(_product._id.toString());
+          expect(response.body.cartitems[0].productId.toString()).to.equal(_product._id.toString());
+          done();
+        });
+    });
+
+    it('should increment a quanitity when POST route called a product that already exists in the cart', function (done) {
+      _loggedInAgent.post('/api/cart/')
+        .send(_product)
+        .expect(200)
+        .end(function (err, response) {
+          if (err) return done(err);
+          expect(response.body.cartitems[0].quantity).to.equal(3);
           done();
         });
     });
@@ -83,9 +124,8 @@ describe('Cart routes', function(){
       _loggedInAgent.get('/api/cart')
       .expect(200)
       .end(function(err, response) {
-        if (err) return done(err);
+        if (err) return err;
         expect(response.body.listitems.length).to.equal(1);
-        done();
       });
     });
 
