@@ -10,7 +10,7 @@ var agent = supertest(app);
 var Order    = mongoose.model('Order');
 var Address  = mongoose.model('Address');
 var User     = mongoose.model('User');
-var Lineitem = mongoose.model('Lineitem');
+var LineItem = mongoose.model('LineItem');
 var Product  = mongoose.model('Product');
 var Promise  = require('bluebird');
 
@@ -27,7 +27,7 @@ describe('Orders API', function() {
   
 
   describe('orders routes', function () {
-    var _orderToBeCreated, _emptyorder, _user, _product, _lineitem, 
+    var _orderToBeCreated, _emptyorder, _user, _product, _lineItem, 
         _address, _data, _createdOrder;
     beforeEach(function (done) {
       return Promise.all([User.create({
@@ -48,13 +48,13 @@ describe('Orders API', function() {
         _user = user;
         _product = product;
         _address = address;
-        return Lineitem.create({
+        return LineItem.create({
           productId: _product._id,
           quantity: 2
         })
       })
-      .then(function(lineitem) {
-        _lineitem = lineitem
+      .then(function(lineItem) {
+        _lineItem = lineItem
 
         return Order.create({
           status: 'cart'
@@ -64,7 +64,7 @@ describe('Orders API', function() {
         _emptyorder = emptyOrder;
         _orderToBeCreated = {
           user: _user._id,
-          lineitems: [_lineitem._id],
+          lineItems: [_lineItem._id],
           shippingAddress: _address._id,
           billingAddress: _address._id,
           status: 'cart' 
@@ -99,10 +99,10 @@ describe('Orders API', function() {
         });
     });
 
-    it('PUT /api/orders/:orderId adding a lineitem', function (done) {
+    it('PUT /api/orders/:orderId adding a lineItem', function (done) {
       agent
         .put('/api/orders/' + _emptyorder._id).send({
-          lineitems: [
+          lineItems: [
             {
               productId: _product._id,
               quantity: 4    
@@ -112,16 +112,16 @@ describe('Orders API', function() {
         .expect(200)
         .end(function(err,res) {
           if (err) return done(err);
-          expect(res.body.lineitems).to.exist;
+          expect(res.body.lineItems).to.exist;
           done();
         })
     });
 
 
-    it('PUT /api/orders/:orderId modifying a lineitem', function (done) {
+    it('PUT /api/orders/:orderId modifying a lineItem', function (done) {
       agent
         .put('/api/orders/' + _createdOrder._id).send({
-          lineitems: [
+          lineItems: [
             {
               productId: _product._id,
               quantity: 4    
@@ -131,7 +131,7 @@ describe('Orders API', function() {
         .expect(200)
         .end(function(err,res) {
           if (err) return done(err);
-          expect(res.body.lineitems).to.exist;
+          expect(res.body.lineItems).to.exist;
           done();
         })
     });

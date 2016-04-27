@@ -1,7 +1,7 @@
 'use strict';
 var mongoose = require('mongoose');
 
-var lineitemSchema = new mongoose.Schema({
+var lineItemSchema = new mongoose.Schema({
   productId: {
     type: mongoose.Schema.Types.ObjectId, ref: 'Product'
   },
@@ -21,8 +21,8 @@ var orderSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId, ref: 'User'
   },
-  lineitems: [{
-    type: mongoose.Schema.Types.ObjectId, ref: 'Lineitem',
+  lineItems: [{
+    type: mongoose.Schema.Types.ObjectId, ref: 'LineItem',
     price: Number
   }],
   shippingAddress: {
@@ -41,5 +41,5 @@ var orderSchema = new mongoose.Schema({
   timestamps: true
 });
 
-mongoose.model('Lineitem', lineitemSchema);
+mongoose.model('LineItem', lineItemSchema);
 mongoose.model('Order', orderSchema);

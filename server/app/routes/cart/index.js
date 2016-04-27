@@ -1,11 +1,11 @@
 'use strict';
 var router = require('express').Router();
 var Cart = require('mongoose').model('Cart');
-var Cartitem = require('mongoose').model('Cartitem');
+var Cartitem = require('mongoose').model('CartItem');
 
 router.get('/', function(req, res, next) {
   if (req.user) {
-    Cart.findOne( {user: req.user._id} ).populate( { path: 'cartitems', populate: {
+    Cart.findOne( {user: req.user._id} ).populate( { path: 'cartItems', populate: {
       path: 'productId'
     }})
     .then(function(cart) {
@@ -21,7 +21,7 @@ router.post('/', function(req, res, next) {
   var cart, newCartitem;
   // need to send back quantity
   if (req.user) {
-    Cart.findOne( {user: req.user._id} ).populate( { path: 'cartitems'})
+    Cart.findOne( {user: req.user._id} ).populate( { path: 'cartItems'})
     .then(function(_cart) {
       if (!_cart) return Cart.create( {user: req.user._id} );
       return _cart;
@@ -31,8 +31,8 @@ router.post('/', function(req, res, next) {
       var exists = false,
           index;
 
-      cart.cartitems.forEach(function(cartitem, idx){
-        if (cartitem.productId.toString() === req.body._id.toString()) {
+      cart.cartItems.forEach(function(cartItem, idx){
+        if (cartItem.productId.toString() === req.body._id.toString()) {
           exists = true;
           index  = idx;
           return;
@@ -41,14 +41,14 @@ router.post('/', function(req, res, next) {
 
       if (exists) {
         // if it exists then we increment
-        cart.cartitems[index].quantity++;
+        cart.cartItems[index].quantity++;
       } else {
         // create a new cart item
-        newCartitem = new Cartitem({
+        newCartItem = new CartItem({
           productId: req.body._id,
           quantity: req.body.quantity
         });
-        cart.cartitems.push(newCartitem);
+        cart.cartItems.push(newCartitem);
       }
       return cart.populate('lineitems').save();
     })
@@ -61,15 +61,15 @@ router.post('/', function(req, res, next) {
   }
 });
 
-router.put('/:cartitemId', function(req, res, next) {
+router.put('/:cartItemId', function(req, res, next) {
   if (req.user) {
-    Cartitem.findById(req.params.cartitemId)
-    .then(function(cartitem) {
-      cartitem.quantity = req.body.quantity;
-      return cartitem.save();
+    Cartitem.findById(req.params.cartItemId)
+    .then(function(cartItem) {
+      cartItem.quantity = req.body.quantity;
+      return cartItem.save();
     })
-    .then(function(cartitem) {
-      res.send(cartitem);
+    .then(function(cartItem) {
+      res.send(cartItem);
     })
     .catch(next);
   } else {
@@ -77,11 +77,11 @@ router.put('/:cartitemId', function(req, res, next) {
   }
 });
 
-router.delete('/:cartitemId', function(req, res, next) {
+router.delete('/:cartItemId', function(req, res, next) {
   if (req.user) {
-    Cartitem.remove( {_id: req.params.cartitemId} )
-    .then(function(cartitem) {
-      res.send(cartitem);
+    Cartitem.remove( {_id: req.params.cartItemId} )
+    .then(function(cartItem) {
+      res.send(cartItem);
     })
     .catch(next);
   } else {

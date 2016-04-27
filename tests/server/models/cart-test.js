@@ -10,7 +10,7 @@ require('../../../server/db/models');
 
 var Cart     = mongoose.model('Cart');
 var User     = mongoose.model('User');
-var Cartitem = mongoose.model('Cartitem');
+var CartItem = mongoose.model('CartItem');
 var Product  = mongoose.model('Product');
 var Promise  = require('bluebird');
 
@@ -27,9 +27,9 @@ describe('Cart Model', function () {
 
 
   describe('testing model', function () {
-    var _cart, _cartitem;
-    beforeEach(function (done) {
-      Cartitem.create({
+    var _cart, _cartItem;
+    before(function (done) {
+      CartItem.create({
         productId: new Product({
           name: 'budweiser',
           description: 'refreshing domestic beer',
@@ -38,11 +38,11 @@ describe('Cart Model', function () {
         }),
         quantity: 2
       })
-      .then(function(cartitem) {
-        _cartitem = cartitem
+      .then(function(cartItem) {
+        _cartItem = cartItem
         return Cart.create({
           user: null,
-          cartitems: [_cartitem]
+          cartItems: [_cartItem]
         });
       })
       .then(function(cart) {
@@ -51,9 +51,10 @@ describe('Cart Model', function () {
       })
     });
 
-    it('expects it cart to exist with a cartitem in there', function () {
+    it('expects it cart to exist with a cartItem in there', function () {
+      console.log(_cart)
       expect(_cart).to.exist;
-      expect(_cart.cartitems.length).to.equal(1);
+      expect(_cart.cartItems.length).to.equal(1);
     });
   });
 });

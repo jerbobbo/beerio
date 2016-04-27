@@ -7,7 +7,7 @@ require('../../../server/db/models');
 var User = mongoose.model('User');
 var Order = mongoose.model('Order');
 var Cart = mongoose.model('Cart');
-var Cartitem = mongoose.model('Cartitem');
+var CartItem = mongoose.model('CartItem');
 var Product = mongoose.model('Product');
 
 
@@ -51,7 +51,7 @@ describe('Cart routes', function(){
       price: 3.99
     };
 
-    var _user, _product, _cartitem, _cart;
+    var _user, _product, _cartItem, _cart;
     beforeEach('Create a user', function (done) {
       User.create(userInfo)
         .then(function(user) {
@@ -67,23 +67,23 @@ describe('Cart routes', function(){
       });
     });
 
-    beforeEach('create a cartitem',function (done) {
-      Cartitem.create({
+    beforeEach('create a cartItem',function (done) {
+      CartItem.create({
         productId: _product._id,
         quantity: 2,
         price: _product.price
       })
-      .then(function(cartitem) {
-        _cartitem = cartitem;
+      .then(function(cartItem) {
+        _cartItem = cartItem;
         done();
       })
     });
-    beforeEach('create a cart with a cartitem',function (done) {
+    beforeEach('create a cart with a cartItem',function (done) {
       Cart.create({
         user: _user._id
       })
       .then(function(cart) {
-        cart.cartitems.push(_cartitem);
+        cart.cartItems.push(_cartItem);
         return cart.save();
       })
       .then(function(savedcart) {
@@ -104,7 +104,7 @@ describe('Cart routes', function(){
         .expect(200)
         .end(function (err, response) {
           if (err) return done(err);
-          expect(response.body.cartitems[0].productId.toString()).to.equal(_product._id.toString());
+          expect(response.body.cartItems[0].productId.toString()).to.equal(_product._id.toString());
           done();
         });
     });
@@ -115,7 +115,7 @@ describe('Cart routes', function(){
         .expect(200)
         .end(function (err, response) {
           if (err) return done(err);
-          expect(response.body.cartitems[0].quantity).to.equal(3);
+          expect(response.body.cartItems[0].quantity).to.equal(3);
           done();
         });
     });

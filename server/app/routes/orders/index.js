@@ -1,7 +1,7 @@
 'use strict';
 var router   = require('express').Router();
 var Order    = require('mongoose').model('Order');
-var Lineitem = require('mongoose').model('Lineitem');
+var LineItem = require('mongoose').model('LineItem');
 var Address  = require('mongoose').model('Address');
 var _        = require('lodash');
 
@@ -69,7 +69,7 @@ router.put('/:orderId', function(req, res, next) {
           } else {
             // lineitem doesn't exist tso we'll create a new lineitem 
             // and push it into the order model
-            order.lineitems.push(new Lineitem(lineitem));
+            order.lineitems.push(new LineItem(lineitem));
           }  
         })
       }
