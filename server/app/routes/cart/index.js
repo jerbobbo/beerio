@@ -5,7 +5,9 @@ var Lineitem = require('mongoose').model('Lineitem');
 
 router.get('/', function(req, res, next) {
   if (req.user) {
-    Order.findOne( {user: req.user._id, status: 'cart'} )
+    Order.findOne( {user: req.user._id, status: 'cart'} ).populate( { path: 'lineitems', populate: {
+      path: 'productId'
+    }})
     .then(function(cart) {
       res.send(cart);
     });
