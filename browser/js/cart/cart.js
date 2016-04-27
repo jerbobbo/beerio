@@ -8,7 +8,7 @@ app.config(function($stateProvider) {
 
 app.controller('CartCtrl', function($scope) {
   // dummy data here
-  $scope.cart = 
+  $scope.cart =
   [
   {
     _id: 12312512323,
@@ -25,6 +25,5 @@ app.controller('CartCtrl', function($scope) {
 
   $scope.quantityChange = function(lineitem) {
     // save to factory and model
-    
   }
 });

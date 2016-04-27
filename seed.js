@@ -23,6 +23,7 @@ var chalk = require('chalk');
 var connectToDb = require('./server/db');
 var User = mongoose.model('User');
 var Product = mongoose.model('Product');
+var Order = mongoose.model('Order');
 
 var wipeCollections = function () {
     var removeUsers = User.remove({});
@@ -69,6 +70,26 @@ var seedProducts = function() {
     return Product.create(products);
 }
 
+var seedOrder = function () {
+
+    var newUser = new User(
+        {
+            email: 'andrew@fsa.com',
+            password: 'password'
+        });
+
+    return newUser.save(function(err){
+
+        var order1 = new Order({
+            user: newUser._id,
+            status: 'cart'
+          });
+
+        return order1.save();
+    })
+
+};
+
 
 connectToDb
     .then(function () {
@@ -79,6 +100,9 @@ connectToDb
     })
     .then(function() {
         return seedProducts();
+    })
+     .then(function() {
+        return seedOrder();
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
