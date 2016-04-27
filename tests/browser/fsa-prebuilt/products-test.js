@@ -7,7 +7,7 @@ describe('Product factory', function() {
   }));
   console.log($httpBackend);
 
-  beforeEach('Get factories', inject(function(ProductFactory) {
+  beforeEach('Get factories', inject(function(_ProductFactory_) {
     ProductFactory = _ProductFactory_;
   }));
 
@@ -19,11 +19,11 @@ describe('Product factory', function() {
     reviews: ['123xz']
   };
 
-  xit('should be an object', function() {
-    expect(Product).to.be.an('object');
+  it('should be an object', function() {
+    expect(ProductFactory).to.be.an('object');
   });
 
-  xit('.getOne fetches a backend product by id', function(done) {
+  it('.getOne fetches a backend product by id', function(done) {
     $httpBackend
       .expect('GET', '/api/products/' + fakeResProduct._id)
       .respond(200, fakeResProduct);
