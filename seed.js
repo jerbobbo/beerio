@@ -23,8 +23,10 @@ var chalk = require('chalk');
 var connectToDb = require('./server/db');
 var User = mongoose.model('User');
 var Product = mongoose.model('Product');
+var Converter = require("csvtojson").Converter;
+var converter = new Converter({});
 
-var wipeCollections = function () {
+var wipeCollections = function() {
     var removeUsers = User.remove({});
     var removeProducts = Product.remove({});
     return Promise.all([
@@ -33,62 +35,51 @@ var wipeCollections = function () {
     ]);
 };
 
-var seedUsers = function () {
+var seedUsers = function() {
 
-    var users = [
-        {
-            email: 'testing@fsa.com',
-            password: 'password'
-        },
-        {
-            email: 'obama@gmail.com',
-            password: 'potus'
-        }
-    ];
+    var users = [{
+        email: 'testing@fsa.com',
+        password: 'password'
+    }, {
+        email: 'obama@gmail.com',
+        password: 'potus'
+    }];
 
     return User.create(users);
 
 };
 
-var seedProducts = function() {
-    var products = [
-        {
-            name: 'Cerveza con Cebollo',
-            price: 10,
-            description:'Twee YOLO banjo fashion axe, intelligentsia lumbersexual iPhone gochujang church-key. Pabst man bun craft beer whatever, single-origin coffee meditation farm-to-table'
-        },
-        {
-            name: 'Duff Beer',
-            price: 5,
-            description:'Twee YOLO banjo fashion axe, intelligentsia lumbersexual iPhone gochujang church-key. Pabst man bun craft beer whatever, single-origin coffee meditation farm-to-table'
-        },
-        {
-            name: 'Wicked Smaht IPA',
-            price: 7,
-            description:'Twee YOLO banjo fashion axe, intelligentsia lumbersexual iPhone gochujang church-key. Pabst man bun craft beer whatever, single-origin coffee meditation farm-to-table',
-            imageUrl: 'https://placebear.com/300/600'
-        }
-    ];
 
-    return Product.create(products);
+//read from seed csv file
+require("fs").createReadStream("./andrew-seed-data.csv").pipe(converter);
+
+//end_parsed will be emitted once parsing finished
+converter.on("end_parsed", function(jsonArray) {
+    console.log(jsonArray); //here is your result jsonarray
+    runSeed(jsonArray);
+});
+
+var seedProducts = function(x) {
+    return Product.create(x);
 }
 
-
-connectToDb
-    .then(function () {
-        return wipeCollections();
-    })
-    .then(function () {
-        return seedUsers();
-    })
-    .then(function() {
-        return seedProducts();
-    })
-    .then(function () {
-        console.log(chalk.green('Seed successful!'));
-        process.kill(0);
-    })
-    .catch(function (err) {
-        console.error(err);
-        process.kill(1);
-    });
+var runSeed = function(productArray) {
+    connectToDb
+        .then(function() {
+            return wipeCollections();
+        })
+        .then(function() {
+            return seedUsers();
+        })
+        .then(function() {
+            return seedProducts(productArray);
+        })
+        .then(function() {
+            console.log(chalk.green('Seed successful!'));
+            process.kill(0);
+        })
+        .catch(function(err) {
+            console.error(err);
+            process.kill(1);
+        });
+}
