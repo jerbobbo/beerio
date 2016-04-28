@@ -29,13 +29,13 @@ app.config(function($stateProvider) {
 
 })
 
-app.controller('ProductCtrl', function($scope, products, isLoggedIn) {
+app.controller('ProductCtrl', function($scope, products, isLoggedIn, CartFactory) {
   $scope.products = products;
-
+  console.log(isLoggedIn);
   $scope.isLoggedIn = isLoggedIn;
 
   $scope.addToCart = function(product) {
-    // send over via cart factory?
+    CartFactory.addToCart(product);
   }
 
 });
