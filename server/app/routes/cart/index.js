@@ -9,7 +9,6 @@ router.get('/', function(req, res, next) {
       path: 'productId'
     }})
     .then(function(cart) {
-      console.log('FOUND CART', cart)
       res.send(cart);
     })
     .catch(res.json);
