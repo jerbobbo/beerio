@@ -6,6 +6,8 @@ var mongoose = require('mongoose');
 require('../../../server/db/models');
 var User = mongoose.model('User');
 var Order = mongoose.model('Order');
+var Cart = mongoose.model('Cart');
+var CartItem = mongoose.model('CartItem');
 var Product = mongoose.model('Product');
 
 
@@ -49,37 +51,93 @@ describe('Cart routes', function(){
       price: 3.99
     };
 
-    before('Create a user', function (done) {
-      User.create(userInfo, done);
-    });
-
-    before('Create a product', function (done) {
-      Product.create(productInfo, done);
-    });
-
-    before('Create loggedIn user agent and authenticate', function (done) {
-      loggedInAgent = supertest.agent(app);
-      loggedInAgent.post('/login').send(userInfo).end(done);
-    });
-
-    it('should add a Budweiser when POST route called with product ID', function (done) {
-      Product.findOne({name: 'Budweiser'})
-      .then(function(product) {
-        loggedInAgent.post('/api/cart/' + product._id).expect(200).end(function (err, response) {
-          if (err) return done(err);
-          expect(response.body.productId).to.equal(product._id.toString());
+    var _user, _product, _cartItem, _cart;
+    beforeEach('Create a user', function (done) {
+      User.create(userInfo)
+        .then(function(user) {
+          _user = user;
           done();
         });
-      });
     });
 
-    it('should have one item in the cart', function(done) {
-      loggedInAgent.get('/api/cart').expect(200).end(function(err, response) {
-        if (err) return done(err);
-        expect(response.body.listitems.length).to.equal(1);
+    beforeEach('Create a product', function (done) {
+      Product.create(productInfo).then(function(product){
+        _product = product;
         done();
       });
     });
+
+    beforeEach('create a cartItem',function (done) {
+      CartItem.create({
+        productId: _product._id,
+        quantity: 2,
+        price: _product.price
+      })
+      .then(function(cartItem) {
+        _cartItem = cartItem;
+        done();
+      })
+    });
+    beforeEach('create a cart with a cartItem',function (done) {
+      Cart.create({
+        user: _user._id
+      })
+      .then(function(cart) {
+        cart.cartItems.push(_cartItem);
+        return cart.save();
+      })
+      .then(function(savedcart) {
+        _cart = savedcart;
+        done();
+      })
+      .catch(console.error);
+    });
+    var _loggedInAgent;
+    beforeEach('Create loggedIn user agent and authenticate', function (done) {
+      _loggedInAgent = supertest.agent(app);
+      _loggedInAgent.post('/login')
+        .send(userInfo)
+        .end(function(err, response) {
+          if (err) {
+            done(err);
+          }
+          done();
+        });
+    });
+
+    it('should have one item in the cart', function (done) {
+      _loggedInAgent.get('/api/cart/')
+        .expect(200)
+        .end(function (err, response) {
+          if (err) return done(err);
+          expect(response.body.cartItems.length).to.equal(1);
+          done();
+        });
+    });
+
+
+    it('should add a Budweiser when POST route called with product ID', function (done) {
+      _loggedInAgent.post('/api/cart/')
+        .send(_product)
+        .expect(200)
+        .end(function (err, response) {
+          if (err) return done(err);
+          expect(response.body.cartItems[0].productId.toString()).to.equal(_product._id.toString());
+          done();
+        });
+    });
+
+    it('should increment a quanitity when POST route called a product that already exists in the cart', function (done) {
+      _loggedInAgent.post('/api/cart/')
+        .send(_product)
+        .expect(200)
+        .end(function (err, response) {
+          if (err) return done(err);
+          expect(response.body.cartItems[0].quantity).to.equal(3);
+          done();
+        });
+    });
+
 
 
   });

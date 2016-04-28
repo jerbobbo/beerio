@@ -10,7 +10,7 @@ require('../../../server/db/models');
 
 var Order    = mongoose.model('Order');
 var User     = mongoose.model('User');
-var Lineitem = mongoose.model('Lineitem');
+var LineItem = mongoose.model('LineItem');
 var Promise  = require('bluebird');
 
 describe('Order Model', function () {
@@ -25,14 +25,16 @@ describe('Order Model', function () {
   });
 
   describe('First Test', function () {
-    var _order, _user, _lineitem;
+    var _order, _user, _lineItem;
     beforeEach(function (done) {
-      return Lineitem.create({
+      return LineItem.create({
         productId: null,
-        quantity: 3
+        quantity: 3,
+        name: 'budweiser',
+        price: 2.99
       })
-      .then(function(lineitem) {
-        _lineitem = lineitem;
+      .then(function(lineItem) {
+        _lineItem = lineItem;
         return User.create({
           email: 'test@test.com',
         })
@@ -42,29 +44,29 @@ describe('Order Model', function () {
         return Order.create({
           user: user,
           status: 'cart',
-          lineitems: [_lineitem]
+          lineItems: [_lineItem]
         })
       })
       .then(function(order) {
-        return order.populate('lineitems');
+        return order.populate('lineItems');
       })
       .then(function(populatedOrder) {
         _order = populatedOrder;
         done();
       })
       .catch(function(err) {
-        console.log('there was an error: ',err);
         done();
       })
     });
 
     it('should be an actual order', function () {
       expect(_order).to.exist;
-      expect(_order.lineitems[0].quantity).to.equal(3);
+      expect(_order.lineItems[0].quantity).to.equal(3);
+      expect(_order.lineItems[0].price).to.equal(2.99);
     });
 
     afterEach(function (done) {
-      Promise.all([Order.findById(_order._id).remove(), User.findById(_user._id).remove(), Lineitem.findById(_lineitem._id).remove()])
+      Promise.all([Order.findById(_order._id).remove(), User.findById(_user._id).remove(), LineItem.findById(_lineItem._id).remove()])
         .then(function(entries) {
           done();
         })

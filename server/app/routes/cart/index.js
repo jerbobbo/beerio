@@ -1,38 +1,15 @@
 'use strict';
 var router = require('express').Router();
-var Order = require('mongoose').model('Order');
-var Lineitem = require('mongoose').model('Lineitem');
+var Cart = require('mongoose').model('Cart');
+var CartItem = require('mongoose').model('CartItem');
 
 router.get('/', function(req, res, next) {
   if (req.user) {
-    Order.findOne( {user: req.user._id, status: 'cart'} ).populate( { path: 'lineitems', populate: {
+    Cart.findOne( {user: req.user._id} ).populate( { path: 'cartItems', populate: {
       path: 'productId'
     }})
     .then(function(cart) {
       res.send(cart);
-    });
-  } else {
-    res.sendStatus(401);
-  }
-});
-
-router.post('/:productId', function(req, res, next) {
-  var cart = {};
-  if (req.user) {
-    Order.findOne( {user: req.user._id, status: 'cart'} )
-    .then(function(_cart) {
-      if (!_cart) return Order.create( {user: req.user._id} );
-      return _cart;
-    })
-    .then(function(_cart) {
-      cart = _cart;
-      return Lineitem.create( {productId: req.params.productId} );
-    })
-    .then(function(newItem) {
-      cart.lineitems.push(newItem._id);
-      cart.save();
-      console.log('cart after saving: ', cart);
-      res.send(newItem);
     })
     .catch(res.json);
   } else {
@@ -40,27 +17,74 @@ router.post('/:productId', function(req, res, next) {
   }
 });
 
-router.put('/:lineItemId', function(req, res, next) {
+router.post('/', function(req, res, next) {
+  var cart, newCartItem;
+  // need to send back quantity
   if (req.user) {
-    Lineitem.findById(req.params.lineItemId)
-    .then(function(lineItem) {
-      lineItem.quantity = req.body.quantity;
-      return lineItem.save();
+    Cart.findOne( {user: req.user._id} ).populate( { path: 'cartItems'})
+    .then(function(_cart) {
+      if (!_cart) return Cart.create( {user: req.user._id} );
+      return _cart;
     })
-    .then(function(lineItem) {
-      res.send(lineItem);
-    });
+    .then(function(_cart) {
+      cart = _cart;
+      var exists = false,
+          index;
+
+      cart.cartItems.forEach(function(cartItem, idx){
+        if (cartItem.productId.toString() === req.body._id.toString()) {
+          exists = true;
+          index  = idx;
+          return;
+        }
+      });
+
+      if (exists) {
+        // if it exists then we increment
+        cart.cartItems[index].quantity++;
+      } else {
+        // create a new cart item
+        newCartItem = new CartItem({
+          productId: req.body._id,
+          quantity: req.body.quantity
+        });
+        cart.cartItems.push(newCartItem);
+      }
+      return cart.populate('lineItems').save();
+    })
+    .then(function(_cart) {
+      console.log('NEW CART', _cart)
+      res.json(_cart);
+    })
+    .catch(res.json);
   } else {
     res.sendStatus(401);
   }
 });
 
-router.delete('/:lineItemId', function(req, res, next) {
+router.put('/:cartItemId', function(req, res, next) {
   if (req.user) {
-    Lineitem.remove( {_id: req.params.lineItemId} )
-    .then(function(lineItem) {
-      res.send(lineItem);
-    });
+    CartItem.findById(req.params.cartItemId)
+    .then(function(cartItem) {
+      cartItem.quantity = req.body.quantity;
+      return cartItem.save();
+    })
+    .then(function(cartItem) {
+      res.send(cartItem);
+    })
+    .catch(res.json);
+  } else {
+    res.sendStatus(401);
+  }
+});
+
+router.delete('/:cartItemId', function(req, res, next) {
+  if (req.user) {
+    CartItem.remove( {_id: req.params.cartItemId} )
+    .then(function(cartItem) {
+      res.send(cartItem);
+    })
+    .catch(res.json);
   } else {
     res.sendStatus(401);
   }
