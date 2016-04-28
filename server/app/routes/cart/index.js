@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
       console.log('FOUND CART', cart)
       res.send(cart);
     })
-    .catch(next);
+    .catch(res.json);
   } else {
     res.sendStatus(401);
   }
@@ -73,7 +73,7 @@ router.put('/:cartItemId', function(req, res, next) {
     .then(function(cartItem) {
       res.send(cartItem);
     })
-    .catch(next);
+    .catch(res.json);
   } else {
     res.sendStatus(401);
   }
@@ -85,7 +85,7 @@ router.delete('/:cartItemId', function(req, res, next) {
     .then(function(cartItem) {
       res.send(cartItem);
     })
-    .catch(next);
+    .catch(res.json);
   } else {
     res.sendStatus(401);
   }

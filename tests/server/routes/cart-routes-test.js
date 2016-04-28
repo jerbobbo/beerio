@@ -95,8 +95,26 @@ describe('Cart routes', function(){
     var _loggedInAgent;
     beforeEach('Create loggedIn user agent and authenticate', function (done) {
       _loggedInAgent = supertest.agent(app);
-      _loggedInAgent.post('/login').send(userInfo).end(done);
+      _loggedInAgent.post('/login')
+        .send(userInfo)
+        .end(function(err, response) {
+          if (err) {
+            done(err);
+          }
+          done();
+        });
     });
+
+    it('should have one item in the cart', function (done) {
+      _loggedInAgent.get('/api/cart/')
+        .expect(200)
+        .end(function (err, response) {
+          if (err) return done(err);
+          expect(response.body.cartItems.length).to.equal(1);
+          done();
+        });
+    });
+
 
     it('should add a Budweiser when POST route called with product ID', function (done) {
       _loggedInAgent.post('/api/cart/')
@@ -120,14 +138,6 @@ describe('Cart routes', function(){
         });
     });
 
-    it('should have one item in the cart', function() {
-      _loggedInAgent.get('/api/cart')
-      .expect(200)
-      .end(function(err, response) {
-        if (err) return err;
-        expect(response.body.listItems.length).to.equal(1);
-      });
-    });
 
 
   });
