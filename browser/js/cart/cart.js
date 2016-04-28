@@ -13,6 +13,7 @@ app.config(function($stateProvider) {
 
 app.controller('CartCtrl', function($scope, cart) {
   // dummy data here
+  console.log(cart)
   $scope.cart = cart;
 
   $scope.quantityChange = function(lineitem) {
@@ -27,9 +28,17 @@ app.factory('CartFactory', function($http) {
   cartObj.fetchCart = function() {
     return $http.get('/api/cart')
       .then(function(response) {
-        return response.data;
+        return response.data.items;
       });
   };
 
+  cartObj.addToCart = function(product) {
+    console.log(product)
+    return $http.post('/api/cart/', product)
+      .then(function(resp) {
+        console.log(product, resp.data);
+        return resp.data;
+      })
+  }
   return cartObj;
 });
