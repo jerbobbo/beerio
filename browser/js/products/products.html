@@ -2,14 +2,15 @@
 	<div ng-repeat="product in products">
 		<div class="col-sm-4 panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">{{product.name}}</h3>
+				<h3 class="panel-title"><a ui-sref="product({id: product._id})">{{product.name}}</a></h3>
 			</div>
 			<div class="panel-body">
 
 				Price:{{product.price}}
 				<br>
 				<hr>
-				<button type="button" class="btn btn-primary" ng-click="addToCart(product)">Add to cart</button>
+				<button ng-disabled="isLoggedIn" type="button" class="btn btn-primary" ng-click="addToCart(product)">Add to cart</button>
+
 			</div>
 		</div>
 	</div>

@@ -12,6 +12,21 @@ app.config(function($stateProvider) {
       }
     }
   })
+
+  $stateProvider.state('product', {
+    url: '/product/:id',
+    templateUrl: '/js/products/product.detail.html',
+    controller:'ProductDetailCtrl',
+    resolve: {
+      product: function(ProductFactory,$stateParams) {
+        return ProductFactory.getOne($stateParams.id);
+      },
+      isLoggedIn: function(AuthService) {
+        return AuthService.isAuthenticated();
+      }
+    }
+  })
+
 })
 
 app.controller('ProductCtrl', function($scope, products, isLoggedIn, CartFactory) {
@@ -21,6 +36,17 @@ app.controller('ProductCtrl', function($scope, products, isLoggedIn, CartFactory
 
   $scope.addToCart = function(product) {
     CartFactory.addToCart(product);
+  }
+
+});
+
+app.controller('ProductDetailCtrl', function($scope, product, isLoggedIn, $stateParams) {
+  $scope.product = product;
+
+  $scope.isLoggedIn = isLoggedIn;
+
+  $scope.addToCart = function(product) {
+    // send over via cart factory?
   }
 
 });
