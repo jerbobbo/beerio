@@ -5,9 +5,8 @@ var CartItem = require('mongoose').model('CartItem');
 
 router.get('/', function(req, res, next) {
   if (req.user) {
-    Cart.findOne( {user: req.user._id} ).populate( { path: 'cartItems', populate: {
-      path: 'productId'
-    }})
+
+    Cart.findOne( {user: req.user._id} )
     .then(function(cart) {
       res.send(cart);
     })
@@ -18,47 +17,39 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  var cart, newCartItem;
-  // need to send back quantity
   if (req.user) {
-    Cart.findOne( {user: req.user._id} ).populate( { path: 'cartItems'})
-    .then(function(_cart) {
-      if (!_cart) return Cart.create( {user: req.user._id} );
-      return _cart;
-    })
-    .then(function(_cart) {
-      cart = _cart;
-      var exists = false,
-          index;
-
-      cart.cartItems.forEach(function(cartItem, idx){
-        if (cartItem.productId.toString() === req.body._id.toString()) {
-          exists = true;
-          index  = idx;
-          return;
+    Cart.findOne({ user: req.user._id })
+      .then(function(cart) {
+        if (!cart) {
+          return Cart.create( {user: req.user._id });
         }
-      });
-
-      if (exists) {
-        // if it exists then we increment
-        cart.cartItems[index].quantity++;
-      } else {
-        // create a new cart item
-        newCartItem = new CartItem({
-          productId: req.body._id,
-          quantity: req.body.quantity
-        });
-        cart.cartItems.push(newCartItem);
-      }
-      return cart.populate('lineItems').save();
-    })
-    .then(function(_cart) {
-      console.log('NEW CART', _cart)
-      res.json(_cart);
-    })
-    .catch(res.json);
-  } else {
-    res.sendStatus(401);
+        return cart;
+      })
+      .then(function(cart) {
+        var found;
+        cart.items.forEach(function(item) {
+          if (req.body._id == item.productId._id) {
+            found = true;
+            CartItem.findByIdAndUpdate(item._id, { $inc: { quantity: 1 }})
+              .then(function(cartItem) {
+                res.json(cartItem);
+              })
+          }
+        })
+        if (!found) {
+          return CartItem.create({
+            productId: req.body._id,
+            quantity: req.body.quantity
+          })
+          .then(function(item) {
+            cart.items.push(item)
+            cart.save()
+              .then(function(cart) {
+                res.json(cart);
+              })
+          })
+        }
+      })
   }
 });
 
