@@ -3,11 +3,6 @@ app.config(function($stateProvider) {
     url: '/cart',
     templateUrl: '/js/cart/cart.html',
     controller: 'CartCtrl'
-    // resolve: {
-    //   cart: function(CartFactory) {
-    //     return CartFactory.fetchCart();
-    //   }
-    // }
   });
 });
 
@@ -72,7 +67,6 @@ app.factory('CartFactory', function($http) {
     _cartCache.forEach(function (lineItemObj) {
       if (lineItemObj.productId._id === productId) foundLineItem = lineItemObj;
     });
-    //console.log(foundLineItem, productId);
     return foundLineItem;
   };
 
@@ -89,7 +83,6 @@ app.factory('CartFactory', function($http) {
     return $http.post('/api/cart/', product)
       .then(function(resp) {
         _cartCache.push(resp.data);
-        //console.log(_cartCache);
         _updateInfo();
         return resp.data;
       });

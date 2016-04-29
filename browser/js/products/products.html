@@ -11,7 +11,7 @@
 				<hr>
 				<button ng-show="getLineItem(product._id) === null" ng-disabled="!isLoggedIn()" type="button" class="btn btn-primary" ng-click="addToCart(product)">Add to cart</button>
 				<div ng-show="getLineItem(product._id) !== null">
-					<span>Quantity: <input ng-model="getLineItem(product._id).quantity"></input></span>
+					<span>Qty In Cart: <input ng-model="getLineItem(product._id).quantity"></input></span>
 					<button type="button" ng-click="updateQty(getLineItem(product._id)._id, getLineItem(product._id).quantity)" class="btn btn-primary">update</button>
 				</div>
 			</div>

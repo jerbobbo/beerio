@@ -7,11 +7,8 @@ app.config(function($stateProvider) {
       products: function(ProductFactory) {
         return ProductFactory.getAll();
       }
-      // isLoggedIn: function(AuthService) {
-      //   return AuthService.isAuthenticated();
-      // }
     }
-  })
+  });
 
   $stateProvider.state('product', {
     url: '/product/:id',
@@ -21,13 +18,10 @@ app.config(function($stateProvider) {
       product: function(ProductFactory,$stateParams) {
         return ProductFactory.getOne($stateParams.id);
       }
-      // isLoggedIn: function(AuthService) {
-      //   return AuthService.isAuthenticated();
-      // }
     }
-  })
+  });
 
-})
+});
 
 app.controller('ProductCtrl', function($scope, products, CartFactory, AuthService) {
   $scope.products = products;
@@ -38,14 +32,12 @@ app.controller('ProductCtrl', function($scope, products, CartFactory, AuthServic
 
 });
 
-app.controller('ProductDetailCtrl', function($scope, product, isLoggedIn, $stateParams) {
+app.controller('ProductDetailCtrl', function($scope, product, CartFactory, AuthService) {
   $scope.product = product;
-
-  $scope.isLoggedIn = isLoggedIn;
-
-  $scope.addToCart = function(product) {
-    // send over via cart factory?
-  }
+  $scope.isLoggedIn = AuthService.isAuthenticated;
+  $scope.getLineItem = CartFactory.getLineItem;
+  $scope.addToCart = CartFactory.addToCart;
+  $scope.updateQty = CartFactory.updateQty;
 
 });
 
@@ -57,13 +49,7 @@ app.factory('ProductFactory', function($http, CartFactory) {
     getAll: function() {
       return $http.get('/api/products')
         .then(function(products) {
-          var productsWithLineItem = products.data.map(function(product) {
-            //will add lineItem to product object if it exists in cart
-            product.lineItem = CartFactory.getLineItem(product._id);
-            return product;
-          });
-          console.log(productsWithLineItem);
-          angular.copy(productsWithLineItem, _productCache);
+          angular.copy(products.data, _productCache);
           return _productCache;
         });
     },
