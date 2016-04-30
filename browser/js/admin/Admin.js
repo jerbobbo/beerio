@@ -12,12 +12,28 @@ app.config(function($stateProvider) {
       }
     }
   })
+
+  $stateProvider.state('admin.productAdd', {
+    url: '/productAdd',
+    templateUrl: '/js/admin/admin.productAdd.html',
+    controller: 'AdminProductCtrl'
+  })
+
 })
 
-app.controller('AdminCtrl', function($scope, products, isLoggedIn) {
+app.controller('AdminCtrl', function($scope, products, isLoggedIn, ProductFactory) {
   $scope.products = products;
   console.log(isLoggedIn);
   $scope.isLoggedIn = isLoggedIn;
+
+
+});
+
+
+app.controller('AdminProductCtrl', function($scope, products, isLoggedIn, ProductFactory) {
+
+  console.log(isLoggedIn);
+
 
 
 });
