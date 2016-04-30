@@ -30,10 +30,23 @@ app.controller('AdminCtrl', function($scope, products, isLoggedIn, ProductFactor
 });
 
 
-app.controller('AdminProductCtrl', function($scope, products, isLoggedIn, ProductFactory) {
+app.controller('AdminProductCtrl', function($scope, $state, isLoggedIn, ProductFactory) {
 
-  console.log(isLoggedIn);
-
-
-
+  $scope.addProduct = function(product){
+    return ProductFactory.add({
+      name:$scope.productName,
+      brewer:$scope.productBrewer,
+      description:$scope.productDesc,
+      style:$scope.productStyle,
+      price:$scope.productPrice,
+      abv:$scope.productABV,
+      ratings:$scope.productRatings,
+      scoreOverall:$scope.productScoreOverall,
+      scoreCategory:$scope.productScoreCategory,
+      imageUrl:$scope.productImageUrl
+    }).then(function(newProduct){
+      console.log(newProduct._id);
+      $state.go('product',{id:newProduct._id});
+    })
+  };
 });
