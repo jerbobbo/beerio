@@ -6,9 +6,12 @@ app.config(function($stateProvider) {
     resolve: {
       products: function(ProductFactory) {
         return ProductFactory.getAll();
+      },
+      isLoggedIn: function(AuthService) {
+        return AuthService.isAuthenticated();
       }
     }
-  });
+  })
 
   $stateProvider.state('product', {
     url: '/product/:id',
@@ -17,21 +20,38 @@ app.config(function($stateProvider) {
     resolve: {
       product: function(ProductFactory,$stateParams) {
         return ProductFactory.getOne($stateParams.id);
+      },
+      isLoggedIn: function(AuthService) {
+        return AuthService.isAuthenticated();
       }
     }
-  });
+  })
 
-});
+})
 
-app.controller('ProductCtrl', function($scope, products, CartFactory) {
+app.controller('ProductCtrl', function($scope, products, isLoggedIn, CartFactory) {
   $scope.products = products;
+  console.log(isLoggedIn);
+  $scope.isLoggedIn = isLoggedIn;
+
+  $scope.addToCart = function(product) {
+    CartFactory.addToCart(product);
+  }
+
 });
 
-app.controller('ProductDetailCtrl', function($scope, product, CartFactory) {
+app.controller('ProductDetailCtrl', function($scope, product, isLoggedIn, $stateParams) {
   $scope.product = product;
+
+  $scope.isLoggedIn = isLoggedIn;
+
+  $scope.addToCart = function(product) {
+    // send over via cart factory?
+  }
+
 });
 
-app.factory('ProductFactory', function($http, CartFactory) {
+app.factory('ProductFactory', function($http) {
   var productObj;
   var _productCache = [];
 
