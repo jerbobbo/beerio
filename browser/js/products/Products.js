@@ -23,22 +23,14 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProductCtrl', function($scope, products, CartFactory, AuthService) {
+app.controller('ProductCtrl', function($scope, products, CartFactory) {
   $scope.products = products;
-  $scope.isLoggedIn = AuthService.isAuthenticated;
   $scope.getLineItem = CartFactory.getLineItem;
-  $scope.addToCart = CartFactory.addToCart;
-  $scope.updateQty = CartFactory.updateQty;
-
 });
 
-app.controller('ProductDetailCtrl', function($scope, product, CartFactory, AuthService) {
+app.controller('ProductDetailCtrl', function($scope, product, CartFactory) {
   $scope.product = product;
-  $scope.isLoggedIn = AuthService.isAuthenticated;
   $scope.getLineItem = CartFactory.getLineItem;
-  $scope.addToCart = CartFactory.addToCart;
-  $scope.updateQty = CartFactory.updateQty;
-
 });
 
 app.factory('ProductFactory', function($http, CartFactory) {

@@ -11,11 +11,7 @@
             <h4>price: {{product.price}}</h4>
             <!-- <h4>reviews: {{product.reviews}}</h4> -->
             <p>description:{{product.description}}</p>
-            <button ng-show="getLineItem(product._id) === null" ng-disabled="!isLoggedIn()" type="button" class="btn btn-primary" ng-click="addToCart(product)">Add to cart</button>
-    				<div ng-show="getLineItem(product._id) !== null">
-    					<span>Qty In Cart: <input ng-model="getLineItem(product._id).quantity"></input></span>
-    					<button type="button" ng-click="updateQty(getLineItem(product._id)._id, getLineItem(product._id).quantity)" class="btn btn-primary">update</button>
-    				</div>
+            <add-to-cart product="product" label="Qty in Cart" lineItem="getLineItem(product._id)"></add-to-cart>
           </div>
         </div>
       </div>

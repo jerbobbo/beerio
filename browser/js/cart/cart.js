@@ -103,7 +103,6 @@ app.factory('CartFactory', function($http) {
       .then(function(resp) {
         _cartCache.splice(_findInCart(lineItemId), 1);
         _updateInfo();
-        console.log(_cartCache);
         return resp.data;
       });
   };

@@ -6,13 +6,14 @@
       </div>
       <div class="panel-body">
         <div class="pull-left">
-          Name: {{lineItem.productId.name}}   ||   
+          Name: {{lineItem.productId.name}}   ||
           Price: {{lineItem.productId.price}}
         </div>
         <div class="pull-right">
-            <span>Quantity: <input ng-model="lineItem.quantity"></input></span>
+          <add-to-cart product="lineItem.productId" lineItem="lineItem" label="Quantity"></add-to-cart>
+            <!-- <span>Quantity: <input ng-model="lineItem.quantity"></input></span>
             <button type="button" ng-click="quantityChange(lineItem, lineItem.quantity)" class="btn btn-primary">update</button>
-          <button type="button" class="btn btn-danger" ng-click="removeItem(lineItem)">remove</button>
+          <button type="button" class="btn btn-danger" ng-click="removeItem(lineItem)">remove</button> -->
         </div>
       </div>
     </div>
