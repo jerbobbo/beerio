@@ -49,6 +49,17 @@ app.factory('ProductFactory', function($http, CartFactory) {
         .then(function(product) {
           return product.data;
         });
+    },
+
+    add: function(product) {
+      return $http({
+            url: '/api/products/',
+            method: "POST",
+            data: product
+      })
+        .then(function(product) {
+          return product.data;
+        });
     }
   };
 
