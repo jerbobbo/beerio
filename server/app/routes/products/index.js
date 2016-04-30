@@ -22,4 +22,14 @@ router.get('/:id', function(req, res) {
     });
 });
 
+router.post('/', function(req, res) {
+  Product.create(req.body)
+    .then(function(product) {
+      res.json(product);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
 module.exports = router;
