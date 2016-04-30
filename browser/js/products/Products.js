@@ -25,12 +25,10 @@ app.config(function($stateProvider) {
 
 app.controller('ProductCtrl', function($scope, products, CartFactory) {
   $scope.products = products;
-  $scope.getLineItem = CartFactory.getLineItem;
 });
 
 app.controller('ProductDetailCtrl', function($scope, product, CartFactory) {
   $scope.product = product;
-  $scope.getLineItem = CartFactory.getLineItem;
 });
 
 app.factory('ProductFactory', function($http, CartFactory) {
