@@ -1,19 +1,34 @@
 <form name="paymentForm">
 	<div class="form">
 		<div class="form-group col-xs-12">
-			<input class="form-control" ng-model="user.card" id="firstName" placeholder="Credit Card" required>
+			<input class="form-control" type="number" ng-model="user.card" id="card" placeholder="Credit Card" required>
 		</div>
-		<div class="form-group col-xs-6">
-			<input class="form-control" ng-model="user.cvc" id="lastName" placeholder="Last Name" required>
+		<div class="form-group col-xs-4">
+			<input class="form-control" type="number" ng-minlength="3" ng-maxlength="4" ng-model="user.cvc" id="CVC" placeholder="CVC" required>
 		</div>
-		<div class="form-group col-xs-6">
-			<input class="form-control" ng-model="user.date" id="email" placeholder="Email Address" required>
+		<div class="form-group col-xs-4">
+			<input class="form-control" type="number" size="2" ng-minlength="2" ng-maxlength="2" ng-model="user.exp.mm" id="mm" placeholder="MM" required>
+		</div>
+		<div class="form-group col-xs-4">
+			<input class="form-control" type="number" size="2" ng-minlength="2" ng-maxlength="2" ng-model="user.exp.yy" id="yy" placeholder="YY" required>
+		</div>
+		<div class="col-sm-12">
+			<div class="checkbox">
+				<label>
+					<input ng-model="user.billingAddressNeeded" checked type="checkbox"> Billing address same as shipping?
+				</label>
+			</div>
+		</div>
+		<div ng-show="!user.billingAddressNeeded">
+			<billing-address-form>
+			</billing-address-form>
 		</div>
 		<div class="col-xs-6">
 			<button class="btn btn-primary pull-left" ng-click="previous()">Previous</button>
 		</div>
 		<div class="col-xs-6">
-			<button class="btn btn-primary pull-right" ng-class="{disabled: paymentForm.$invalid}" ng-click="submitOrder(user)">Continue</button>
+			<button class="btn btn-primary pull-right" ng-class="{disabled: paymentForm.$invalid}" ng-click="submitOrder(user, paymentForm)">Continue</button>
 		</div>
 	</div>
 </form>
+
