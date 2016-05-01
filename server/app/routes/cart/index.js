@@ -17,27 +17,34 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   if (req.user) {
+    var _item, _cart;
     Cart.findOne({ user: req.user._id })
       .then(function(cart) {
-        var _item;
-        CartItem.create({
+        if (!cart) return Cart.create( {user: req.user._id } );
+      })
+      .then(function(cart) {
+        _cart = cart;
+        return CartItem.create({
           productId: req.body._id,
           quantity: req.body.quantity
-        })
-        .then(function(item) {
-          _item = item;
-          cart.items.push(item);
-          return cart.save();
-        })
-        .then(function() {
-          return CartItem.findById(_item._id).populate('productId');
-        })
-        .then(function(_item) {
-          res.json(_item);
         });
-      });
-  }
-});
+      })
+      .then(function(item) {
+        _item = item;
+        _cart.items.push(item);
+        return _cart.save();
+      })
+      .then(function() {
+        return CartItem.findById(_item._id).populate('productId');
+      })
+      .then(function(_item) {
+        res.json(_item);
+      })
+      .catch(res.json);
+    }else {
+      res.sendStatus(401);
+    }
+  });
 
 router.put('/:cartItemId', function(req, res, next) {
   if (req.user) {
