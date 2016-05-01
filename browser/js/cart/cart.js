@@ -25,6 +25,14 @@ app.controller('CartCtrl', function($scope, CartFactory, ProductFactory) {
     return CartFactory.removeItem(lineItem._id);
   };
 
+  $scope.updateOne = function(lineItem, dir) {
+    var qty = Number(lineItem.quantity);
+    if (qty === 0) {
+      return CartFactory.removeItem(lineItem._id);
+    }
+    qty += Number(dir);
+    return CartFactory.updateQty(lineItem._id, qty);
+  };
 
 });
 

@@ -41,6 +41,10 @@ router.post('/', function(req, res, next) {
 
 router.put('/:cartItemId', function(req, res, next) {
   if (req.user) {
+    if (req.body.quantity < 0) {
+      throw('ERROR: No negative quantities')
+      res.sendStatus(400);
+    };
     CartItem.findById(req.params.cartItemId).populate('productId')
     .then(function(cartItem) {
       cartItem.quantity = req.body.quantity;
