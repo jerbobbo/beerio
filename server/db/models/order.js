@@ -1,5 +1,6 @@
 'use strict';
 var mongoose = require('mongoose');
+//nice schema!
 
 var lineItemSchema = new mongoose.Schema({
   productId: {
@@ -34,7 +35,7 @@ var orderSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    default: 'cart'
+    default: 'cart'//maybe an enum here?
   }
 },
 {

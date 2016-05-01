@@ -12,7 +12,7 @@ var cartItemSchema = new mongoose.Schema({
     type: Number,
     default: 1
   }
-})
+});
 cartItemSchema.plugin(autopopulate);
 
 
@@ -23,7 +23,7 @@ var cartSchema = new mongoose.Schema({
   items: [{
     type: mongoose.Schema.Types.ObjectId, ref: 'CartItem', autopopulate: true
   }]
-})
+});
 cartSchema.plugin(autopopulate);
 
 mongoose.model('CartItem', cartItemSchema);

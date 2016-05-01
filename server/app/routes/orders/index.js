@@ -6,6 +6,7 @@ var Address  = require('mongoose').model('Address');
 var _        = require('lodash');
 
 // modified this route to return all orders made by a particular user
+// see members routes.. don't let someone get into here if they are not a user
 router.get('/', function(req, res) {
   if (req.user) {
     Order.find({user: req.user._id})
@@ -38,6 +39,8 @@ router.get('/:order_id', function(req, res) {
 router.post('/', function(req, res, next) {
   Order.create(req.body)
     .then(function(order){
+      //maybe add a static to Order..
+      // Order.findByIdAndPopulate(order._id);
       return Order.findById(order._id)
         .populate('user')
         .populate('lineItems')
@@ -55,6 +58,8 @@ router.put('/:orderId', function(req, res, next) {
       shippingAddress = req.body.shippingAddress,
       billingAddress  = req.body.billingAddress;
 
+  //too much going on here..
+  //we want skinny routes and fuller models
   Order.findById(req.params.orderId)
     .populate('user lineItems shippingAddress billingAddress')
     .then(function(order){
@@ -105,8 +110,7 @@ router.put('/:orderId', function(req, res, next) {
     })
     .then(function(savedOrder) {
       res.json(savedOrder);
-    })
-    .catch(console.error);
+    }, next);
 });
 
 module.exports = router;

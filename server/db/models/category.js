@@ -7,7 +7,7 @@ var findOneOrCreate = require('mongoose-find-one-or-create');
 
 var categorySchema = new mongoose.Schema({
   name:{ type: String, required: true, unique: true }
-})
+});
 
 categorySchema.plugin(uniqueValidator);
 categorySchema.plugin(findOneOrCreate);
