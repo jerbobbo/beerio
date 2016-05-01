@@ -63,11 +63,10 @@ app.factory('ProductFactory', function($http, CartFactory) {
     },
 
     delete: function(id){
-      return $http({
-        url:'/api/products/' + id,
-        method:'DELETE',
-        data:{id:id}
-      })
+      return $http.delete('/api/products/' + id)
+        .then(function(product) {
+          return product.data;
+        });
     }
   };
 
