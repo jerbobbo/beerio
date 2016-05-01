@@ -23,22 +23,26 @@ app.controller('checkOutCtrl', function($scope, $state, CartFactory) {
 		{
 			state: 'checkout',
 			title: 'Shipping Info',
-			progress: 10
+			progress: 10,
+			form: {}
 		},
 		{
 			state: 'checkout.payment',
 			title: 'Payment Info',
-			progress: 60
+			progress: 60,
+			form: {}
 		},
 		{
 			state: 'checkout.review',
 			title: 'Review Order',
-			progress: 90
+			progress: 90,
+			form: {}
 		},
 		{
 			state: 'checkout.complete',
 			title: 'Order Placed',
-			progress: 100
+			progress: 100,
+			form: {}
 		}];
 
 	var stateIdx = 0;
@@ -46,21 +50,18 @@ app.controller('checkOutCtrl', function($scope, $state, CartFactory) {
 	var previousState = states[stateIdx];
 
 	// not being used yet - will only be used on review template
-	$scope.submitOrder = function(info, form) {
-		console.log(info, form)
-		if (info && form.$valid) {
-			console.log(info, form)
-			previousState = currentState;
-			currentState = 'checkout.payment';
-			$scope.progress = 60;
-			$scope.progressTitle = "Payment Info"
-			$state.go(currentState)
-		}
+	$scope.submitOrder = function(info) {
+
 	}
 	$scope.next = function(info, form) {
 		if (info && form.$valid) {
 			previousState = $scope.currentState;
 			$scope.currentState = states[++stateIdx];
+			if (stateIdx === 2) {
+				$scope.currentState.form.shipping = states[0].form;
+				$scope.currentState.form.billing = states[1].form;
+				console.log($scope)
+			}
 			$state.go($scope.currentState.state)
 		}
 	};
