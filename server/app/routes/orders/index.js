@@ -8,7 +8,13 @@ var _        = require('lodash');
 // modified this route to return all orders made by a particular user
 router.get('/', function(req, res) {
   if (req.user) {
-    Order.find({user: req.user._id})
+    Order.find({user: req.user._id}).populate({
+      path: 'lineItems',
+      populate: {
+        path: 'productId',
+        model: 'Product'
+      }
+    })
       .then(function(orders) {
         res.json(orders);
       })
