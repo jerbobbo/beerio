@@ -15,11 +15,11 @@
 		<div class="col-sm-12">
 			<div class="checkbox">
 				<label>
-					<input ng-model="user.billingAddressNeeded" checked type="checkbox"> Billing address same as shipping?
+					<input ng-model="user.billingAddressNotNeeded" checked type="checkbox"> Billing address same as shipping?
 				</label>
 			</div>
 		</div>
-		<div ng-show="!user.billingAddressNeeded">
+		<div ng-show="!user.billingAddressNotNeeded">
 			<billing-address-form>
 			</billing-address-form>
 		</div>
@@ -27,7 +27,7 @@
 			<button class="btn btn-primary pull-left" ng-click="previous()">Previous</button>
 		</div>
 		<div class="col-xs-6">
-			<button class="btn btn-primary pull-right" ng-class="{disabled: paymentForm.$invalid}" ng-click="submitOrder(user, paymentForm)">Continue</button>
+			<button class="btn btn-primary pull-right" ng-class="{disabled: paymentForm.$invalid}" ng-click="next(user, paymentForm)">Review</button>
 		</div>
 	</div>
 </form>

@@ -21,6 +21,7 @@ router.post('/', function(req, res, next) {
     Cart.findOne({ user: req.user._id })
       .then(function(cart) {
         if (!cart) return Cart.create( {user: req.user._id } );
+        return cart;
       })
       .then(function(cart) {
         _cart = cart;

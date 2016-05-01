@@ -6,16 +6,27 @@ app.config(function($stateProvider) {
   });
 });
 
-app.controller('CartCtrl', function($scope, CartFactory, ProductFactory) {
+app.controller('CartCtrl', function($scope, $uibModal, CartFactory, ProductFactory) {
 
   $scope.cartInfo = CartFactory.getInfo();
   $scope.isInCart = CartFactory.isInCart;
 
   CartFactory.fetchCart()
-  .then(function(_cart) {
-    $scope.cart = _cart;
-  });
+    .then(function(_cart) {
+      $scope.cart = _cart;
+    });
 
+  $scope.openModal = function(id) {
+    $uibModal.open({
+      templateUrl: 'js/products/product.detail.html',
+      controller: 'ProductDetailCtrl',
+      resolve: {
+        product: function(ProductFactory) {
+          return ProductFactory.getOne(id);
+        }
+      }
+    });
+  };
 
   $scope.quantityChange = function(lineItem, qty) {
     return CartFactory.updateQty(lineItem._id, qty);
@@ -56,7 +67,7 @@ app.factory('CartFactory', function($http) {
 
   function _findInCart(id) {
     var foundIdx = -1;
-    _cartCache.forEach(function (lineItemObj, idx) {
+    _cartCache.forEach(function(lineItemObj, idx) {
       if (lineItemObj._id === id) {
         foundIdx = idx;
       }
@@ -72,7 +83,7 @@ app.factory('CartFactory', function($http) {
 
   cartObj.getLineItem = function(productId) {
     var foundLineItem = null;
-    _cartCache.forEach(function (lineItemObj) {
+    _cartCache.forEach(function(lineItemObj) {
       if (lineItemObj.productId._id === productId) foundLineItem = lineItemObj;
     });
     return foundLineItem;
@@ -98,7 +109,9 @@ app.factory('CartFactory', function($http) {
 
   cartObj.updateQty = function(lineItemId, qty) {
     if (qty == 0) return cartObj.removeItem(lineItemId);
-    return $http.put('/api/cart/' + lineItemId, {quantity: qty})
+    return $http.put('/api/cart/' + lineItemId, {
+        quantity: qty
+      })
       .then(function(resp) {
         _cartCache[_findInCart(lineItemId)].quantity = qty;
         _updateInfo();
