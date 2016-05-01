@@ -1,0 +1,36 @@
+<div class="panel panel-default">
+	<div class="text-center panel-heading">Order Summary</div>
+	<div class="panel-body">
+		<ul class="lineItem" ng-repeat="item in cart">
+			<li>
+				<div class="well">
+					<div class="row">
+						<div class="col-xs-4">
+							<img ng-src="{{item.productId.imageUrl}}">
+						</div>
+						<div class="col-xs-8">
+							<div class="row">
+								<div class="col-xs-8"><strong><abbr title="{{item.productId.name}}">{{item.productId.name | abbr}}</abbr></strong></div>
+								<div class="col-xs-4">${{item.productId.price}}</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-3">Qty:</div>
+								<div class="col-xs-9 input-group input-group-sm xs-input">
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button">-</button>
+									</span>
+									<input type="text" class="form-control" value="{{item.quantity}}">
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button">+</button>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+		<hr>
+		<span><h4 class="text-left">Total: ${{cartInfo.subtotal}}</h4></span>
+	</div>
+</div>
