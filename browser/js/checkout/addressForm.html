@@ -1,0 +1,34 @@
+<form name="shippingForm">
+	<div class="form">
+		<div class="form-group col-xs-6">
+			<input class="form-control" ng-model="user.firstName" id="firstName" placeholder="First Name" required>
+		</div>
+		<div class="form-group col-xs-6">
+			<input class="form-control" ng-model="user.lastName" id="lastName" placeholder="Last Name" required>
+		</div>
+		<div class="form-group col-xs-12">
+			<input class="form-control" ng-model="user.email" type="email" id="email" placeholder="Email Address" required>
+		</div>
+		<div class="form-group col-xs-12">
+			<input class="form-control" ng-model="user.address" id="address" placeholder="Address" required>
+		</div>
+		<div class="form-group col-xs-12">
+			<input class="form-control" ng-model="user.addressOpt" id="addressOpt" placeholder="Address (optional)">
+		</div>
+		<div class="form-group col-xs-6">
+			<input class="form-control" ng-model="user.city" id="city" placeholder="City" required>
+		</div>
+		<div class="form-group col-xs-6">
+			<input class="form-control" ng-model="user.zip" id="zip" placeholder="Postal/Zip Code" required>
+		</div>
+		<div class="form-group col-xs-6">
+			<input class="form-control" ng-model="user.country" id="country" placeholder="Country" required>
+		</div>
+		<div class="form-group col-xs-6">
+			<input class="form-control" ng-model="user.state" id="state" placeholder="State / Province" required>
+		</div>
+		<div class="col-xs-12">
+			<button class="btn btn-primary pull-right" ng-class="{disabled: shippingForm.$invalid}" ng-click="submitOrder(user)">Continue</button>
+		</div>
+	</div>
+</form>

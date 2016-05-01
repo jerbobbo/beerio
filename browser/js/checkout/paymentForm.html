@@ -1,0 +1,19 @@
+<form name="paymentForm">
+	<div class="form">
+		<div class="form-group col-xs-12">
+			<input class="form-control" ng-model="user.card" id="firstName" placeholder="Credit Card" required>
+		</div>
+		<div class="form-group col-xs-6">
+			<input class="form-control" ng-model="user.cvc" id="lastName" placeholder="Last Name" required>
+		</div>
+		<div class="form-group col-xs-6">
+			<input class="form-control" ng-model="user.date" id="email" placeholder="Email Address" required>
+		</div>
+		<div class="col-xs-6">
+			<button class="btn btn-primary pull-left" ng-click="previous()">Previous</button>
+		</div>
+		<div class="col-xs-6">
+			<button class="btn btn-primary pull-right" ng-class="{disabled: paymentForm.$invalid}" ng-click="submitOrder(user)">Continue</button>
+		</div>
+	</div>
+</form>
