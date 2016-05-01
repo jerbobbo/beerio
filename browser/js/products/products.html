@@ -2,7 +2,7 @@
 	<div ng-repeat="product in products">
 		<div class="col-sm-4 panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title"><a ui-sref="product({id: product._id})">{{product.name}}</a></h3>
+				<h3 class="panel-title"><a ng-click="openModal(product._id)">{{product.name}}</a></h3>
 			</div>
 			<div class="panel-body">
 
