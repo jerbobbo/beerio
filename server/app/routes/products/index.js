@@ -32,4 +32,14 @@ router.post('/', function(req, res) {
     });
 });
 
+router.delete('/:id', function(req, res) {
+  Product.findByIdAndRemove(req.params.id)
+    .then(function(product) {
+      res.json(product);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
 module.exports = router;

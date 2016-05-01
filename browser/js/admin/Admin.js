@@ -7,6 +7,7 @@ app.config(function($stateProvider) {
       products: function(ProductFactory) {
         return ProductFactory.getAll();
       },
+
       isLoggedIn: function(AuthService) {
         return AuthService.isAuthenticated();
       }
@@ -16,6 +17,12 @@ app.config(function($stateProvider) {
   $stateProvider.state('admin.productAdd', {
     url: '/productAdd',
     templateUrl: '/js/admin/admin.productAdd.html',
+    controller: 'AdminProductCtrl'
+  })
+
+  $stateProvider.state('admin.productDelete', {
+    url: '/productDelete',
+    templateUrl: '/js/admin/admin.productDelete.html',
     controller: 'AdminProductCtrl'
   })
 
@@ -31,6 +38,8 @@ app.controller('AdminCtrl', function($scope, products, isLoggedIn, ProductFactor
 
 
 app.controller('AdminProductCtrl', function($scope, $state, isLoggedIn, ProductFactory) {
+
+  $scope.adminColumns=['name','brewer'];
 
   $scope.addProduct = function(product){
     return ProductFactory.add({
@@ -49,4 +58,12 @@ app.controller('AdminProductCtrl', function($scope, $state, isLoggedIn, ProductF
       $state.go('product',{id:newProduct._id});
     })
   };
+
+  $scope.removeProduct=function(id){
+    return ProductFactory.delete(id)
+            .then(function(){
+              $state.reload();
+            })
+  };
+
 });
