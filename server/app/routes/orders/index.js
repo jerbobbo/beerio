@@ -4,7 +4,7 @@ var Order    = require('mongoose').model('Order');
 var LineItem = require('mongoose').model('LineItem');
 var Address  = require('mongoose').model('Address');
 var _        = require('lodash');
-
+var sendgrid = require('../../../sendgrid');
 // modified this route to return all orders made by a particular user
 router.get('/', function(req, res) {
   if (req.user) {
