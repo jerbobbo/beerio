@@ -26,10 +26,16 @@ app.config(function($stateProvider) {
     controller: 'AdminProductCtrl'
   })
 
-    $stateProvider.state('admin.productEdit', {
+  $stateProvider.state('admin.productEdit', {
     url: '/productEdit',
     templateUrl: '/js/admin/admin.productEdit.html',
     controller: 'AdminProductCtrl'
+  })
+
+    $stateProvider.state('admin.userAdd', {
+    url: '/userAdd',
+    templateUrl: '/js/admin/admin.userAdd.html',
+    controller: 'AdminUserCtrl'
   })
 
 })
