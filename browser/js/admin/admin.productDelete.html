@@ -1,0 +1,27 @@
+<div class="container">
+<h3>Products</h3>
+
+        <div class="row">
+
+          <div class="col-md-12">
+            <table class="table">
+              <thead >
+                <tr >
+                  <th ng-repeat="col in adminColumns">{{col}}</th>
+                  <th> Remove </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="product in products">
+
+                  <td ng-repeat="col in adminColumns">{{product[col]}}</td>
+                  <td><button ng-click="removeProduct(product._id)">
+                        X
+                      </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+</div>
