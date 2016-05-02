@@ -1,0 +1,54 @@
+<div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+
+          <h3>Edit</h3>
+            <form role="form" name="productEdit" ng-submit="editProduct(product)">
+              <div class="form-group">
+                <label for="name">Product Name:</label>
+                <input type="text" class="form-control" ng-model="product.name">
+              </div>
+              <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="text" class="form-control" ng-model="product.price" >
+              </div>
+              <div class="form-group">
+                <label for="brewer">Brewer:</label>
+                <input type="text" class="form-control" ng-model="product.brewer">
+              </div>
+              <div class="form-group">
+                <label for="description">Description:</label>
+                <input type="text" class="form-control" ng-model="product.description">
+              </div>
+              <div class="form-group">
+                <label for="style">Style: </label>
+                <input type="text" class="form-control" ng-model="product.style">
+              </div>
+              <div class="form-group">
+                <label for="abv">ABV:</label>
+                <input type="text" class="form-control" ng-model="product.abv">
+              </div>
+              <div class="form-group">
+                <label for="ratings">Ratings:</label>
+                <input type="text" class="form-control" ng-model="product.ratings">
+              </div>
+              <div class="form-group">
+                <label for="scoreOverall">Score Overall:</label>
+                <input type="text" class="form-control" ng-model="product.scoreOverall">
+              </div>
+              <div class="form-group">
+                <label for="scoreCategory">Score Category:</label>
+                <input type="text" class="form-control" ng-model="product.scoreCategory">
+              </div>
+              <div class="form-group">
+                <label for="imageUrl">Image Url:</label>
+                <input type="text" class="form-control" ng-model="product.imageUrl">
+              </div>
+              <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+
+          </div>
+        </div>
+      </div>
+</div>

@@ -8,6 +8,7 @@
               <thead >
                 <tr >
                   <th ng-repeat="col in adminColumns">{{col}}</th>
+                  <th> Edit </th>
                   <th> Remove </th>
                 </tr>
               </thead>
@@ -15,6 +16,9 @@
                 <tr ng-repeat="product in products">
 
                   <td ng-repeat="col in adminColumns">{{product[col]}}</td>
+                  <td>
+                    <a ng-click="openModal(product._id)" class="btn btn-default">Edit</a>
+                  </td>
                   <td><button ng-click="removeProduct(product._id)">
                         X
                       </button>
