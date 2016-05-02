@@ -27,7 +27,7 @@ app.controller('ProductCtrl', function($scope, products, CartFactory) {
   $scope.products = products;
 });
 
-app.controller('ProductDetailCtrl', function($scope, product, CartFactory, ProductFactory,$state) {
+app.controller('ProductDetailCtrl', function($scope, product, CartFactory) {
   $scope.product = product;
 
 });
