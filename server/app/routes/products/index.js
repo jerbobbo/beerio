@@ -53,4 +53,16 @@ router.get('/:id/reviews', function(req, res, next) {
   }, next);
 });
 
+router.put('/:id', function(req, res) {
+  console.log(req.body);
+  console.log(req.params.id);
+  Product.findByIdAndUpdate(req.params.id,{$set:req.body})
+    .then(function(product) {
+      res.json(product);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
 module.exports = router;
