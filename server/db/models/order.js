@@ -39,7 +39,9 @@ var orderSchema = new mongoose.Schema({
 },
 {
   timestamps: true
-});
+}
+);
+
 
 mongoose.model('LineItem', lineItemSchema);
 mongoose.model('Order', orderSchema);

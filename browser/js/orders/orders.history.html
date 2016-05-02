@@ -4,6 +4,10 @@
       <div class="panel-heading">
         <h3 class="panel-title">
           Order #<a ui-sref="order({orderId: order._id})">{{ order._id }}</a>
+
+          <span class="pull-right">
+            {{order.createdAt | date:'dd-MM-yyyy'}}
+          </span>
         </h3>
       </div>
       <div class="panel-body">
@@ -11,7 +15,8 @@
         <div ng-repeat="lineItem in order.lineItems">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title"><a ui-sref="product({id: lineItem.productId._id})">{{lineItem.productId.name}}</a></h3>
+              <h3 class="panel-title"><a ui-sref="product({id: lineItem.productId._id})">{{lineItem.productId.name}}</a>
+              </h3>
             </div>
             <div class="panel-body">
 
@@ -24,8 +29,6 @@
                 <div>Price: ${{lineItem.price}}</div>
               </div>
               
-              
-
             </div>
           </div>
         </div>

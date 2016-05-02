@@ -19,7 +19,7 @@ app.config(function($stateProvider) {
       controller: 'OrderDetailCtrl',
       resolve: {
         order: function(OrderFactory, $stateParams) {
-          return OrderFactory.fetchOne($staetParams.orderId);
+          return OrderFactory.fetchOne($stateParams.orderId);
         },
         isLoggedIn: function(AuthService) {
           return AuthService.isAuthenticated();
