@@ -30,11 +30,16 @@ app.controller('ProductCtrl', function($scope, products, CartFactory) {
 app.controller('ProductDetailCtrl', function($scope, product, CartFactory, ProductFactory,$state) {
   $scope.product = product;
 
+});
+
+app.controller('ProductDetailModalCtrl', function($scope, product, CartFactory, ProductFactory,$state,$uibModalInstance) {
+  $scope.product = product;
+
   $scope.editProduct = function(product){
     return ProductFactory.update(product)
             .then(function(updatedProduct){
                 console.log('updated product is', updatedProduct);
-
+                 $uibModalInstance.dismiss('cancel');
                 $state.go('product',{id:updatedProduct._id});
             })
   };

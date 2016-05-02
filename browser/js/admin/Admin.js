@@ -50,7 +50,7 @@ app.controller('AdminProductCtrl', function($scope, $state, $uibModal, isLoggedI
   $scope.openModal = function(id) {
     $uibModal.open({
       templateUrl: '/js/admin/admin.productEdit.html',
-      controller: 'ProductDetailCtrl',
+      controller: 'ProductDetailModalCtrl',
       resolve: {
         product: function(ProductFactory) {
           return ProductFactory.getOne(id);
