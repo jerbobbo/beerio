@@ -6,3 +6,4 @@ require('./order');
 require('./address');
 require('./product');
 require('./cart');
+require('./review');
