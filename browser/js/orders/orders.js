@@ -32,7 +32,7 @@ app.controller('OrdersCtrl', function($scope, orders, isLoggedIn, CartFactory) {
   $scope.orders = orders;
 });
 
-app.controller('OrderDetailCtrl', function($scope, order, isLoggedIn, CartFactory) {;
+app.controller('OrderDetailCtrl', function($scope, order, isLoggedIn, CartFactory) {
   $scope.order = order;
 });
 
