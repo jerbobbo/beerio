@@ -8,7 +8,13 @@ var _        = require('lodash');
 // modified this route to return all orders made by a particular user
 router.get('/', function(req, res) {
   if (req.user) {
-    Order.find({user: req.user._id})
+    Order.find({user: req.user._id}).populate({
+      path: 'lineItems',
+      populate: {
+        path: 'productId',
+        model: 'Product'
+      }
+    })
       .then(function(orders) {
         res.json(orders);
       })
@@ -23,7 +29,13 @@ router.get('/', function(req, res) {
 // return specific order made by user. if unauth, return 401
 router.get('/:order_id', function(req, res) {
   if (req.user) {
-    Order.findById(req.params.order_id)
+    Order.findById(req.params.order_id).populate({
+      path: 'lineItems',
+      populate: {
+        path: 'productId',
+        model: 'Product'
+      }
+    })
       .then(function(order) {
         res.json(order);
       })

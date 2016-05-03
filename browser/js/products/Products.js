@@ -40,6 +40,21 @@ app.controller('ProductCtrl', function($scope, $uibModal, products, CartFactory)
 
 app.controller('ProductDetailCtrl', function($scope, product, CartFactory) {
   $scope.product = product;
+
+});
+
+app.controller('ProductDetailModalCtrl', function($scope, product, CartFactory, ProductFactory,$state,$uibModalInstance) {
+  $scope.product = product;
+
+  $scope.editProduct = function(product){
+    return ProductFactory.update(product)
+            .then(function(updatedProduct){
+                console.log('updated product is', updatedProduct);
+                 $uibModalInstance.dismiss('cancel');
+                $state.go('product',{id:updatedProduct._id});
+            })
+  };
+
 });
 
 app.factory('ProductFactory', function($http, CartFactory) {
@@ -75,6 +90,17 @@ app.factory('ProductFactory', function($http, CartFactory) {
 
     delete: function(id){
       return $http.delete('/api/products/' + id)
+        .then(function(product) {
+          return product.data;
+        });
+    },
+
+    update: function(product) {
+      return $http({
+            url: '/api/products/' + product._id,
+            method: "PUT",
+            data: product
+      })
         .then(function(product) {
           return product.data;
         });

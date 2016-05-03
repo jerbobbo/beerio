@@ -26,6 +26,12 @@ app.config(function($stateProvider) {
     controller: 'AdminProductCtrl'
   })
 
+    $stateProvider.state('admin.productEdit', {
+    url: '/productEdit',
+    templateUrl: '/js/admin/admin.productEdit.html',
+    controller: 'AdminProductCtrl'
+  })
+
 })
 
 app.controller('AdminCtrl', function($scope, products, isLoggedIn, ProductFactory) {
@@ -37,9 +43,21 @@ app.controller('AdminCtrl', function($scope, products, isLoggedIn, ProductFactor
 });
 
 
-app.controller('AdminProductCtrl', function($scope, $state, isLoggedIn, ProductFactory) {
+app.controller('AdminProductCtrl', function($scope, $state, $uibModal, isLoggedIn, ProductFactory) {
 
   $scope.adminColumns=['name','brewer'];
+
+  $scope.openModal = function(id) {
+    $uibModal.open({
+      templateUrl: '/js/admin/admin.productEdit.html',
+      controller: 'ProductDetailModalCtrl',
+      resolve: {
+        product: function(ProductFactory) {
+          return ProductFactory.getOne(id);
+         }
+       }
+     });
+  };
 
   $scope.addProduct = function(product){
     return ProductFactory.add({
@@ -65,5 +83,7 @@ app.controller('AdminProductCtrl', function($scope, $state, isLoggedIn, ProductF
               $state.reload();
             })
   };
+
+
 
 });
