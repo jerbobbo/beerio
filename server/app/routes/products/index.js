@@ -56,9 +56,10 @@ router.delete('/:id', function(req, res, next) {
 });
 
 router.get('/:id/reviews', function(req, res, next) {
-  Review.find({})
-  .then(function(reviews) {
-    res.json(reviews);
+  Product.findById(req.params.id).populate('reviews')
+  .then(function(product) {
+    console.log('product: ', product);
+    res.json(product.reviews);
   })
   .catch(function(err) {
     res.json(err);
@@ -66,9 +67,15 @@ router.get('/:id/reviews', function(req, res, next) {
 });
 
 router.post('/:id/reviews', function(req, res, next) {
+  var newReview;
   Review.create(req.body)
-  .then(function(review){
-    res.json(review);
+  .then(function(review) {
+    newReview = review;
+    return Product.findById(req.params.id);
+  })
+  .then(function(product) {
+    product.reviews.push(newReview);
+    res.json(newReview);
   })
   .catch(function(err) {
     res.json(err);
@@ -109,6 +116,7 @@ router.delete('/:id/reviews/:reviewId', function(req, res, next) {
   .catch(function(err) {
     res.json(err);
   }, next);
+});
 
 
 module.exports = router;
