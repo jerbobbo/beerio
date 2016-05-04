@@ -42,7 +42,7 @@ describe('Cart Model', function () {
         _cartItem = cartItem
         return Cart.create({
           user: null,
-          cartItems: [_cartItem]
+          items: [_cartItem]
         });
       })
       .then(function(cart) {
@@ -52,9 +52,8 @@ describe('Cart Model', function () {
     });
 
     it('expects it cart to exist with a cartItem in there', function () {
-      console.log(_cart)
       expect(_cart).to.exist;
-      expect(_cart.cartItems.length).to.equal(1);
+      expect(_cart.items.length).to.equal(1);
     });
   });
 });

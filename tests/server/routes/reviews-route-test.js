@@ -45,6 +45,7 @@ describe('Reviews route', function() {
       })
       .then(function(review) {
         _reviewOne = review;
+        _product.reviews.push(_reviewOne);
         return Review.create( {
           userId: _userTwo._id,
           productId: _product._id,
@@ -54,6 +55,10 @@ describe('Reviews route', function() {
       })
       .then(function(review) {
         _reviewTwo = review;
+        _product.reviews.push(_reviewTwo);
+        return _product.save();
+      })
+      .then(function() {
         done();
       });
     });
@@ -70,6 +75,51 @@ describe('Reviews route', function() {
         done();
       });
     });
+
+    it('Should get a review by ID', function(done) {
+      agent.get('/api/products/' + _product._id + '/reviews/' + _reviewOne._id)
+      .expect(200)
+      .then(function(res) {
+        expect(res.body).to.be.an('object');
+        expect(res.body.body).to.equal('This beer is so much better than I remembered');
+        expect(res.body.stars).to.equal(4);
+        done();
+      });
+    });
+
+    it('Should create a new review with a POST to /api/products/:productId/reviews', function(done) {
+      agent.post('/api/products/' + _product._id + '/reviews')
+      .send( { productId: _product._id, body: 'This beer has gone downhill', userId: _userTwo._id, stars: 2 })
+      .then(function(res) {
+        expect(res.body).to.be.an('object');
+        expect(res.body.userId).to.equal(_userTwo._id.toString());
+        expect(res.body.body).to.equal('This beer has gone downhill');
+        expect(res.body.stars).to.equal(2);
+        done();
+      });
+    });
+
+    it('Should edit a review with a PUT request to /api/products/:productId/reviews/:reviewId', function(done) {
+      agent.put('/api/products/' + _product._id + '/reviews/' + _reviewOne._id)
+      .send( { productId: _product._id, body: 'I edited my review', userId: _userOne._id, stars: 1 })
+      .then(function(res) {
+        expect(res.body).to.be.an('object');
+        expect(res.body.body).to.equal('I edited my review');
+        expect(res.body.stars).to.equal(1);
+        done();
+      });
+    });
+
+    it('Should delete a review with a DELETE request to /api/products/:productId/reviews/:reviewId', function(done) {
+      agent.delete('/api/products/' + _product._id + '/reviews/' + _reviewOne._id)
+      .then(function() {
+        agent.get('/api/products/' + _product._id + '/reviews/' + _reviewOne._id)
+        .expect(404);
+        done();
+      });
+    });
+
+
   });
 
 });

@@ -72,6 +72,7 @@
     "supertest": "^0.15.0"
   },
   "devDependencies": {
-    "karma-chrome-launcher": "^0.2.3"
+    "karma-chrome-launcher": "^0.2.3",
+    "supertest-as-promised": "^3.1.0"
   }
 }
