@@ -48,7 +48,7 @@ router.post('/', function(req, res, next) {
     }
   });
 
-router.put('/:cartItemId', function(req, res, next) {
+router.put('/:cartId/cartitems/:cartItemId', function(req, res, next) {
   if (req.user) {
     if (req.body.quantity < 0) {
       throw('ERROR: No negative quantities')
@@ -60,9 +60,9 @@ router.put('/:cartItemId', function(req, res, next) {
       return cartItem.save();
     })
     .then(function(cartItem) {
-      res.send(cartItem);
-    })
-    .catch(res.json);
+      console.log('whats going on over here? ', cartItem);
+      res.json(cartItem);
+    }, next)
   } else {
     res.sendStatus(401);
   }

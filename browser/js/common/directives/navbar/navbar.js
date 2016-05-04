@@ -11,7 +11,6 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
                 { label: 'About', state: 'about' },
                 { label: 'Products', state: 'products' },
                 { label: 'Members Only', state: 'membersOnly', auth: true },
-                { label: 'Admin', state: 'admin', auth: true },
                 { label: 'Orders', state: 'orders', auth: true}
             ];
 
@@ -19,6 +18,10 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
 
             scope.isLoggedIn = function () {
                 return AuthService.isAuthenticated();
+            };
+
+            scope.adminAccess = function () {
+                return AuthService.isAdmin();
             };
 
             scope.logout = function () {
