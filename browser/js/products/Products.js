@@ -84,6 +84,49 @@ app.factory('ProductFactory', function($http, CartFactory) {
         });
     },
 
+    softDelete: function(id){
+      return $http({
+            url: '/api/products/' + id,
+            method: "PUT",
+            data: {deleted:true}
+        })
+        .then(function(product) {
+          console.log(product)
+          return $http({
+            url: '/api/products/' + product.data._id,
+            method: "PUT",
+            data: {available:false}
+           })
+        })
+        .then(function(product) {
+          console.log(product)
+          return product.data;
+        });
+    },
+
+    toggle: function(id,available){
+      if(available){
+        return $http({
+            url: '/api/products/' + id,
+            method: "PUT",
+            data: {available:false}
+        })
+        .then(function(product) {
+          return product.data;
+        });
+      } else {
+        return $http({
+            url: '/api/products/' + id,
+            method: "PUT",
+            data: {available:true}
+        })
+        .then(function(product) {
+          return product.data;
+        });
+      }
+
+    },
+
     update: function(product) {
       return $http({
             url: '/api/products/' + product._id,
