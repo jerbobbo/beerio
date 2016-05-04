@@ -16,10 +16,13 @@ router.get('/', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
   Product.findById(req.params.id)
     .then(function(product) {
+      if (!product) { 
+        return false;
+      }
       res.json(product);
     })
     .catch(function(err) {
-      res.json(err);
+      res.send(404).send(err);
     }, next);
 });
 
@@ -44,8 +47,10 @@ router.delete('/:id', function(req, res, next) {
 });
 
 router.get('/:id/reviews', function(req, res, next) {
-  Review.find({})
+  console.log('did it come throug here?')
+  Review.find({productId: req.params.id})
   .then(function(reviews) {
+    console.log('did it come throug here? and here?');
     res.json(reviews);
   })
   .catch(function(err) {
@@ -53,16 +58,14 @@ router.get('/:id/reviews', function(req, res, next) {
   }, next);
 });
 
-router.put('/:id', function(req, res) {
-  console.log(req.body);
-  console.log(req.params.id);
+router.put('/:id', function(req, res, next) {
   Product.findByIdAndUpdate(req.params.id,{$set:req.body})
     .then(function(product) {
       res.json(product);
     })
     .catch(function(err) {
       res.json(err);
-    });
+    }, next);
 });
 
 module.exports = router;
