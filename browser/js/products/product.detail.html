@@ -6,7 +6,13 @@
             class="img-responsive">
           </div>
           <div class="col-md-6">
+          <div class="unavailable" ng-show="!product.available">
+              <h4> Currently Unavailable</h4>
+              <img src='http://www.cathybragg.com/images/out_of_stock.png'>
+          </div>
+
             <h3>{{product.name}}</h3>
+
             <!-- <h4>category: {{product.category || beer}}</h4> -->
             <h4>price: {{product.price}}</h4>
             <h4>brewer: {{product.brewer}}</h4>
