@@ -16,10 +16,13 @@ router.get('/', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
   Product.findById(req.params.id)
     .then(function(product) {
+      if (!product) {
+        return false;
+      }
       res.json(product);
     })
     .catch(function(err) {
-      res.json(err);
+      res.send(404).send(err);
     }, next);
 });
 
@@ -34,8 +37,6 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res) {
-  console.log(req.body);
-  console.log(req.params.id);
   Product.findByIdAndUpdate(req.params.id,{$set:req.body})
     .then(function(product) {
       res.json(product);
@@ -58,7 +59,6 @@ router.delete('/:id', function(req, res, next) {
 router.get('/:id/reviews', function(req, res, next) {
   Product.findById(req.params.id).populate('reviews')
   .then(function(product) {
-    console.log('product: ', product);
     res.json(product.reviews);
   })
   .catch(function(err) {

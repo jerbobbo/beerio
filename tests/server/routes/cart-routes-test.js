@@ -83,7 +83,7 @@ describe('Cart routes', function(){
         user: _user._id
       })
       .then(function(cart) {
-        cart.cartItems.push(_cartItem);
+        cart.items.push(_cartItem);
         return cart.save();
       })
       .then(function(savedcart) {
@@ -110,7 +110,7 @@ describe('Cart routes', function(){
         .expect(200)
         .end(function (err, response) {
           if (err) return done(err);
-          expect(response.body.cartItems.length).to.equal(1);
+          expect(response.body.items.length).to.equal(1);
           done();
         });
     });
@@ -122,18 +122,19 @@ describe('Cart routes', function(){
         .expect(200)
         .end(function (err, response) {
           if (err) return done(err);
-          expect(response.body.cartItems[0].productId.toString()).to.equal(_product._id.toString());
+          expect(response.body.productId._id.toString()).to.equal(_product._id.toString());
           done();
         });
     });
 
     it('should increment a quanitity when POST route called a product that already exists in the cart', function (done) {
-      _loggedInAgent.post('/api/cart/')
-        .send(_product)
+      _loggedInAgent.put('/api/cart/' +_cart._id + '/cartitems/' + _cartItem._id )
+        .send({quantity: 3})
         .expect(200)
         .end(function (err, response) {
+          console.log('heres the response!!!', response.data);
           if (err) return done(err);
-          expect(response.body.cartItems[0].quantity).to.equal(3);
+          expect(response.body.quantity).to.equal(3);
           done();
         });
     });
