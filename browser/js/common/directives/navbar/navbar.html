@@ -5,7 +5,10 @@
         </div>
         <ul class="nav navbar-nav">
             <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
-                <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label }}</a>
+                <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label}}</a>
+            </li>
+            <li ng-show="isLoggedIn() && adminAccess()">
+                <a ui-sref="admin">Admin</a>
             </li>
         </ul>
         <div class="pull-right">
@@ -18,4 +21,5 @@
             </div>
         </div>
     </div>
+
 </nav>
