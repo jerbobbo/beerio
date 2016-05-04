@@ -33,6 +33,18 @@ router.post('/', function(req, res, next) {
     }, next);
 });
 
+router.put('/:id', function(req, res) {
+  console.log(req.body);
+  console.log(req.params.id);
+  Product.findByIdAndUpdate(req.params.id,{$set:req.body})
+    .then(function(product) {
+      res.json(product);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
 router.delete('/:id', function(req, res, next) {
   Product.findByIdAndRemove(req.params.id)
     .then(function(product) {
@@ -97,6 +109,6 @@ router.delete('/:id/reviews/:reviewId', function(req, res, next) {
   .catch(function(err) {
     res.json(err);
   }, next);
-});
+
 
 module.exports = router;

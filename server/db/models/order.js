@@ -35,11 +35,35 @@ var orderSchema = new mongoose.Schema({
     type: String,
     required: true,
     default: 'cart'
+  },
+  subtotal: {
+    type: Number
+  },
+  total: {
+    type: Number
   }
 },
 {
   timestamps: true
+}
+);
+
+orderSchema.pre('save', function(next) {
+  var subtotal  = this.lineItems
+                    .map(function(lineitem) {
+                      return lineitem.price;
+                    })
+                    .reduce(function(prev, curr) {
+                      return prev + curr
+                    }, 0);
+  subtotal      = subtotal.toFixed(2);
+  var total     = (subtotal * 1.08875);
+  total         = total.toFixed(2);
+  this.subtotal = subtotal;
+  this.total    = total;
+  next();
 });
+
 
 mongoose.model('LineItem', lineItemSchema);
 mongoose.model('Order', orderSchema);
