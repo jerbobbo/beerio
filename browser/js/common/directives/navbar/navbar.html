@@ -13,7 +13,7 @@
         </ul>
         <div class="pull-right">
             <cart-status></cart-status>
-            <button ng-show="user" ui-sref="cart" class="btn cart-button"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</button>
+            <button ng-show="user" ui-sref="checkout" class="btn cart-button"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</button>
             <button ng-show="!user" ui-sref="login" class="btn login-button">Login</button>
             <div ng-show="user" class="welcome">
                 <span>Welcome, {{ user.email }}!</span>

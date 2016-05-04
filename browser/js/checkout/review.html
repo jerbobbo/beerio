@@ -1,0 +1,20 @@
+<div>
+	<p>Hi! You'll soon be drinking some delicious beer, but lets verify a few things.</p>
+	<p>If any of the following information is incorrect, please feel free to click the <strong>previous button</strong>, or modify your cart to the left</p>
+</div>
+<hr>
+<div>
+	<p>These drinks will be shipped to: </p>
+	<p><span>{{currentState.form.shipping.firstName}} {{currentState.form.shipping.lastName}}</span></p>
+	<p>{{currentState.form.shipping.address}}</p>
+	<p>{{currentState.form.shipping.city}}, {{currentState.form.shipping.state}} {{currentState.form.shipping.zip}}</p>
+</div>
+<div class="text-center">
+	<p>When you are ready, click <strong>Place Order</strong></p>
+</div>
+<div class="col-xs-6">
+	<button class="btn btn-primary pull-left" ng-click="previous()">Previous</button>
+</div>
+<div class="col-xs-6">
+	<button class="btn btn-primary pull-right" ng-class="{disabled: paymentForm.$invalid}" ng-click="next()">Place Order</button>
+</div>
