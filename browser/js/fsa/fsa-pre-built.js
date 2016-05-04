@@ -63,10 +63,10 @@
             return !!Session.user;
         };
         this.isAdmin = function () {
-            console.log(Session.user);
-             console.log(Session.user.admin);
+            if(Session.user){
+                return !!Session.user.admin;
+            }
 
-            return !!Session.user.admin;
         };
 
         this.getLoggedInUser = function (fromServer) {
