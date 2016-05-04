@@ -18,8 +18,43 @@ app.config(function ($stateProvider) {
     })
 });
 
-app.controller('checkOutCtrl', function($scope, $state, CartFactory) {
-	var states = [
+app.controller('checkOutCtrl', function($scope, $state, CheckoutFactory) {
+
+	var stateIdx = 0;
+	$scope.currentState = CheckoutFactory.getState();
+	// $scope.init = function(){
+	// 	$scope.currentState = (function() {
+	// 		CheckoutFactory.getState(stateIdx);
+	// 	})();
+	// }
+	// console.log($scope.currentState)
+	// var previousState = $scope.currentState;
+	// not being used yet - will only be used on review template
+	// $scope.submitOrder = function(info) {
+
+	// }
+
+	$scope.next = function(info, form) {
+		if (info && form.$valid) {
+			// previousState = $scope.currentState;
+			CheckoutFactory.saveState(form);
+			CheckoutFactory.setIdx(++stateIdx);
+			// console.log(CheckoutFactory.getState())
+			$scope.currentState = CheckoutFactory.getState();
+			$state.go($scope.currentState.state)
+		}
+	};
+
+	$scope.previous = function() {
+		CheckoutFactory.setIdx(--stateIdx);
+		$scope.currentState = CheckoutFactory.getState();
+		console.log($scope.currentState)
+		$state.go($scope.currentState.state);
+	}
+});
+
+app.factory('CheckoutFactory', function($http) {
+	var _states = [
 		{
 			state: 'checkout',
 			title: 'Shipping Info',
@@ -44,31 +79,23 @@ app.controller('checkOutCtrl', function($scope, $state, CartFactory) {
 			progress: 100,
 			form: {}
 		}];
+	var _stateIdx = 0;
 
-	var stateIdx = 0;
-	$scope.currentState = states[stateIdx];
-	var previousState = states[stateIdx];
+	return {
 
-	// not being used yet - will only be used on review template
-	$scope.submitOrder = function(info) {
+		getState: function() {
+			return _states[_stateIdx];
+		},
 
-	}
-	$scope.next = function(info, form) {
-		if (info && form.$valid) {
-			previousState = $scope.currentState;
-			$scope.currentState = states[++stateIdx];
-			if (stateIdx === 2) {
-				$scope.currentState.form.shipping = states[0].form;
-				$scope.currentState.form.billing = states[1].form;
-				console.log($scope)
-			}
-			$state.go($scope.currentState.state)
+		saveState: function(form) {
+			_states[_stateIdx].form = form;
+			_stateIdx++;
+		},
+
+		setIdx: function(idx) {
+			_stateIdx = idx;
+			return _stateIdx;
 		}
-	};
-
-	$scope.previous = function() {
-		$scope.currentState = states[--stateIdx];
-		$state.go($scope.currentState.state);
 	}
 })
 
