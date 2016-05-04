@@ -109,12 +109,11 @@ var seedProducts = function(x) {
 }
 
 
-
 var seedCats= function(cats){
     return Promise.map(cats, function(cat){
         return Category.create({name:cat})
                 .then(function(category){
-                    catKV[category.name]=category._id
+                    catKV[category.name]=category._id;
                 })
     })
 }
