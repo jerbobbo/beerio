@@ -85,6 +85,7 @@ app.factory('ProductFactory', function($http, CartFactory) {
     },
 
     softDelete: function(id){
+      //note - soft delete also sets available to false
       return $http({
             url: '/api/products/' + id,
             method: "PUT",
@@ -137,6 +138,7 @@ app.factory('ProductFactory', function($http, CartFactory) {
           return product.data;
         });
     }
+
   };
 
   return productObj;
