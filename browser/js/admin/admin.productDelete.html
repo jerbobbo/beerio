@@ -8,8 +8,9 @@
               <thead >
                 <tr >
                   <th ng-repeat="col in adminColumns">{{col}}</th>
-                  <th> Edit </th>
-                  <th> Remove </th>
+                  <th> Edit Details </th>
+                  <th> Toggle Availability</th>
+                  <th> Soft Delete </th>
                 </tr>
               </thead>
               <tbody>
@@ -19,6 +20,9 @@
                   <td>
                     <a ng-click="openModal(product._id)" class="btn btn-default">Edit</a>
                   </td>
+                  <td><button ng-click="toggleAvailability(product._id,product.available)">
+                        O
+                      </button>
                   <td><button ng-click="removeProduct(product._id)">
                         X
                       </button>
