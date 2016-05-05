@@ -22,7 +22,7 @@ router.get('/:id', function(req, res, next) {
       res.json(product);
     })
     .catch(function(err) {
-      res.send(404).send(err);
+      res.status(404).send(err);
     }, next);
 });
 

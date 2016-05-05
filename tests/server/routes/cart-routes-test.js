@@ -30,7 +30,7 @@ describe('Cart routes', function(){
 
     it('will not retrieve orders if unauthorized', function(done){
       agent
-        .get('/api/orders')
+        .get('/api/cart')
         .expect(401)
         .end(done);
     });
