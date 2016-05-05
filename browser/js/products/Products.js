@@ -17,6 +17,9 @@ app.config(function($stateProvider) {
     resolve: {
       product: function(ProductFactory,$stateParams) {
         return ProductFactory.getOne($stateParams.id);
+      },
+      reviews: function(ProductFactory, $stateParams) {
+        return ProductFactory.getReviews($stateParams.id);
       }
     }
   });
@@ -33,17 +36,13 @@ app.controller('ProductCtrl', function($scope, products) {
   $scope.products = products;
 });
 
-app.controller('ProductDetailCtrl', function($scope, product, CartFactory, ProductFactory) {
+app.controller('ProductDetailCtrl', function($scope, product, reviews, CartFactory, ProductFactory) {
   $scope.product = product;
   $scope.showReviewForm = false;
   $scope.newReview = {};
   $scope.newReview.productId = $scope.product._id;
   $scope.reviewLimit = 3;
-
-  ProductFactory.getReviews(product._id)
-  .then(function(_reviews) {
-    $scope.reviews = _reviews;
-  });
+  $scope.reviews = reviews;
 
   $scope.toggleReview = function() {
     $scope.showReviewForm = !$scope.showReviewForm;
@@ -58,9 +57,26 @@ app.controller('ProductDetailCtrl', function($scope, product, CartFactory, Produ
     ProductFactory.addReview(product, review)
     .then(function(newReview) {
       $scope.reviews.unshift(newReview);
+      $scope.avgReview = getAvgReview();
       $scope.newReview = {};
     });
   };
+
+  $scope.numReviews = function() {
+    return $scope.reviews.length;
+  };
+
+  var getAvgReview = function() {
+    if (!$scope.reviews.length) return 0;
+
+    var ratingTotal = 0;
+    $scope.reviews.forEach(function(review) {
+      ratingTotal += review.stars;
+    });
+    return ratingTotal/$scope.reviews.length;
+  };
+
+  $scope.avgReview = getAvgReview();
 
 });
 
