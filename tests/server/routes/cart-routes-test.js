@@ -125,7 +125,6 @@ describe('Cart routes', function(){
         })
         .expect(200)
         .end(function (err, response) {
-          console.log('holmgren san ', response.body)
           if (err) return done(err);
           expect(response.body.quantity).to.equal(3);
           done();
@@ -155,7 +154,7 @@ describe('Cart routes', function(){
         .expect(200)
         .end(function (err, response) {
           if (err) return done(err);
-          expect(response.body.items.length).to.equal(1);
+          expect(response.body.items.length).to.equal(0);
           done();
         });
     });
@@ -180,7 +179,6 @@ describe('Cart routes', function(){
         })
         .expect(200)
         .end(function (err, response) {
-          console.log('heres the response!!!', response.data);
           if (err) return done(err);
           expect(response.body.quantity).to.equal(3);
           done();
