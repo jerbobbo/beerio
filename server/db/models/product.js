@@ -13,7 +13,9 @@ var productSchema = new mongoose.Schema({
   scoreOverall:{type: Number},
   scoreCategory:{type: Number},
   reviews: [{type: mongoose.Schema.Types.ObjectId, ref: 'Review'}],
-  imageUrl: {type: String}
+  imageUrl: {type: String},
+  available:{type: Boolean, default: true},
+  deleted:{type: Boolean, default: false}
 });
 
 mongoose.model('Product', productSchema);
