@@ -3,18 +3,6 @@ var router = require('express').Router();
 var Cart = require('mongoose').model('Cart');
 var CartItem = require('mongoose').model('CartItem');
 
-router.use(function(req, res, next) {
-  if (!req.user && !req.cart) {
-    Cart.create({}).then(function(cart) {
-      req.session.cart = cart;
-      next();
-    });
-  } else {
-    next();
-  }
-  
-})
-
 router.get('/', function(req, res, next) {
   if (req.user) {
     Cart.findOne( {user: req.user._id} )
@@ -23,7 +11,10 @@ router.get('/', function(req, res, next) {
     })
     .catch(res.json);
   } else {
-    res.json(req.session.cart);
+    Cart.findById(req.session.cart._id).populate('productId')
+      .then(function(cart) {
+        res.json(cart);    
+      });
   }
 });
 

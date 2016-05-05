@@ -27,6 +27,7 @@ module.exports = function (app) {
 
     // middle ware for creating a cart
     app.use(function(req, res, next) {
+      console.log('whats reqsession now?', req.session.cart, 'and whats user', req.user);
       if (!req.user && !req.session.cart) {
         Cart.create({})
         .then(function(cart) {
@@ -68,22 +69,20 @@ module.exports = function (app) {
                     }
                     var combinedArr = [];
                     for (var i = 0; i < loggedInCart.items.length; i++) {
-                        var shared = false;
                         for (var i = 0; i < req.session.cart.items.length; i++) {
-                            if (loggedInCart[i]._id === req.session.cart.items[j]._id) {
+                            if (loggedInCart.items[i]._id === req.session.cart.items[j]._id) {
                                 // take the greater of the two quantities
-                                if (loggedInCart[i].quantity > req.session.cart.items[j].quantity) {
-                                    combinedArr.push(loggedInCart[i]);
+                                if (loggedInCart.items[i].quantity > req.session.cart.items[j].quantity) {
+                                    combinedArr.push(loggedInCart.items[i]);
                                     break;
                                 }
-                                if (loggedInCart[i].quantity < req.session.cart.items[j].quantity) {
+                                if (loggedInCart.items[i].quantity < req.session.cart.items[j].quantity) {
                                     combinedArr.push(req.session.cart.items[j]);
                                     break;
                                 }
                             }
-
                             combinedArr.push(req.session.cart.items[j]);
-                            combinedArr.push(loggedInCart[i]);
+                            combinedArr.push(loggedInCart.items[i]);
                         }
                     }
                     loggedInCart.items = combinedArr;
