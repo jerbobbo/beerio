@@ -1,21 +1,21 @@
 app.config(function($stateProvider, $urlRouterProvider) {
 	$stateProvider.state('checkout', {
-		abstract: true,
-		url: '/checkout',
-		controller: 'checkOutCtrl',
-		templateUrl: 'js/checkout/checkout.html',
-	})
+			abstract: true,
+			url: '/checkout',
+			controller: 'checkOutCtrl',
+			templateUrl: 'js/checkout/checkout.html'
+		})
 		.state('checkout.address', {
 			url: '/address',
 			templateUrl: 'js/checkout/addressForm.html',
 			controller: 'addressCtrl',
 			resolve: {
-				order: function(CheckoutFactory) {
-					return CheckoutFactory.createOrder()
-				},
 				current: function(CheckoutFactory) {
 					CheckoutFactory.setIdx(0);
 					return CheckoutFactory.getState();
+				},
+				order: function(CheckoutFactory) {
+					return CheckoutFactory.createOrder();
 				}
 			}
 		})
@@ -31,11 +31,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			url: '/complete',
 			templateUrl: 'js/checkout/complete.html'
 		});
-	// $urlRouterProvider.when('/checkout', '/checkout/address').otherwise('/checkcout/address');
+	$urlRouterProvider.when('/checkout', '/checkout/address').otherwise('/checkcout/address');
 }).run(function($rootScope, $urlRouter, $location, $state) {
 	// intercept each state change
 	$rootScope.$on('$locationChangeSuccess', function(e, toState, toParams) {
-		if ($location.url() === '/checkout/address' && toParams.indexOf('/checkout/address' !== -1)) {
+		if ($location.url() === '/checkout/address' && toParams.indexOf('address') === -1) {
 			$state.reload(true) // if above is true, reload state.
 			$urlRouter.sync();
 		}
@@ -44,19 +44,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 app.controller('addressCtrl', function($scope, current, order) {
 	$scope.currentState = current;
-	$scope.order = order
-	console.log(order)
-
 })
 
 app.controller('checkOutCtrl', function($scope, $state, CheckoutFactory) {
 	var stateIdx = 0;
-
+	var currentOrder;
 	$scope.currentState = CheckoutFactory.getState();
 	$scope.next = function(info, form) {
 
 		if (info && form.$valid) {
-			CheckoutFactory.saveState(info);
+			currentOrder = CheckoutFactory.getOrder();
+			CheckoutFactory.saveState(info, $scope.cart, $scope.cartInfo);
 			CheckoutFactory.setIdx(++stateIdx);
 			$scope.currentState = CheckoutFactory.getState();
 			$state.go($scope.currentState.state)
@@ -70,7 +68,7 @@ app.controller('checkOutCtrl', function($scope, $state, CheckoutFactory) {
 	}
 
 	$scope.placeOrder = function() {
-		// return CheckoutFactory.()
+	 	CheckoutFactory.placeOrder()
 	}
 });
 
@@ -79,12 +77,16 @@ app.factory('CheckoutFactory', function($http) {
 		state: 'checkout.address',
 		title: 'Shipping Info',
 		progress: 10,
-		form: {}
+		form: {},
+		lineItems: [],
+		cartInfo: {}
 	}, {
 		state: 'checkout.payment',
 		title: 'Payment Info',
 		progress: 60,
-		form: {}
+		form: {},
+		lineItems: [],
+		cartInfo: {}
 	}, {
 		state: 'checkout.review',
 		title: 'Review Order',
@@ -97,28 +99,85 @@ app.factory('CheckoutFactory', function($http) {
 		form: {}
 	}];
 	var _stateIdx = 0;
-
+	var _order;
+	var	_updateObj = {
+		lineItems: null,
+		subtotal: null,
+		total: null,
+		billingAddress: null,
+		shippingAddress: null,
+		status: null
+	};
 	return {
-
-		getState: function() {
-			return _states[_stateIdx];
-		},
-
-		saveState: function(form) {
-			_states[_stateIdx].form = form;
-			_stateIdx++;
-		},
-
-		setIdx: function(idx) {
-			_stateIdx = idx;
-			return _stateIdx;
-		},
-		createOrder: function(cart, info ) {
-			$http.post('/api/orders')
+		placeOrder: function() {
+			_updateObj.status = 'complete';
+			return $http.put('/api/orders/' + _order._id, _updateObj)
 				.then(function(order) {
 					console.log(order)
 					return order.data;
 				})
+		},
+		
+		getState: function() {
+			return _states[_stateIdx];
+		},
+
+		saveState: function(form, lineItems, cartInfo) {
+			var addrObj = {
+				name: form.firstName + ' ' + form.lastName,
+				street: form.address,
+				city: form.city,
+				state: form.state,
+				country: form.country,
+				postal: form.zip,
+				email: form.email
+			}
+			console.log(cartInfo)
+			if (lineItems && cartInfo) {
+				_updateObj.lineItems = lineItems;
+				_updateObj.subtotal = cartInfo.subtotal;
+				_updateObj.total = cartInfo.subtotal + 5;
+			};
+
+			if (_stateIdx === 0) {
+				addrObj.type = 'shipping';
+				_updateObj.shippingAddress = addrObj;
+			} else if (_stateIdx === 1) {
+				addrObj.type = 'billing';
+				_updateObj.billingAddress = addrObj;
+			};
+			$http.put('/api/orders/' + _order._id, _updateObj)
+				.then(function(order) {
+					_order = order.data;
+					return order.data;
+				})
+			_states[_stateIdx].form = form;
+			
+			_stateIdx++;
+		},
+		getOrder: function() {
+			return _order;
+		},
+		setIdx: function(idx) {
+			_stateIdx = idx;
+			return _stateIdx;
+		},
+		createOrder: function() {
+			if (!_order) {
+				console.log('anything?')
+				$http.post('/api/orders')
+					.then(function(order) {
+						_order = order.data;
+						return order.data;
+					});
+			}
+			else {
+				return _order;
+			}
+		},
+		updateOrder: function(cart, info) {
+			console.log(cart, info, _stateIdx)
+			console.log(_states[_stateIdx])
 		}
 	}
 })
