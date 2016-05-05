@@ -44,7 +44,8 @@ var seedUsers = function() {
         password: 'password'
     }, {
         email: 'obama@gmail.com',
-        password: 'potus'
+        password: 'potus',
+        admin:true
     }];
 
     return User.create(users);
