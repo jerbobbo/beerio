@@ -32,11 +32,9 @@ var converter = new Converter({});
 var wipeCollections = function() {
     var removeUsers = User.remove({});
     var removeProducts = Product.remove({});
-    var removeCategories = Category.remove({});
     return Promise.all([
         removeUsers,
-        removeProducts,
-        removeCategories
+        removeProducts
     ]);
 };
 
