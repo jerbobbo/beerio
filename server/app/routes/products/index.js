@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res, next) {
-  Product.findById(req.params.id).populate('category')
+  Product.findById(req.params.id).populate('reviews')
     .then(function(product) {
       if (!product) {
         return false;
@@ -57,9 +57,9 @@ router.delete('/:id', function(req, res, next) {
 });
 
 router.get('/:id/reviews', function(req, res, next) {
-  Product.findById(req.params.id).populate('reviews')
-  .then(function(product) {
-    res.json(product.reviews);
+  Review.find({ productId: req.params.id }).populate('userId')
+  .then(function(reviews) {
+    res.json(reviews);
   })
   .catch(function(err) {
     res.json(err);
@@ -67,14 +67,14 @@ router.get('/:id/reviews', function(req, res, next) {
 });
 
 router.post('/:id/reviews', function(req, res, next) {
-  var newReview;
-  Review.create(req.body)
+  var reviewBody = req.body;
+  if (!reviewBody.userId) reviewBody.userId = req.user._id;
+
+  Review.create(reviewBody)
   .then(function(review) {
-    newReview = review;
-    return Product.findById(req.params.id);
+    return Review.findById(review._id).populate('userId');
   })
-  .then(function(product) {
-    product.reviews.push(newReview);
+  .then(function(newReview) {
     res.json(newReview);
   })
   .catch(function(err) {

@@ -68,9 +68,9 @@ describe('Reviews route', function() {
       .expect(200)
       .then(function(res) {
         expect(res.body).to.be.an('array');
-        expect(res.body[0].userId).to.equal(_userOne._id.toString());
+        expect(res.body[0].userId._id).to.equal(_userOne._id.toString());
         expect(res.body[0].body).to.equal('This beer is so much better than I remembered');
-        expect(res.body[1].userId).to.equal(_userTwo._id.toString());
+        expect(res.body[1].userId._id).to.equal(_userTwo._id.toString());
         expect(res.body[1].body).to.equal('Wish I had ordered a Miller Genuine Draft');
         done();
       });
@@ -92,7 +92,7 @@ describe('Reviews route', function() {
       .send( { productId: _product._id, body: 'This beer has gone downhill', userId: _userTwo._id, stars: 2 })
       .then(function(res) {
         expect(res.body).to.be.an('object');
-        expect(res.body.userId).to.equal(_userTwo._id.toString());
+        expect(res.body.userId._id).to.equal(_userTwo._id.toString());
         expect(res.body.body).to.equal('This beer has gone downhill');
         expect(res.body.stars).to.equal(2);
         done();

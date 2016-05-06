@@ -24,6 +24,43 @@
             <h4>reviews: {{product.reviews}}</h4>
             <p>description:{{product.description}}</p>
             <add-to-cart product="product" label="Qty in Cart"></add-to-cart>
+            <h5>Average User Rating<uib-rating ng-model="avgReview" read-only="true"></h5></uib-rating>
+            <div>
+              <button class="btn btn-info" style="margin-top:30px" ng-click="toggleReview()">Write a Review</button>
+            </div>
+            <div>
+              <form ng-show="showReviewForm">
+                <div class="form-group">
+                  <label># of stars</label>
+                  <uib-rating ng-model="newReview.stars"></uib-rating>
+                </div>
+                <div class="form-group">
+                  <textarea class="form-control" rows="3" ng-model="newReview.body"></textarea>
+                </div>
+                <div>
+                  <button class="btn btn-primary btn-small pull-right" ng-click="addReview(product, newReview)">save</button>
+                </div>
+
+              </form>
+            </div>
+            <div class="clearfix">
+
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Reviews</h3>
+              </div>
+              <div class="panel-body" ng-repeat="review in reviews | orderBy:'-_id' | limitTo:reviewLimit">
+                <h5>{{ review.userId.email }}</h5>
+                <uib-rating ng-model="review.stars" read-only="true"></uib-rating>
+                <p>
+                  {{ review.body }}
+                </p>
+              </div>
+              <div class="panel-body" ng-show="reviewLimit === 3 && numReviews() > 3">
+                <h5><a ng-click="toggleReviewLimit()">View All Reviews</a></h5>
+              </div>
+            </div>
           </div>
         </div>
       </div>
