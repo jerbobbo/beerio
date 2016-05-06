@@ -1,0 +1,34 @@
+<form name="paymentForm">
+	<div class="form">
+		<div class="form-group col-xs-12">
+			<input class="form-control" type="number" ng-model="currentState.form.card" id="card" placeholder="Credit Card" ng-maxlength="16" ng-minlength="16" maxlength="16" required>
+		</div>
+		<div class="form-group col-xs-4">
+			<input class="form-control" type="tel" min="0" max="9999" size="4" ng-minlength="3" ng-maxlength="4" maxlength="4" ng-model="currentState.form.cvc" id="CVC" placeholder="CVC" required>
+		</div>	
+		<div class="form-group col-xs-4">
+			<input class="form-control" type="tel" min="1" max="99" size="2" ng-minlength="2" ng-maxlength="2" maxlength="2" ng-model="currentState.form.exp.mm" id="mm" placeholder="MM" required>
+		</div>
+		<div class="form-group col-xs-4">
+			<input class="form-control" type="tel" min="0" max="99" size="2" ng-minlength="2" ng-maxlength="2" maxlength="2" ng-model="currentState.form.exp.yy" id="yy" placeholder="YY" required>
+		</div>
+		<div class="col-sm-12">
+			<div class="checkbox">
+				<label>
+					<input ng-model="currentState.form.billingAddressNotNeeded" checked type="checkbox"> Billing address same as shipping?
+				</label>
+			</div>
+		</div>
+		<div ng-show="!currentState.form.billingAddressNotNeeded">
+			<billing-address-form>
+			</billing-address-form>
+		</div>
+		<div class="col-xs-6">
+			<button class="btn btn-primary pull-left" ng-click="previous()">Previous</button>
+		</div>
+		<div class="col-xs-6">
+			<button class="btn btn-primary pull-right" ng-class="{disabled: paymentForm.$invalid}" ng-click="next(currentState.form, paymentForm)">Review</button>
+		</div>
+	</div>
+</form>
+
