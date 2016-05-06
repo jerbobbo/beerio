@@ -11,7 +11,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			controller: 'addressCtrl',
 			resolve: {
 				current: function(CheckoutFactory) {
-					CheckoutFactory.setIdx(0);
 					return CheckoutFactory.getState();
 				},
 				order: function(CheckoutFactory) {
@@ -40,7 +39,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			$urlRouter.sync();
 		}
 	});
-})
+});
 
 app.controller('addressCtrl', function($scope, current, order) {
 	$scope.currentState = current;
@@ -50,6 +49,11 @@ app.controller('checkOutCtrl', function($scope, $state, CheckoutFactory) {
 	var stateIdx = 0;
 	var currentOrder;
 	$scope.currentState = CheckoutFactory.getState();
+	
+	if ($scope.currentState.state != $state.current.name) {
+		$state.go($scope.currentState.state);	
+	}
+	
 	$scope.next = function(info, form) {
 
 		if (info && form.$valid) {
