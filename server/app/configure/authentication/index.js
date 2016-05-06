@@ -52,8 +52,14 @@ module.exports = function (app) {
         }
     });
 
+    app.get('/clearsession', function(req, res) {
+        req.session.destroy();
+        res.send('session is cleared');
+    });
+
     // Simple /logout route.
     app.get('/logout', function (req, res) {
+        req.session.destroy();
         req.logout();
         res.status(200).end();
     });

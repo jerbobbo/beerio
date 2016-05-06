@@ -76,125 +76,128 @@ describe('Orders API', function() {
         done();
       })
     });
-    afterEach(function (done) {
-      return Promise.all(
-        [
-          Order.remove(), User.remove(),
-          Product.remove(), Order.remove(),
-          Address.remove()
-        ])
-      .then(function(){
-        done();
-      })
-    });
-    // create an order with a user and a fake address
-    it('POST /api/orders route creates a fake order', function(done) {
-      agent
-        .post('/api/orders/').send(_orderToBeCreated)
-        .expect(200)
-        .end(function(err,res) {
-          if (err)return done(err);
-          expect(res.body.user.email).to.equal('testing123@test.com');
-          done();
-        });
-    });
 
-    it('PUT /api/orders/:orderId adding a lineItem', function (done) {
-      agent
-        .put('/api/orders/' + _emptyorder._id).send({
-          lineItems: [
-            {
-              productId: _product._id,
-              quantity: 4    
+    describe('authenticated requests', function () {
+      var loggedInAgent;
+      var userInfo = {
+        email: 'testing123@test.com',
+        password: 'password'
+      };
+      beforeEach(function (done) {
+        loggedInAgent = supertest.agent(app);
+        loggedInAgent.post('/login').send(userInfo).end(done);
+      });
+
+      // create an order with a user and a fake address
+      it('POST /api/orders route creates a fake order', function(done) {
+        loggedInAgent
+          .post('/api/orders/').send(_orderToBeCreated)
+          .expect(200)
+          .end(function(err,res) {
+            if (err)return done(err);
+            expect(res.body.user.email).to.equal('testing123@test.com');
+            done();
+          });
+      });
+
+      it('PUT /api/orders/:orderId adding a lineItem', function (done) {
+        loggedInAgent
+          .put('/api/orders/' + _emptyorder._id).send({
+            lineItems: [
+              {
+                productId: _product._id,
+                quantity: 4    
+              }
+            ]
+          })
+          .expect(200)
+          .end(function(err,res) {
+            if (err) return done(err);
+            expect(res.body.lineItems).to.exist;
+            done();
+          })
+      });
+
+
+      it('PUT /api/orders/:orderId modifying a lineItem', function (done) {
+        loggedInAgent
+          .put('/api/orders/' + _createdOrder._id).send({
+            lineItems: [
+              {
+                productId: _product._id,
+                quantity: 4    
+              }
+            ]
+          })
+          .expect(200)
+          .end(function(err,res) {
+            if (err) return done(err);
+            expect(res.body.lineItems).to.exist;
+            done();
+          })
+      });
+
+      it('PUT /api/orders/:orderId adding a shipping or billing address', function (done) {
+        loggedInAgent
+          .put('/api/orders/' + _emptyorder._id).send({
+            billingAddress: {
+              type: 'billing',
+              street: '500 9th ave',
+              city: 'new york',
+              state: 'NY',
+              country:'USA',
+              postal: '10019'
+            },
+            shippingAddress: {
+              type: 'shipping',
+              street: '500 9th ave',
+              city: 'new york',
+              state: 'NY',
+              country:'USA',
+              postal: '10019'
             }
-          ]
-        })
-        .expect(200)
-        .end(function(err,res) {
-          if (err) return done(err);
-          expect(res.body.lineItems).to.exist;
-          done();
-        })
-    });
+          })
+          .expect(200)
+          .end(function(err,res) {
+            if (err) return done(err);
+            expect(res.body.billingAddress).to.exist;
+            expect(res.body.shippingAddress).to.exist;
+            done();
+          })
+      });
 
-
-    it('PUT /api/orders/:orderId modifying a lineItem', function (done) {
-      agent
-        .put('/api/orders/' + _createdOrder._id).send({
-          lineItems: [
-            {
-              productId: _product._id,
-              quantity: 4    
+      it('PUT /api/orders/:orderId modifying an existing shipping or billing address', function (done) {
+        loggedInAgent
+          .put('/api/orders/' + _createdOrder._id).send({
+            billingAddress: {
+              type: 'billing',
+              street: '500 8th ave',
+              city: 'new york',
+              state: 'NY',
+              country:'USA',
+              postal: '10019'
+            },
+            shippingAddress: {
+              type: 'shipping',
+              street: '500 8th ave',
+              city: 'new york',
+              state: 'NY',
+              country:'USA',
+              postal: '10019'
             }
-          ]
-        })
-        .expect(200)
-        .end(function(err,res) {
-          if (err) return done(err);
-          expect(res.body.lineItems).to.exist;
-          done();
-        })
+          })
+          .expect(200)
+          .end(function(err,res) {
+            if (err) return done(err);
+            expect(res.body.billingAddress).to.exist;
+            expect(res.body.billingAddress.street).to.equal('500 8th ave');
+            expect(res.body.shippingAddress).to.exist;
+            expect(res.body.shippingAddress.street).to.equal('500 8th ave');
+            done();
+          })
+      });
     });
-
-    it('PUT /api/orders/:orderId adding a shipping or billing address', function (done) {
-      agent
-        .put('/api/orders/' + _emptyorder._id).send({
-          billingAddress: {
-            type: 'billing',
-            street: '500 9th ave',
-            city: 'new york',
-            state: 'NY',
-            country:'USA',
-            postal: '10019'
-          },
-          shippingAddress: {
-            type: 'shipping',
-            street: '500 9th ave',
-            city: 'new york',
-            state: 'NY',
-            country:'USA',
-            postal: '10019'
-          }
-        })
-        .expect(200)
-        .end(function(err,res) {
-          if (err) return done(err);
-          expect(res.body.billingAddress).to.exist;
-          expect(res.body.shippingAddress).to.exist;
-          done();
-        })
-    });
-
-    it('PUT /api/orders/:orderId modifying an existing shipping or billing address', function (done) {
-      agent
-        .put('/api/orders/' + _createdOrder._id).send({
-          billingAddress: {
-            type: 'billing',
-            street: '500 8th ave',
-            city: 'new york',
-            state: 'NY',
-            country:'USA',
-            postal: '10019'
-          },
-          shippingAddress: {
-            type: 'shipping',
-            street: '500 8th ave',
-            city: 'new york',
-            state: 'NY',
-            country:'USA',
-            postal: '10019'
-          }
-        })
-        .expect(200)
-        .end(function(err,res) {
-          if (err) return done(err);
-          expect(res.body.billingAddress).to.exist;
-          expect(res.body.billingAddress.street).to.equal('500 8th ave');
-          expect(res.body.shippingAddress).to.exist;
-          expect(res.body.shippingAddress.street).to.equal('500 8th ave');
-          done();
-        })
-    });
+    
 
   });
 });

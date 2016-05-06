@@ -15,15 +15,16 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res, next) {
-  Product.findById(req.params.id)
+  Product.findById(req.params.id).populate('category')
     .then(function(product) {
       if (!product) {
         return false;
       }
+      console.log('product: ', product);
       res.json(product);
     })
     .catch(function(err) {
-      res.send(404).send(err);
+      res.status(404).send(err);
     }, next);
 });
 
