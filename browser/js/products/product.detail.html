@@ -24,6 +24,7 @@
             <!-- <h4>reviews: {{product.reviews}}</h4> -->
             <p>description:{{product.description}}</p>
             <add-to-cart product="product" label="Qty in Cart"></add-to-cart>
+            <h5>Average User Rating<uib-rating ng-model="avgReview" read-only="true"></h5></uib-rating>
             <div>
               <button class="btn btn-info" style="margin-top:30px" ng-click="toggleReview()">Write a Review</button>
             </div>
@@ -56,7 +57,7 @@
                   {{ review.body }}
                 </p>
               </div>
-              <div class="panel-body" ng-show="reviewLimit === 3">
+              <div class="panel-body" ng-show="reviewLimit === 3 && numReviews() > 3">
                 <h5><a ng-click="toggleReviewLimit()">View All Reviews</a></h5>
               </div>
             </div>
