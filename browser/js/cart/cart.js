@@ -36,6 +36,17 @@ app.controller('CartCtrl', function($scope, $uibModal, CartFactory, ProductFacto
     return CartFactory.removeItem(lineItem._id);
   };
 
+
+  $scope.$on('refreshCart', function(ev) {
+    CartFactory.fetchCart()
+      .then(function(_cart) {
+        $scope.cart = _cart;
+        $scope.cartInfo = CartFactory.getInfo();
+        $scope.isInCart = CartFactory.isInCart;    
+      })
+    
+  })
+
   $scope.updateOne = function(lineItem, dir) {
     var qty = Number(lineItem.quantity);
     if (qty === 0) {
@@ -44,6 +55,7 @@ app.controller('CartCtrl', function($scope, $uibModal, CartFactory, ProductFacto
     qty += Number(dir);
     return CartFactory.updateQty(lineItem._id, qty);
   };
+
 
 });
 

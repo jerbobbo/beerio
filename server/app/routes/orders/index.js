@@ -4,47 +4,46 @@ var Order    = require('mongoose').model('Order');
 var LineItem = require('mongoose').model('LineItem');
 var Address  = require('mongoose').model('Address');
 var _        = require('lodash');
-
+router.use('/', function(req,res,next) {
+  if (!req.user) {
+    res.sendStatus(401);
+  } else {
+    next();
+  }
+});
 // modified this route to return all orders made by a particular user
 router.get('/', function(req, res) {
-  if (req.user) {
-    Order.find({user: req.user._id}).populate({
-      path: 'lineItems',
-      populate: {
-        path: 'productId',
-        model: 'Product'
-      }
+  console.log(' and then here?');
+  Order.find({user: req.user._id}).populate({
+    path: 'lineItems',
+    populate: {
+      path: 'productId',
+      model: 'Product'
+    }
+  })
+    .then(function(orders) {
+      res.json(orders);
     })
-      .then(function(orders) {
-        res.json(orders);
-      })
-      .catch(function(err) {
-        res.json(err);
-      });
-  } else {
-    res.sendStatus(401)
-  }
+    .catch(function(err) {
+      res.json(err);
+    });
 });
 
 // return specific order made by user. if unauth, return 401
 router.get('/:order_id', function(req, res) {
-  if (req.user) {
-    Order.findById(req.params.order_id).populate({
-      path: 'lineItems',
-      populate: {
-        path: 'productId',
-        model: 'Product'
-      }
+  Order.findById(req.params.order_id).populate({
+    path: 'lineItems',
+    populate: {
+      path: 'productId',
+      model: 'Product'
+    }
+  })
+    .then(function(order) {
+      res.json(order);
     })
-      .then(function(order) {
-        res.json(order);
-      })
-      .catch(function(err) {
-        res.json(err);
-      });
-  } else {
-    res.sendStatus(401);
-  }
+    .catch(function(err) {
+      res.json(err);
+    });
 });
 
 router.post('/', function(req, res, next) {
