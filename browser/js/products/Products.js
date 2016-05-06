@@ -83,6 +83,9 @@ app.controller('ProductsCatCtrl', function($stateParams,$scope, products, catego
       resolve: {
         product: function(ProductFactory) {
           return ProductFactory.getOne(id);
+        },
+        reviews: function(ProductFactory) {
+          return ProductFactory.getReviews(id);
         }
       }
     });
