@@ -11,7 +11,7 @@ module.exports = {
 			to: to,
 			from: 'w00t@beer.io',
 			subject: 'Thanks for buying from beer.io!',
-			text: 'This is my first email through SendGrid'
+			text: 'Your order is on its way. Get ready.'
 		});
 
 		sendgrid.send(email, function(err, json) {

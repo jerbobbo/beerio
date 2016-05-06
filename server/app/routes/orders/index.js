@@ -16,7 +16,6 @@ router.use('/', function(req,res,next) {
 
 // modified this route to return all orders made by a particular user
 router.get('/', function(req, res) {
-  console.log(' and then here?');
   Order.find({user: req.user._id}).populate({
     path: 'lineItems',
     populate: {
@@ -127,14 +126,16 @@ router.put('/:orderId', function(req, res, next) {
         } else {
           order.billingAddress = new Address(billingAddress);
         }
-        
       }
+      order.user = req.user._id;
+
       return order.save();
     })
     .then(function(savedOrder) {
-      if (savedOrder.shippingAddress.email) {
-        sendgrid
-       
+      console.log(savedOrder)
+      if (savedOrder.shippingAddress.email && savedOrder.status === 'complete') {
+        console.log('sending email.. ', savedOrder.shippingAddress.email)
+        sendgrid.mailTo(savedOrder.shippingAddress.email)
        }
       res.json(savedOrder);
     })
