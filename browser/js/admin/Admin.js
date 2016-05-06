@@ -26,6 +26,18 @@ app.config(function($stateProvider) {
     controller: 'AdminProductCtrl'
   })
 
+  $stateProvider.state('admin.productEdit', {
+    url: '/productEdit',
+    templateUrl: '/js/admin/admin.productEdit.html',
+    controller: 'AdminProductCtrl'
+  })
+
+    $stateProvider.state('admin.userAdd', {
+    url: '/userAdd',
+    templateUrl: '/js/admin/admin.userAdd.html',
+    controller: 'AdminUserCtrl'
+  })
+
 })
 
 app.controller('AdminCtrl', function($scope, products, isLoggedIn, ProductFactory) {
@@ -37,9 +49,21 @@ app.controller('AdminCtrl', function($scope, products, isLoggedIn, ProductFactor
 });
 
 
-app.controller('AdminProductCtrl', function($scope, $state, isLoggedIn, ProductFactory) {
+app.controller('AdminProductCtrl', function($scope, $state, $uibModal, isLoggedIn, ProductFactory) {
 
-  $scope.adminColumns=['name','brewer'];
+  $scope.adminColumns=['name','available','deleted'];
+
+  $scope.openModal = function(id) {
+    $uibModal.open({
+      templateUrl: '/js/admin/admin.productEdit.html',
+      controller: 'ProductDetailModalCtrl',
+      resolve: {
+        product: function(ProductFactory) {
+          return ProductFactory.getOne(id);
+         }
+       }
+     });
+  };
 
   $scope.addProduct = function(product){
     return ProductFactory.add({
@@ -60,10 +84,19 @@ app.controller('AdminProductCtrl', function($scope, $state, isLoggedIn, ProductF
   };
 
   $scope.removeProduct=function(id){
-    return ProductFactory.delete(id)
+    return ProductFactory.softDelete(id)
             .then(function(){
               $state.reload();
             })
   };
+
+  $scope.toggleAvailability= function(id,available){
+    return ProductFactory.toggle(id,available)
+            .then(function(){
+              $state.reload();
+            })
+  };
+
+
 
 });

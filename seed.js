@@ -23,6 +23,8 @@ var chalk = require('chalk');
 var connectToDb = require('./server/db');
 var User = mongoose.model('User');
 var Product = mongoose.model('Product');
+var Order = mongoose.model('Order');
+var LineItem = mongoose.model('LineItem');
 var Converter = require("csvtojson").Converter;
 var converter = new Converter({});
 
@@ -39,10 +41,12 @@ var seedUsers = function() {
 
     var users = [{
         email: 'testing@fsa.com',
-        password: 'password'
+        password: 'password',
+        admin: false
     }, {
         email: 'obama@gmail.com',
-        password: 'potus'
+        password: 'potus',
+        admin:true
     }];
 
     return User.create(users);
@@ -55,7 +59,6 @@ require("fs").createReadStream("./andrew-seed-data.csv").pipe(converter);
 
 //end_parsed will be emitted once parsing finished
 converter.on("end_parsed", function(jsonArray) {
-    console.log(jsonArray); //here is your result jsonarray
     runSeed(jsonArray);
 });
 
@@ -63,18 +66,52 @@ var seedProducts = function(x) {
     return Product.create(x);
 }
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+var seedOrders = function(users, products) {
+    var promises = [],
+        lineitemspromises    = [];
+    products.forEach(function(product) {
+        promises.push(createLineItem(product));
+    });
+
+    return Promise.map(promises, function(lineitem) {
+        return lineitem;
+    }).then(function(lineitems) {
+        while(lineitems.length > 0) {
+            lineitemspromises.push(createOrder(users[0], lineitems.splice(0,3)));
+        }
+        return Promise.map(lineitemspromises, function(order) {
+            return order;
+        });
+    }).then(function(orders) {
+        return orders;
+    });
+}
+
+var createOrder = function(user, lineitems) {
+    return Order.create({
+        user: user._id,
+        lineItems: lineitems
+    });
+}
+
+var createLineItem = function(product) {
+    return LineItem.create({
+        productId: product._id,
+        quantity: getRandomInt(1,8),
+        price: getRandomInt(5, 20)
+    });
+}
+
 var runSeed = function(productArray) {
     connectToDb
         .then(function() {
-            return wipeCollections();
-        })
-        .then(function() {
-            return seedUsers();
-        })
-        .then(function() {
-            return seedProducts(productArray);
-        })
-        .then(function() {
+            return Promise.all([wipeCollections(), seedUsers(), seedProducts(productArray)])
+        }).spread(function(wipe, users, products) {
+            return seedOrders(users, products);
+        }).then(function() {
             console.log(chalk.green('Seed successful!'));
             process.kill(0);
         })

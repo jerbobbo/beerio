@@ -5,12 +5,15 @@
         </div>
         <ul class="nav navbar-nav">
             <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
-                <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label }}</a>
+                <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label}}</a>
+            </li>
+            <li ng-show="isLoggedIn() && adminAccess()">
+                <a ui-sref="admin">Admin</a>
             </li>
         </ul>
         <div class="pull-right">
             <cart-status></cart-status>
-            <button ng-show="user" ui-sref="checkout" class="btn cart-button"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</button>
+            <button ng-show="user" ui-sref="checkout.address" class="btn cart-button"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</button>
             <button ng-show="!user" ui-sref="login" class="btn login-button">Login</button>
             <div ng-show="user" class="welcome">
                 <span>Welcome, {{ user.email }}!</span>
@@ -18,4 +21,5 @@
             </div>
         </div>
     </div>
+
 </nav>

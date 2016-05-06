@@ -20,6 +20,7 @@ router.post('/', function(req, res, next) {
     var _item, _cart;
     Cart.findOne({ user: req.user._id })
       .then(function(cart) {
+        if (cart) return cart;
         if (!cart) return Cart.create( {user: req.user._id } );
         return cart;
       })
@@ -59,9 +60,9 @@ router.put('/:cartItemId', function(req, res, next) {
       return cartItem.save();
     })
     .then(function(cartItem) {
-      res.send(cartItem);
-    })
-    .catch(res.json);
+      console.log('whats going on over here? ', cartItem);
+      res.json(cartItem);
+    }, next)
   } else {
     res.sendStatus(401);
   }

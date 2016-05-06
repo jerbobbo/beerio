@@ -8,7 +8,13 @@ var sendgrid = require('../../../sendgrid');
 // modified this route to return all orders made by a particular user
 router.get('/', function(req, res) {
   if (req.user) {
-    Order.find({user: req.user._id})
+    Order.find({user: req.user._id}).populate({
+      path: 'lineItems',
+      populate: {
+        path: 'productId',
+        model: 'Product'
+      }
+    })
       .then(function(orders) {
         res.json(orders);
       })
@@ -23,7 +29,13 @@ router.get('/', function(req, res) {
 // return specific order made by user. if unauth, return 401
 router.get('/:order_id', function(req, res) {
   if (req.user) {
-    Order.findById(req.params.order_id)
+    Order.findById(req.params.order_id).populate({
+      path: 'lineItems',
+      populate: {
+        path: 'productId',
+        model: 'Product'
+      }
+    })
       .then(function(order) {
         res.json(order);
       })
@@ -53,11 +65,25 @@ router.post('/', function(req, res, next) {
 router.put('/:orderId', function(req, res, next) {
   var lineItems       = req.body.lineItems,
       shippingAddress = req.body.shippingAddress,
-      billingAddress  = req.body.billingAddress;
+      billingAddress  = req.body.billingAddress,
+      subtotal        = req.body.subtotal,
+      total           = req.body.total,
+      email           = req.body.email,
+      status          = req.body.status;
 
   Order.findById(req.params.orderId)
     .populate('user lineItems shippingAddress billingAddress')
     .then(function(order){
+      if (total && subtotal) {
+        order.subtotal = subtotal;
+        order.total = total;
+      }
+      if (email) {
+        order.email = email;
+      }
+      if (status) {
+        order.status = status;
+      }
       if (lineItems) {
         lineItems.forEach(function(lineItem) {
           var searchedLineItem = order.lineItems.filter(function(_orderlineItem) {
@@ -104,6 +130,7 @@ router.put('/:orderId', function(req, res, next) {
       return order.save();
     })
     .then(function(savedOrder) {
+      console.log(savedOrder)
       res.json(savedOrder);
     })
     .catch(console.error);
