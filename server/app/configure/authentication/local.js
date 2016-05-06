@@ -27,7 +27,6 @@ module.exports = function (app) {
 
     // middle ware for creating a cart
     app.use(function(req, res, next) {
-      console.log('whats reqsession now?', req.session.cart, 'and whats user', req.user);
       if (!req.user && !req.session.cart) {
         Cart.create({})
         .then(function(cart) {
@@ -86,6 +85,7 @@ module.exports = function (app) {
                         }
                     }
                     loggedInCart.items = combinedArr;
+                    req.session.cart = null;
                     return loggedInCart.save()
                 })
                 .then(function(finishedCart) {
