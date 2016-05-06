@@ -13,7 +13,7 @@
 
             <h3>{{product.name}}</h3>
 
-            <h4>categories: <span ng-repeat="cat in product.category">{{cat.name}} </span></h4>
+            <!-- <h4>category: {{product.category || beer}}</h4> -->
             <h4>price: {{product.price}}</h4>
             <h4>brewer: {{product.brewer}}</h4>
             <h4>style: {{product.style}}</h4>
@@ -21,7 +21,7 @@
             <h4>ratings: {{product.ratings}}</h4>
             <h4>scoreOverall: {{product.scoreOverall}}</h4>
             <h4>scoreCategory: {{product.scoreCategory}}</h4>
-            <h4>reviews: {{product.reviews}}</h4>
+            <!-- <h4>reviews: {{product.reviews}}</h4> -->
             <p>description:{{product.description}}</p>
             <add-to-cart product="product" label="Qty in Cart"></add-to-cart>
             <h5>Average User Rating<uib-rating ng-model="avgReview" read-only="true"></h5></uib-rating>

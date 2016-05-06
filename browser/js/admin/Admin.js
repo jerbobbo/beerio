@@ -7,9 +7,6 @@ app.config(function($stateProvider) {
       products: function(ProductFactory) {
         return ProductFactory.getAll();
       },
-      categories: function(CategoryFactory){
-        return CategoryFactory.getAll();
-      },
 
       isLoggedIn: function(AuthService) {
         return AuthService.isAuthenticated();
@@ -24,7 +21,7 @@ app.config(function($stateProvider) {
   })
 
   $stateProvider.state('admin.productDelete', {
-    url: '/productEdit',
+    url: '/productDelete',
     templateUrl: '/js/admin/admin.productDelete.html',
     controller: 'AdminProductCtrl'
   })
@@ -52,11 +49,9 @@ app.controller('AdminCtrl', function($scope, products, isLoggedIn, ProductFactor
 });
 
 
-app.controller('AdminProductCtrl', function($scope, $state, $uibModal, isLoggedIn, ProductFactory,categories) {
+app.controller('AdminProductCtrl', function($scope, $state, $uibModal, isLoggedIn, ProductFactory) {
 
   $scope.adminColumns=['name','available','deleted'];
-
-  $scope.categories = categories;
 
   $scope.openModal = function(id) {
     $uibModal.open({
@@ -65,10 +60,7 @@ app.controller('AdminProductCtrl', function($scope, $state, $uibModal, isLoggedI
       resolve: {
         product: function(ProductFactory) {
           return ProductFactory.getOne(id);
-         },
-        categories: function(CategoryFactory){
-          return CategoryFactory.getAll();
-        }
+         }
        }
      });
   };

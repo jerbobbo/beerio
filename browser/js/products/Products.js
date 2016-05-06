@@ -91,9 +91,8 @@ app.controller('ProductDetailCtrl', function($scope, product, reviews, CartFacto
 
 });
 
-app.controller('ProductDetailModalCtrl', function($scope, product, CartFactory, ProductFactory,$state,$uibModalInstance,categories) {
+app.controller('ProductDetailModalCtrl', function($scope, product, CartFactory, ProductFactory,$state,$uibModalInstance) {
   $scope.product = product;
-  $scope.categories=categories;
 
   $scope.editProduct = function(product){
     return ProductFactory.update(product)
@@ -102,16 +101,6 @@ app.controller('ProductDetailModalCtrl', function($scope, product, CartFactory, 
                  $uibModalInstance.dismiss('cancel');
                 $state.go('product',{id:updatedProduct._id});
             });
-  };
-
-  $scope.addCategory = function(cat){
-    $scope.product.category.push(cat);
-  };
-
-  $scope.removeCategory = function(cat){
-    var i = $scope.product.category.indexOf(cat);
-    $scope.product.category.splice(i, 1);
-
   };
 
 });
