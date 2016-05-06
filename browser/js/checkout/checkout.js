@@ -55,7 +55,7 @@ app.controller('checkOutCtrl', function($scope, $state, CheckoutFactory) {
 	}
 	
 	$scope.next = function(info, form) {
-
+		console.log(form)
 		if (info && form.$valid) {
 			currentOrder = CheckoutFactory.getOrder();
 			CheckoutFactory.saveState(info, $scope.cart, $scope.cartInfo);
@@ -123,6 +123,7 @@ app.factory('CheckoutFactory', function($http) {
 		},
 		
 		getState: function() {
+
 			return _states[_stateIdx];
 		},
 
@@ -136,7 +137,7 @@ app.factory('CheckoutFactory', function($http) {
 				postal: form.zip,
 				email: form.email
 			}
-			console.log(cartInfo)
+
 			if (lineItems && cartInfo) {
 				_updateObj.lineItems = lineItems;
 				_updateObj.subtotal = cartInfo.subtotal;
@@ -156,7 +157,9 @@ app.factory('CheckoutFactory', function($http) {
 					return order.data;
 				})
 			_states[_stateIdx].form = form;
-			
+			if (_stateIdx === 0) {
+				_states[2].form = _states[0].form
+			}
 			_stateIdx++;
 		},
 		getOrder: function() {
@@ -178,10 +181,6 @@ app.factory('CheckoutFactory', function($http) {
 			else {
 				return _order;
 			}
-		},
-		updateOrder: function(cart, info) {
-			console.log(cart, info, _stateIdx)
-			console.log(_states[_stateIdx])
 		}
 	}
 })
