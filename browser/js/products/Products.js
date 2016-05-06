@@ -41,6 +41,9 @@ app.controller('ProductCtrl', function($scope, $uibModal, products) {
       resolve: {
         product: function(ProductFactory) {
           return ProductFactory.getOne(id);
+        },
+        reviews: function(ProductFactory) {
+          return ProductFactory.getReviews(id);
         }
       }
     });
