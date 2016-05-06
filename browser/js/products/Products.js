@@ -61,8 +61,8 @@ app.controller('ProductCtrl', function($scope, $uibModal, products,categories,Ca
         product: function(ProductFactory) {
           return ProductFactory.getOne(id);
         },
-        reviews: function(ProductFactory, $stateParams) {
-        return ProductFactory.getReviews($stateParams.id);
+        reviews: function(ProductFactory) {
+          return ProductFactory.getReviews(id);
         }
       }
     });
