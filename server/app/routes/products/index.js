@@ -4,6 +4,7 @@ var Product = require('mongoose').model('Product');
 var Review = require('mongoose').model('Review');
 
 router.get('/', function(req, res, next) {
+  console.log(req.user)
   Product.find({})
     .then(function(products) {
       res.json(products);

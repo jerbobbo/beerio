@@ -32,8 +32,19 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProductCtrl', function($scope, products) {
+app.controller('ProductCtrl', function($scope, $uibModal, products) {
   $scope.products = products;
+  $scope.openModal = function(id) {
+    $uibModal.open({
+      templateUrl: 'js/products/product.detail.html',
+      controller: 'ProductDetailCtrl',
+      resolve: {
+        product: function(ProductFactory) {
+          return ProductFactory.getOne(id);
+        }
+      }
+    });
+  }
 });
 
 app.controller('ProductDetailCtrl', function($scope, product, reviews, CartFactory, ProductFactory) {

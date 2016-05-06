@@ -22,6 +22,7 @@ router.post('/', function(req, res, next) {
       .then(function(cart) {
         if (cart) return cart;
         if (!cart) return Cart.create( {user: req.user._id } );
+        return cart;
       })
       .then(function(cart) {
         _cart = cart;
@@ -47,8 +48,12 @@ router.post('/', function(req, res, next) {
     }
   });
 
-router.put('/:cartId/cartitems/:cartItemId', function(req, res, next) {
+router.put('/:cartItemId', function(req, res, next) {
   if (req.user) {
+    if (req.body.quantity < 0) {
+      throw('ERROR: No negative quantities')
+      res.sendStatus(400);
+    };
     CartItem.findById(req.params.cartItemId).populate('productId')
     .then(function(cartItem) {
       cartItem.quantity = req.body.quantity;
