@@ -4,10 +4,9 @@ app.factory('CategoryFactory', function($http) {
   var catObj = {};
 
   catObj.getAll = function() {
-    console.log('getting all cats');
+
     return $http.get('/api/categories/')
       .then(function(response) {
-        console.log(response)
         return response.data;
       });
   };

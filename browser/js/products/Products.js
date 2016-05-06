@@ -60,6 +60,9 @@ app.controller('ProductCtrl', function($scope, $uibModal, products,categories,Ca
       resolve: {
         product: function(ProductFactory) {
           return ProductFactory.getOne(id);
+        },
+        reviews: function(ProductFactory, $stateParams) {
+        return ProductFactory.getReviews($stateParams.id);
         }
       }
     });
