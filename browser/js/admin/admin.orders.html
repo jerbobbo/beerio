@@ -1,7 +1,16 @@
 
 <div class="container">
-<h3>All Orders</h3>
 
+        <div class="row">
+        <h3>Orders</h3>
+          <div class="col-md-6"
+              <div class="btn-group" role="group" aria-label="...">
+                <button ng-click="viewAll()" type="button" class="btn btn-default">All</button>
+                <button ng-click="filterOrders('cart')" type="button" class="btn btn-default">Carts</button>
+                <button ng-click="filterOrders('complete')" type="button" class="btn btn-default">Completed</button>
+              </div>
+          </div>
+        </div>
         <div class="row">
 
           <div class="col-md-12">
@@ -26,10 +35,10 @@
                     <a ng-click="openModal(product._id)" class="btn btn-default">Edit</a>
                   </td>
                   <td><button ng-click="toggleStatus(order._id,order.status)">
-                        O
+                       <span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
                       </button>
                   <td><button ng-click="cancelOrder(order._id)">
-                        X
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                       </button>
                   </td>
                 </tr>

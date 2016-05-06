@@ -64,6 +64,17 @@ app.controller('AdminOrderCtrl', function($scope,isLoggedIn,OrderFactory,orders)
   $scope.orders=orders;
   $scope.adminColumns=['_id','user','status','total'];
 
+  $scope.filterOrders= function(status){
+    return OrderFactory.getByType(status)
+            .then(function(orders){
+              $scope.orders=orders;
+            })
+  };
+
+  $scope.viewAll = function(){
+    $scope.orders=orders;
+  }
+
 });
 
 

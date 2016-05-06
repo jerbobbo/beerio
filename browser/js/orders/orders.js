@@ -43,7 +43,7 @@ app.factory('OrderFactory', function($http) {
   orderObj.fetchAll = function() {
     return $http.get('/api/orders/')
       .then(function(response) {
-        console.log(response)
+
         return response.data;
       });
   };
@@ -51,9 +51,26 @@ app.factory('OrderFactory', function($http) {
   orderObj.getAdminAll = function() {
     return $http.get('/api/orders/all')
       .then(function(response) {
-        console.log(response)
+
         return response.data;
       });
+  };
+
+  orderObj.getByType = function(status) {
+    return $http.get('/api/orders/all')
+      .then(function(response) {
+
+        return response.data;
+      })
+      .then(function(orders){
+        var filteredOrders=orders.filter(function(order){
+
+          if (order.status==status) {
+            return true;
+          }
+        })
+        return filteredOrders;
+      })
   };
 
   orderObj.fetchOne = function(orderId) {
