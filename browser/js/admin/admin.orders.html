@@ -1,0 +1,40 @@
+
+<div class="container">
+<h3>All Orders</h3>
+
+        <div class="row">
+
+          <div class="col-md-12">
+            <table class="table">
+              <thead >
+                <tr >
+                  <th ng-repeat="col in adminColumns">{{col}}</th>
+                  <th> Edit Details </th>
+                  <th> Toggle Status</th>
+                  <th> Cancel </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="order in orders">
+
+                  <!-- <td ng-repeat="col in adminColumns">{{order[col]}}</td> -->
+                  <td> {{order['_id']}}</td>
+                  <td>{{order['user'].email}}</td>
+                  <td>{{order['status']}}</td>
+                  <td>{{order['total']}}</td>
+                  <td>
+                    <a ng-click="openModal(product._id)" class="btn btn-default">Edit</a>
+                  </td>
+                  <td><button ng-click="toggleStatus(order._id,order.status)">
+                        O
+                      </button>
+                  <td><button ng-click="cancelOrder(order._id)">
+                        X
+                      </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+</div>

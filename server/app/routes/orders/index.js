@@ -11,7 +11,9 @@ router.use('/', function(req,res,next) {
     next();
   }
 });
+
 // modified this route to return all orders made by a particular user
+// this seems not RESTful?
 router.get('/', function(req, res) {
   console.log(' and then here?');
   Order.find({user: req.user._id}).populate({
@@ -21,6 +23,17 @@ router.get('/', function(req, res) {
       model: 'Product'
     }
   })
+    .then(function(orders) {
+      res.json(orders);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
+router.get('/all', function(req, res) {
+
+  Order.find().populate('user')
     .then(function(orders) {
       res.json(orders);
     })
@@ -92,10 +105,10 @@ router.put('/:orderId', function(req, res, next) {
             // it already exists so we're just updating quantity
             searchedLineItem.quantity = lineItem.quantity;
           } else {
-            // lineItem doesn't exist tso we'll create a new lineItem 
+            // lineItem doesn't exist tso we'll create a new lineItem
             // and push it into the order model
             order.lineItems.push(new LineItem(lineItem));
-          }  
+          }
         })
       }
       if (shippingAddress) {
@@ -111,7 +124,7 @@ router.put('/:orderId', function(req, res, next) {
           // we need to create a new address model to insert
           order.shippingAddress = new Address(shippingAddress);
         }
-        
+
       }
       if (billingAddress) {
         if (order.billingAddress) {
@@ -124,7 +137,7 @@ router.put('/:orderId', function(req, res, next) {
         } else {
           order.billingAddress = new Address(billingAddress);
         }
-        
+
       }
       return order.save();
     })
