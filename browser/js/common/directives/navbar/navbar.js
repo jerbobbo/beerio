@@ -26,7 +26,8 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
 
             scope.logout = function () {
                 AuthService.logout().then(function () {
-                   $state.go('home');
+                    $state.go('home');
+                    $rootScope.$broadcast('refreshCart');
                 });
             };
 

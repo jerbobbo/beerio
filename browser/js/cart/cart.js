@@ -25,7 +25,15 @@ app.controller('CartCtrl', function($scope, CartFactory, ProductFactory) {
     return CartFactory.removeItem(lineItem._id);
   };
 
-
+  $scope.$on('refreshCart', function(ev) {
+    CartFactory.fetchCart()
+      .then(function(_cart) {
+        $scope.cart = _cart;
+        $scope.cartInfo = CartFactory.getInfo();
+        $scope.isInCart = CartFactory.isInCart;    
+      })
+    
+  })
 });
 
 
