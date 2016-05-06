@@ -45,7 +45,6 @@ describe('Reviews route', function() {
       })
       .then(function(review) {
         _reviewOne = review;
-        _product.reviews.push(_reviewOne);
         return Review.create( {
           userId: _userTwo._id,
           productId: _product._id,
@@ -55,7 +54,6 @@ describe('Reviews route', function() {
       })
       .then(function(review) {
         _reviewTwo = review;
-        _product.reviews.push(_reviewTwo);
         return _product.save();
       })
       .then(function() {

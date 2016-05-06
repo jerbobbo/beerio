@@ -1,0 +1,38 @@
+.lineItem {
+    list-style-type: none;
+    padding: 0;
+}
+
+.lineItem img {
+	/* max-width: 5em; */
+	max-height: 3em;
+}
+
+/* .lineItem input {
+	width: 20px;
+} */
+
+.xs-input {
+	width: 120px !important;
+}
+
+.orange {
+	color: orange;
+}
+
+.minus {
+	border-top-left-radius:13px;
+	border-bottom-left-radius: 13px;
+	display:inline-block;
+	height: 1.3em;
+	line-height: .5em;
+
+}
+
+.plus {
+	height:1.3em;
+	line-height: .5em;
+	border-bottom-right-radius:13px;
+	border-top-right-radius: 13px;
+	display:inline-block;
+}

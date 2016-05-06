@@ -1,0 +1,26 @@
+<div class="panel panel-default">
+	<div class="text-center panel-heading"><strong>Checkout</strong></div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="progress">
+					<div class="progress-bar" role="progressbar" style="width: {{currentState.progress}}%;">
+						{{currentState.progress}}%
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<span>{{currentState.title}}</span>
+					</div>
+					<div class="panel-body">
+						<ui-view>
+						</ui-view>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
