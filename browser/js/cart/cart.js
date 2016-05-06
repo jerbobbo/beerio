@@ -23,6 +23,9 @@ app.controller('CartCtrl', function($scope, $uibModal, CartFactory, ProductFacto
       resolve: {
         product: function(ProductFactory) {
           return ProductFactory.getOne(id);
+        },
+        reviews: function(ProductFactory) {
+          return ProductFactory.getReviews(id);
         }
       }
     });
