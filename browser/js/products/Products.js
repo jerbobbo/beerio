@@ -21,14 +21,46 @@ app.config(function($stateProvider) {
     }
   });
 
+  $stateProvider.state('product.reviews', {
+    url: '/reviews',
+    templateUrl: '/js/products/product.reviews.html',
+    controller: 'ProductDetailCtrl'
+  });
+
 });
 
-app.controller('ProductCtrl', function($scope, products, CartFactory) {
+app.controller('ProductCtrl', function($scope, products) {
   $scope.products = products;
 });
 
-app.controller('ProductDetailCtrl', function($scope, product, CartFactory) {
+app.controller('ProductDetailCtrl', function($scope, product, CartFactory, ProductFactory) {
   $scope.product = product;
+  $scope.showReviewForm = false;
+  $scope.newReview = {};
+  $scope.newReview.productId = $scope.product._id;
+  $scope.reviewLimit = 3;
+
+  ProductFactory.getReviews(product._id)
+  .then(function(_reviews) {
+    $scope.reviews = _reviews;
+  });
+
+  $scope.toggleReview = function() {
+    $scope.showReviewForm = !$scope.showReviewForm;
+  };
+
+  $scope.toggleReviewLimit = function() {
+    if($scope.reviewLimit === 3) $scope.reviewLimit = $scope.reviews.length;
+    else $scope.reviewLimit = 3;
+  };
+
+  $scope.addReview = function(product, review) {
+    ProductFactory.addReview(product, review)
+    .then(function(newReview) {
+      $scope.reviews.unshift(newReview);
+      $scope.newReview = {};
+    });
+  };
 
 });
 
@@ -41,12 +73,12 @@ app.controller('ProductDetailModalCtrl', function($scope, product, CartFactory, 
                 console.log('updated product is', updatedProduct);
                  $uibModalInstance.dismiss('cancel');
                 $state.go('product',{id:updatedProduct._id});
-            })
+            });
   };
 
 });
 
-app.factory('ProductFactory', function($http, CartFactory) {
+app.factory('ProductFactory', function($http) {
   var productObj;
   var _productCache = [];
 
@@ -72,8 +104,8 @@ app.factory('ProductFactory', function($http, CartFactory) {
             method: "POST",
             data: product
       })
-        .then(function(product) {
-          return product.data;
+        .then(function(_product) {
+          return _product.data;
         });
     },
 
@@ -134,9 +166,23 @@ app.factory('ProductFactory', function($http, CartFactory) {
             method: "PUT",
             data: product
       })
-        .then(function(product) {
-          return product.data;
+        .then(function(_product) {
+          return _product.data;
         });
+    },
+
+    getReviews: function(productId) {
+      return $http.get('/api/products/' + productId + '/reviews')
+      .then(function(reviews) {
+        return reviews.data;
+      });
+    },
+
+    addReview: function(product, review) {
+      return $http.post('/api/products/' + product._id + '/reviews', review)
+      .then(function(_review) {
+        return _review.data;
+      });
     }
 
   };
