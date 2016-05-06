@@ -120,7 +120,7 @@ var seedCats= function(cats){
 
 var catReplace= function(productArray,catKeys){
     productArray.forEach(function(prod){
-        prod.category=catKV[prod.style]
+        prod.category=[catKV[prod.style]]
     })
     return productArray;
 }
