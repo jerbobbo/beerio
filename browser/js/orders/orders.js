@@ -80,6 +80,17 @@ app.factory('OrderFactory', function($http) {
       });
   };
 
+  orderObj.update = function(order) {
+      return $http({
+            url: '/api/products/' + order._id,
+            method: "PUT",
+            data: order
+      })
+        .then(function(_order) {
+          return _order.data;
+        });
+  };
+
 
   return orderObj;
 });

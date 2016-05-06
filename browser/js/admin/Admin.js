@@ -73,7 +73,21 @@ app.controller('AdminOrderCtrl', function($scope,isLoggedIn,OrderFactory,orders)
 
   $scope.viewAll = function(){
     $scope.orders=orders;
-  }
+  };
+
+  $scope.toggleStatus = function(order){
+      var _status;
+      if(!order.status){
+        return
+      } else if(order.status=='cart'){
+        _status='complete';
+      } else if( order.status=='complete'){
+        _status='cart';
+      }
+      order.status=_status;
+
+      return OrderFactory.update(order);
+  };
 
 });
 

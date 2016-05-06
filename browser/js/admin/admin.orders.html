@@ -3,6 +3,7 @@
 
         <div class="row">
         <h3>Orders</h3>
+        <p>One day we'll paginate these responses, I swear it</p>
           <div class="col-md-6"
               <div class="btn-group" role="group" aria-label="...">
                 <button ng-click="viewAll()" type="button" class="btn btn-default">All</button>
@@ -32,9 +33,9 @@
                   <td>{{order['status']}}</td>
                   <td>{{order['total']}}</td>
                   <td>
-                    <a ng-click="openModal(product._id)" class="btn btn-default">Edit</a>
+                    <a ng-click="openModal(order._id)" class="btn btn-default">Edit</a>
                   </td>
-                  <td><button ng-click="toggleStatus(order._id,order.status)">
+                  <td><button ng-click="toggleStatus(order)">
                        <span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
                       </button>
                   <td><button ng-click="cancelOrder(order._id)">
