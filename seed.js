@@ -29,6 +29,11 @@ var LineItem = mongoose.model('LineItem');
 var Converter = require("csvtojson").Converter;
 var converter = new Converter({});
 
+var supertest = require('supertest-as-promised');
+var app = require('./server/app');
+var agent = supertest(app);
+var expect = require('chai').expect;
+
 var wipeCollections = function() {
     var removeUsers = User.remove({});
     var removeProducts = Product.remove({});
@@ -167,11 +172,14 @@ var runSeed = function(productArray) {
 
     connectToDb
         .then(function() {
-            return Promise.all([wipeCollections(), seedUsers(), seedProducts(productArray)])
-        }).spread(function(wipe, users, products) {
+            return agent.get('/clearsession');
+        })
+        .then(function(resp) {
+            return Promise.all([wipeCollections(), seedUsers(), seedProducts(productArray)]);
+        })
+        .spread(function(wipe, users, products) {
             return seedOrders(users, products);
         }).then(function() {
-            console.log(chalk.green('Seed successful!'));
             process.kill(0);
         })
         .catch(function(err) {
