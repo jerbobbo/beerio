@@ -27,9 +27,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			templateUrl: 'js/checkout/review.html'
 		})
 		.state('checkout.complete', {
-			url: '/complete',
-			templateUrl: 'js/checkout/complete.html'
-		});
+		url: '/complete',
+		templateUrl: 'js/checkout/complete.html'
+		})
 	$urlRouterProvider.when('/checkout', '/checkout/address').otherwise('/checkcout/address');
 }).run(function($rootScope, $urlRouter, $location, $state) {
 	// intercept each state change
@@ -45,7 +45,7 @@ app.controller('addressCtrl', function($scope, current, order) {
 	$scope.currentState = current;
 })
 
-app.controller('checkOutCtrl', function($scope, $state, CheckoutFactory) {
+app.controller('checkOutCtrl', function($scope, $state, CheckoutFactory, CartFactory) {
 	var stateIdx = 0;
 	var currentOrder;
 	$scope.currentState = CheckoutFactory.getState();
@@ -55,7 +55,6 @@ app.controller('checkOutCtrl', function($scope, $state, CheckoutFactory) {
 	}
 	
 	$scope.next = function(info, form) {
-		console.log(form)
 		if (info && form.$valid) {
 			currentOrder = CheckoutFactory.getOrder();
 			CheckoutFactory.saveState(info, $scope.cart, $scope.cartInfo);
@@ -73,6 +72,10 @@ app.controller('checkOutCtrl', function($scope, $state, CheckoutFactory) {
 
 	$scope.placeOrder = function() {
 	 	CheckoutFactory.placeOrder()
+	 		.then(function(order) {
+	 			$scope.cart = [];
+	 			CartFactory.clear()
+	 		})
 	}
 });
 
@@ -105,16 +108,18 @@ app.factory('CheckoutFactory', function($http) {
 	var _stateIdx = 0;
 	var _order;
 	var	_updateObj = {
-		lineItems: null,
+		lineItems: [],
 		subtotal: null,
 		total: null,
 		billingAddress: null,
 		shippingAddress: null,
 		status: null
 	};
+
 	return {
 		placeOrder: function() {
 			_updateObj.status = 'complete';
+			console.log(_updateObj)
 			return $http.put('/api/orders/' + _order._id, _updateObj)
 				.then(function(order) {
 					console.log(order)
@@ -138,8 +143,15 @@ app.factory('CheckoutFactory', function($http) {
 				email: form.email
 			}
 
-			if (lineItems && cartInfo) {
-				_updateObj.lineItems = lineItems;
+			if (cartInfo !== _updateObj.cartInfo) {
+				lineItems.forEach(function(item) {
+					_updateObj.lineItems.push({
+						productId: item.productId._id,
+						quantity: item.quantity,
+						name: item.productId.name,
+						price: item.productId.price
+					});
+				});
 				_updateObj.subtotal = cartInfo.subtotal;
 				_updateObj.total = cartInfo.subtotal + 5;
 			};
@@ -147,15 +159,10 @@ app.factory('CheckoutFactory', function($http) {
 			if (_stateIdx === 0) {
 				addrObj.type = 'shipping';
 				_updateObj.shippingAddress = addrObj;
-			} else if (_stateIdx === 1) {
+			} else if (_stateIdx === 1 && !form.billingAddressNotNeeded) {
 				addrObj.type = 'billing';
 				_updateObj.billingAddress = addrObj;
 			};
-			$http.put('/api/orders/' + _order._id, _updateObj)
-				.then(function(order) {
-					_order = order.data;
-					return order.data;
-				})
 			_states[_stateIdx].form = form;
 			if (_stateIdx === 0) {
 				_states[2].form = _states[0].form
@@ -170,8 +177,8 @@ app.factory('CheckoutFactory', function($http) {
 			return _stateIdx;
 		},
 		createOrder: function() {
-			if (!_order) {
-				console.log('anything?')
+			if (!_order || _order.status === 'complete') {
+				// create a new order
 				$http.post('/api/orders')
 					.then(function(order) {
 						_order = order.data;
