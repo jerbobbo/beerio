@@ -10,7 +10,9 @@ app.config(function($stateProvider) {
       categories: function(CategoryFactory){
         return CategoryFactory.getAll();
       },
-
+      orders: function(OrderFactory){
+        return OrderFactory.getAdminAll();
+      },
       isLoggedIn: function(AuthService) {
         return AuthService.isAuthenticated();
       }
@@ -35,10 +37,16 @@ app.config(function($stateProvider) {
     controller: 'AdminProductCtrl'
   })
 
-    $stateProvider.state('admin.userAdd', {
+  $stateProvider.state('admin.userAdd', {
     url: '/userAdd',
     templateUrl: '/js/admin/admin.userAdd.html',
     controller: 'AdminUserCtrl'
+  })
+
+  $stateProvider.state('admin.orders', {
+    url: '/orders',
+    templateUrl: '/js/admin/admin.orders.html',
+    controller: 'AdminOrderCtrl'
   })
 
 })
@@ -47,6 +55,64 @@ app.controller('AdminCtrl', function($scope, products, isLoggedIn, ProductFactor
   $scope.products = products;
   console.log(isLoggedIn);
   $scope.isLoggedIn = isLoggedIn;
+
+
+});
+
+app.controller('AdminOrderCtrl', function($scope,isLoggedIn,OrderFactory,orders, $uibModal) {
+
+  $scope.orders=orders;
+  $scope.adminColumns=['_id','user','status','total'];
+
+  $scope.filterOrders= function(status){
+    return OrderFactory.getByType(status)
+            .then(function(orders){
+              $scope.orders=orders;
+            })
+  };
+
+  $scope.viewAll = function(){
+    $scope.orders=orders;
+  };
+
+  $scope.toggleStatus = function(order){
+      var _status;
+
+      if(!order.status || order.status=='cancelled'){
+        console.log('you cant uncancel an order');
+        return;
+     } else if(order.status=='cart'){
+        _status='complete';
+      } else if( order.status=='complete'){
+        _status='cart';
+      }
+      order.status=_status;
+
+      return OrderFactory.update(order);
+  };
+
+  $scope.cancelOrder = function(order){
+
+      order.status='cancelled';
+
+      return OrderFactory.update(order);
+  };
+
+  $scope.openModal = function(order) {
+    console.log(order);
+    $uibModal.open({
+      templateUrl: '/js/orders/orders.detail.html',
+      controller: 'OrderDetailCtrl',
+      resolve: {
+        order: function(OrderFactory) {
+          return OrderFactory.fetchOne(order._id);
+        },
+        isLoggedIn: function(AuthService) {
+          return AuthService.isAuthenticated();
+        }
+       }
+     })
+  };
 
 
 });

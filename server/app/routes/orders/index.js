@@ -20,6 +20,7 @@ router.use('/', function(req, res, next) {
 });
 
 // modified this route to return all orders made by a particular user
+// this seems not RESTful?
 router.get('/', function(req, res) {
   Order.find({
     user: req.user._id
@@ -30,6 +31,17 @@ router.get('/', function(req, res) {
       model: 'Product'
     }
   })
+    .then(function(orders) {
+      res.json(orders);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
+router.get('/all', function(req, res) {
+
+  Order.find().populate('user')
     .then(function(orders) {
       res.json(orders);
     })

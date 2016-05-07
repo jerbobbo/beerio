@@ -1,0 +1,51 @@
+
+<div class="container">
+
+        <div class="row">
+        <h3>Orders</h3>
+        <p>One day we'll paginate these responses, I swear it</p>
+          <div class="col-md-6"
+              <div class="btn-group" role="group" aria-label="...">
+                <button ng-click="viewAll()" type="button" class="btn btn-default">All</button>
+                <button ng-click="filterOrders('cart')" type="button" class="btn btn-default">Carts</button>
+                <button ng-click="filterOrders('complete')" type="button" class="btn btn-default">Completed</button>
+                <button ng-click="filterOrders('cancelled')" type="button" class="btn btn-default">Cancelled</button>
+              </div>
+          </div>
+        </div>
+        <div class="row">
+
+          <div class="col-md-12">
+            <table class="table">
+              <thead >
+                <tr >
+                  <th ng-repeat="col in adminColumns">{{col}}</th>
+                  <th> Edit Details </th>
+                  <th> Toggle Status</th>
+                  <th> Cancel </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="order in orders">
+
+                  <!-- <td ng-repeat="col in adminColumns">{{order[col]}}</td> -->
+                  <td>{{order['_id']}}</td>
+                  <td>{{order['user'].email}}</td>
+                  <td>{{order['status']}}</td>
+                  <td>{{order['total']}}</td>
+                  <td>
+                    <a ng-click="openModal(order)" class="btn btn-default">Edit</a>
+                  </td>
+                  <td><button ng-click="toggleStatus(order)">
+                       <span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
+                      </button>
+                  <td><button ng-click="cancelOrder(order)">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                      </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+</div>
