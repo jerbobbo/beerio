@@ -30,7 +30,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url: '/complete',
 		templateUrl: 'js/checkout/complete.html'
 		})
-	$urlRouterProvider.when('/checkout', '/checkout/address').otherwise('/checkcout/address');
+	$urlRouterProvider.when('/checkout', '/checkout/address').otherwise('/checkout/address');
 }).run(function($rootScope, $urlRouter, $location, $state) {
 	// intercept each state change
 	$rootScope.$on('$locationChangeSuccess', function(e, toState, toParams) {
@@ -109,8 +109,8 @@ app.factory('CheckoutFactory', function($http) {
 	var _order;
 	var	_updateObj = {
 		lineItems: [],
-		subtotal: null,
-		total: null,
+		subtotal: 0,
+		total: 0,
 		billingAddress: null,
 		shippingAddress: null,
 		status: null
@@ -119,16 +119,13 @@ app.factory('CheckoutFactory', function($http) {
 	return {
 		placeOrder: function() {
 			_updateObj.status = 'complete';
-			console.log(_updateObj)
 			return $http.put('/api/orders/' + _order._id, _updateObj)
 				.then(function(order) {
-					console.log(order)
 					return order.data;
 				})
 		},
 		
 		getState: function() {
-
 			return _states[_stateIdx];
 		},
 
@@ -143,7 +140,7 @@ app.factory('CheckoutFactory', function($http) {
 				email: form.email
 			}
 
-			if (cartInfo !== _updateObj.cartInfo) {
+			if (cartInfo.subtotal !== _updateObj.subtotal) {
 				lineItems.forEach(function(item) {
 					_updateObj.lineItems.push({
 						productId: item.productId._id,

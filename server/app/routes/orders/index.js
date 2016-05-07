@@ -41,17 +41,9 @@ router.get('/', function(req, res) {
 // return specific order made by user. if unauth, return 401
 router.get('/:order_id', function(req, res) {
   Order.findById(req.params.order_id)
-  // .populate({
-  //   path: 'lineItems',
-  //   populate: {
-  //     path: 'productId',
-  //     model: 'Product'
-  //   }
-  // })
-  .then(function(order) {
-    console.log('get ', order)
-    res.json(order);
-  })
+    .then(function(order) {
+      res.json(order);
+    })
     .catch(function(err) {
       res.json(err);
     });
@@ -105,10 +97,10 @@ router.put('/:orderId', function(req, res, next) {
         })
     })
     .then(function(savedOrder) {
-      // if (savedOrder.shippingAddress.email && savedOrder.status === 'complete') {
-      //   console.log('sending email.. ', savedOrder.shippingAddress.email)
-      //   sendgrid.mailTo(savedOrder.shippingAddress.email)
-      //  }
+      if (req.user.email && savedOrder.status === 'complete') {
+        console.log('sending email.. ', req.user.email)
+        sendgrid.mailTo(req.user.email)
+      }
       res.json(savedOrder);
     })
     .catch(console.error);
