@@ -81,7 +81,7 @@ app.factory('OrderFactory', function($http) {
   };
 
   orderObj.update = function(order) {
-     return $http.put('/api/orders/' + order._id, order)
+     return $http.put('/api/orders/' + order._id, {"status":order.status})
         .then(function(_order) {
           return _order.data;
         });
