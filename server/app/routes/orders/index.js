@@ -62,21 +62,6 @@ router.get('/:order_id', function(req, res) {
 });
 
 router.post('/', function(req, res, next) {
-  Order.create(req.body)
-    .then(function(order) {
-      return Order.findById(order._id)
-        .populate('user')
-        .populate('lineItems')
-        .populate('shippingAddress')
-        .populate('billingAddress');
-    })
-    .then(function(populatedOrder) {
-      res.json(populatedOrder);
-    })
-    .catch(console.error);
-});
-
-router.put('/:orderId', function(req, res, next) {
   var lineItems = req.body.lineItems,
     shippingAddress = req.body.shippingAddress,
     billingAddress = req.body.billingAddress,
@@ -85,9 +70,9 @@ router.put('/:orderId', function(req, res, next) {
     status = req.body.status;
   var updateObj = {
     lineItems: [],
-    subtotal: subtotal,
-    total: total,
-    user: req.user._id,
+    subtotal: subtotal || 0,
+    total: total || 0,
+    user: req.user,
     status: status
   };
   Promise.map(lineItems, function(item) {
@@ -100,22 +85,78 @@ router.put('/:orderId', function(req, res, next) {
       return items;
     })
     .then(function() {
-      return Order.findByIdAndUpdate(req.params.orderId, updateObj, {
-          new: true
-        })
-        .then(function(order) {
-          // console.log(order)
-          return order;
-        })
+      // create new shipping address item
+      return Address.create(shippingAddress);
     })
-    .then(function(savedOrder) {
-      if (req.user.email && savedOrder.status === 'complete') {
-        console.log('sending email.. ', req.user.email)
-        sendgrid.mailTo(req.user.email)
+    .then(function(address) {
+      // take returned shipping address, assign to updateObj
+      // console.log(address)
+      // console.log(billingAddress)
+      updateObj.shippingAddress = address;
+      if (billingAddress !== null) {
+        return Address.create(billingAddress);
       }
-      res.json(savedOrder);
+      return Address.create(shippingAddress)
+    })
+    .then(function(address) {
+      updateObj.billingAddress = address;
+      return Order.create(updateObj);
+    })
+    .then(function(populatedOrder) {
+      res.json(populatedOrder);
     })
     .catch(console.error);
+});
+
+// edit status
+router.put('/:orderId', function(req, res, next) {
+  if (req.body.status) {
+    Order.findByIdAndUpdate(req.params.orderId, req.body, {new: true})
+      .then(function(order) {
+        res.json(order)
+      })
+  } else {
+    res.sendStatus(401)
+  }
+  // var lineItems = req.body.lineItems,
+  //   shippingAddress = req.body.shippingAddress,
+  //   billingAddress = req.body.billingAddress,
+  //   subtotal = req.body.subtotal,
+  //   total = req.body.total,
+  //   status = req.body.status;
+  // var updateObj = {
+  //   lineItems: [],
+  //   subtotal: subtotal,
+  //   total: total,
+  //   user: req.user._id,
+  //   status: status
+  // };
+  // Promise.map(lineItems, function(item) {
+  //   return LineItem.create(item)
+  // })
+  //   .then(function(items) {
+  //     items.forEach(function(item) {
+  //       updateObj.lineItems.push(item._id);
+  //     });
+  //     return items;
+  //   })
+  //   .then(function() {
+  //     return Order.findByIdAndUpdate(req.params.orderId, updateObj, {
+  //         new: true
+  //       })
+  //       .then(function(order) {
+  //         // console.log(order)
+  //         return order;
+  //       })
+  //   })
+  //   .then(function(savedOrder) {
+  //     if (req.user.email && savedOrder.status === 'complete') {
+  //       console.log('sending email.. ', req.user.email)
+  //       sendgrid.mailTo(req.user.email)
+  //     }
+  //     // res.json(savedOrder);
+  //   })
+  //   .catch(console.error);
 });
 
 module.exports = router;
