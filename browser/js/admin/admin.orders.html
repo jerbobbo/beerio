@@ -9,6 +9,7 @@
                 <button ng-click="viewAll()" type="button" class="btn btn-default">All</button>
                 <button ng-click="filterOrders('cart')" type="button" class="btn btn-default">Carts</button>
                 <button ng-click="filterOrders('complete')" type="button" class="btn btn-default">Completed</button>
+                <button ng-click="filterOrders('cancelled')" type="button" class="btn btn-default">Cancelled</button>
               </div>
           </div>
         </div>
@@ -28,7 +29,7 @@
                 <tr ng-repeat="order in orders">
 
                   <!-- <td ng-repeat="col in adminColumns">{{order[col]}}</td> -->
-                  <td> {{order['_id']}}</td>
+                  <td>{{order['_id']}}</td>
                   <td>{{order['user'].email}}</td>
                   <td>{{order['status']}}</td>
                   <td>{{order['total']}}</td>
@@ -38,7 +39,7 @@
                   <td><button ng-click="toggleStatus(order)">
                        <span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
                       </button>
-                  <td><button ng-click="cancelOrder(order._id)">
+                  <td><button ng-click="cancelOrder(order)">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                       </button>
                   </td>

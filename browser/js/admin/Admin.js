@@ -77,14 +77,23 @@ app.controller('AdminOrderCtrl', function($scope,isLoggedIn,OrderFactory,orders)
 
   $scope.toggleStatus = function(order){
       var _status;
-      if(!order.status){
-        return
-      } else if(order.status=='cart'){
+
+      if(!order.status || order.status=='cancelled'){
+        console.log('you cant uncancel an order');
+        return;
+     } else if(order.status=='cart'){
         _status='complete';
       } else if( order.status=='complete'){
         _status='cart';
       }
       order.status=_status;
+
+      return OrderFactory.update(order);
+  };
+
+  $scope.cancelOrder = function(order){
+
+      order.status='cancelled';
 
       return OrderFactory.update(order);
   };

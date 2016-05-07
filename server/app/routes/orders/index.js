@@ -4,6 +4,7 @@ var Order    = require('mongoose').model('Order');
 var LineItem = require('mongoose').model('LineItem');
 var Address  = require('mongoose').model('Address');
 var _        = require('lodash');
+
 router.use('/', function(req,res,next) {
   if (!req.user) {
     res.sendStatus(401);
@@ -86,6 +87,7 @@ router.put('/:orderId', function(req, res, next) {
   Order.findById(req.params.orderId)
     .populate('user lineItems shippingAddress billingAddress')
     .then(function(order){
+
       if (total && subtotal) {
         order.subtotal = subtotal;
         order.total = total;
@@ -142,7 +144,6 @@ router.put('/:orderId', function(req, res, next) {
       return order.save();
     })
     .then(function(savedOrder) {
-      console.log(savedOrder)
       res.json(savedOrder);
     })
     .catch(console.error);
