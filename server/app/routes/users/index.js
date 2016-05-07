@@ -36,6 +36,18 @@ router.post('/', function(req, res, next) {
     }, next);
 });
 
+router.put('/:id', function(req, res) {
+  console.log(req);
+  User.findByIdAndUpdate(req.params.id,{$set:req.body})
+    .then(function(user) {
+      console.log('this is the user returned in the put route',user);
+      res.json(user);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
 
 router.delete('/:id', function(req, res, next) {
   User.findByIdAndRemove(req.params.id)

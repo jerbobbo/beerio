@@ -8,7 +8,7 @@
                 <tr>
                   <th ng-repeat="col in adminColumns">{{col}}</th>
                   <th> Edit Details </th>
-                  <th> Toggle Availability</th>
+                  <th> Toggle User Type</th>
                   <th> Soft Delete </th>
                 </tr>
               </thead>
@@ -19,10 +19,10 @@
                   <td>
                     <a ng-click="openModal(product._id)" class="btn btn-default">Edit</a>
                   </td>
-                  <td><button ng-click="toggleAvailability(product._id,product.available)">
+                  <td><button ng-click="toggleUserType(user)">
                         O
                       </button>
-                  <td><button ng-click="removeProduct(product._id)">
+                  <td><button ng-click="blockUser(user)">
                         X
                       </button>
                   </td>

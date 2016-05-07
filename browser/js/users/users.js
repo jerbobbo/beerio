@@ -26,5 +26,28 @@ app.factory('UserFactory', function($http) {
       });
   };
 
+  userObj.update = function(user){
+      return $http({
+            url: '/api/users/' + user._id,
+            method: "PUT",
+            data: user
+      })
+        .then(function(_user) {
+          return _user.data;
+        });
+    };
+
+  userObj.softDelete = function(id){
+    console.log('okokok');
+      return $http({
+            url: '/api/users/' + id,
+            method: "PUT",
+            data: {deleted:true}
+        })
+        .then(function(_user) {
+          return _user.data;
+        });
+  }
+
   return userObj;
 });

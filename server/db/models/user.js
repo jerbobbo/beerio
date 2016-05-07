@@ -27,6 +27,10 @@ var schema = new mongoose.Schema({
     },
     admin:{
         type:Boolean
+    },
+    deleted:{
+        type:Boolean,
+        default:false
     }
 });
 

@@ -75,7 +75,7 @@ app.controller('AdminUserCtrl', function($scope,$state, users, isLoggedIn, UserF
   $scope.users = users;
   console.log(isLoggedIn);
   $scope.isLoggedIn = isLoggedIn;
-  $scope.adminColumns=['email','admin'];
+  $scope.adminColumns=['email','admin','deleted'];
   $scope.select= function(type){
     $scope.userType=type;
   };
@@ -97,6 +97,27 @@ app.controller('AdminUserCtrl', function($scope,$state, users, isLoggedIn, UserF
             $scope.success=true;
             $state.go('admin.userEdit')
           });
+  };
+
+  $scope.toggleUserType= function(user){
+    var _admin;
+
+    if(!user.admin){
+      _admin=true;
+    } else if (user.admin){
+      _admin=false;
+    }
+    user.admin=_admin;
+
+    return UserFactory.update(user);
+  };
+
+  $scope.blockUser=function(user){
+    console.log('wtf?',user);
+    return UserFactory.softDelete(user.id)
+            .then(function(){
+              $state.reload();
+            })
   };
 
 });
