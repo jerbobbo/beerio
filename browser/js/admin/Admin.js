@@ -59,7 +59,7 @@ app.controller('AdminCtrl', function($scope, products, isLoggedIn, ProductFactor
 
 });
 
-app.controller('AdminOrderCtrl', function($scope,isLoggedIn,OrderFactory,orders) {
+app.controller('AdminOrderCtrl', function($scope,isLoggedIn,OrderFactory,orders, $uibModal) {
 
   $scope.orders=orders;
   $scope.adminColumns=['_id','user','status','total'];
@@ -97,6 +97,23 @@ app.controller('AdminOrderCtrl', function($scope,isLoggedIn,OrderFactory,orders)
 
       return OrderFactory.update(order);
   };
+
+  $scope.openModal = function(order) {
+    console.log(order);
+    $uibModal.open({
+      templateUrl: '/js/orders/orders.detail.html',
+      controller: 'OrderDetailCtrl',
+      resolve: {
+        order: function(OrderFactory) {
+          return OrderFactory.fetchOne(order._id);
+        },
+        isLoggedIn: function(AuthService) {
+          return AuthService.isAuthenticated();
+        }
+       }
+     })
+  };
+
 
 });
 
