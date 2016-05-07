@@ -51,7 +51,7 @@ describe('Cart Model', function () {
       })
     });
 
-    xit('expects it cart to exist with a cartItem in there', function () {
+    it('expects it cart to exist with a cartItem in there', function () {
       expect(_cart).to.exist;
       expect(_cart.items.length).to.equal(1);
     });
