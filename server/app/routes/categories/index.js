@@ -31,18 +31,10 @@ router.get('/:id/products', function(req, res, next) {
     .then(function(cat) {
       console.log(cat)
       _cat=cat;
-      return Product.find().populate('category')
-    })
-    .then(function(products){
-      var match_prods=products.filter(function(prod){
-        var isInArray = prod.category.some(function (category) {
-              return category.equals(_cat._id);
-          });
-        return isInArray;
-      })
-      return match_prods;
+      return Product.find({category:cat}).populate('category')
     })
     .then(function(matches){
+      console.log(matches);
       res.json(matches);
     })
     .catch(function(err) {
