@@ -133,34 +133,6 @@ describe('Cart routes', function(){
 
 
   });
-  // trying to write a test to log in and see if it works
-  // this test does not work right now
-  describe('Unauthenticated to Authenticated Request', function () {
-    var __cart, __loggedInAgent;
-    xit('should combine the two carts', function (done) {
-      agent.post('/api/cart/').send(_product).expect(200)
-        .then(function(res) {
-          return Cart.findOne({items: res.body._id})
-            .then(function(cart) {
-              __cart = cart;
-              return cart;
-            })
-        })
-        .then(function(res) {
-          __loggedInAgent = supertest.agent(app);
-          return __loggedInAgent.post('/login').send(userInfo);
-        })
-        .then(function(res) {
-          return __loggedInAgent.get('/api/cart').expect(200);
-        })
-        .then(function(res) {
-          expect(res.body.items.length).to.equal(__cart.items.length);
-          done()
-        })
-        .catch(done);
-    });
-
-  });
 
   describe('Authenticated Request', function() {
     var _loggedInAgent;
