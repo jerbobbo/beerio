@@ -13,18 +13,32 @@ Filter by Category:
                   </div>
  <br><br>
 	<div ng-repeat="product in products">
-		<div ng-show="!product.deleted && product.available" class="col-sm-4 panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title"><a ng-click="openModal(product._id)">{{product.name}}</a></h3>
-			</div>
-			<div class="panel-body">
-
-				Price:{{product.price}}
-
-				<br>
-				<hr>
-				<add-to-cart product="product" label="Qty in Cart"></add-to-cart>
-			</div>
+		<div ng-show="!product.deleted && product.available" class="col-lg-3 col-sm-6 productListing" >
+      <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default ">
+          <div class="panel-heading">
+            <h3 class="panel-title"><a ng-click="openModal(product._id)">{{product.name}}</a></h3>
+          </div>
+          <div class="panel-body">
+            <div class="img-cont">
+              <img src="{{product.imageUrl || 'https://placebear.com/400/300'}}"
+              class="img-responsive center-block img-max-height">
+            </div>
+            
+            <hr>
+            <div class="text-right">
+              Price: <b>${{product.price}}</b>
+            </div>
+            <hr>
+            <div class="text-right">
+              <add-to-cart product="product" label="Qty in Cart"></add-to-cart>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
 		</div>
+
 	</div>
 </div>
