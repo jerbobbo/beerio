@@ -10,7 +10,9 @@ app.config(function($stateProvider) {
       categories: function(CategoryFactory){
         return CategoryFactory.getAll();
       },
-
+      users: function(UserFactory){
+        return UserFactory.getAll();
+      },
       isLoggedIn: function(AuthService) {
         return AuthService.isAuthenticated();
       }
@@ -35,9 +37,15 @@ app.config(function($stateProvider) {
     controller: 'AdminProductCtrl'
   })
 
-    $stateProvider.state('admin.userAdd', {
+  $stateProvider.state('admin.userAdd', {
     url: '/userAdd',
     templateUrl: '/js/admin/admin.userAdd.html',
+    controller: 'AdminUserCtrl'
+  })
+
+  $stateProvider.state('admin.userEdit', {
+    url: '/userAdd',
+    templateUrl: '/js/admin/admin.userEdit.html',
     controller: 'AdminUserCtrl'
   })
 
@@ -48,6 +56,12 @@ app.controller('AdminCtrl', function($scope, products, isLoggedIn, ProductFactor
   console.log(isLoggedIn);
   $scope.isLoggedIn = isLoggedIn;
 
+});
+
+app.controller('AdminUserCtrl', function($scope, users, isLoggedIn, UserFactory) {
+  $scope.users = users;
+  console.log(isLoggedIn);
+  $scope.isLoggedIn = isLoggedIn;
 
 });
 
