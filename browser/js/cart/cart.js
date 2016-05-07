@@ -47,7 +47,6 @@ app.controller('CartCtrl', function($scope, $uibModal, CartFactory, ProductFacto
         $scope.cartInfo = CartFactory.getInfo();
         $scope.isInCart = CartFactory.isInCart;    
       })
-    
   })
 
   $scope.updateOne = function(lineItem, dir) {
@@ -69,6 +68,7 @@ app.factory('CartFactory', function($http) {
     subtotal: 0,
     numberOfItems: 0
   };
+  var _cartId = null;
 
   function _updateInfo() {
     _cartInfo.numberOfItems = 0;
@@ -107,6 +107,7 @@ app.factory('CartFactory', function($http) {
   cartObj.fetchCart = function() {
     return $http.get('/api/cart')
       .then(function(response) {
+        _cartId = response.data._id;
         angular.copy(response.data.items, _cartCache);
         _updateInfo();
         return _cartCache;
@@ -141,6 +142,17 @@ app.factory('CartFactory', function($http) {
         _updateInfo();
         return resp.data;
       });
+  };
+
+  cartObj.clear = function() {
+    return $http.delete('/api/cart/remove/' + _cartId)
+      .then(function(deleted_cart) {
+        _cartCache = [];
+        _cartInfo.subtotal = 0,
+        _cartInfo.numberOfItems = 0
+        console.log(deleted_cart);
+        return deleted_cart;
+      })
   };
 
   return cartObj;

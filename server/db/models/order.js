@@ -1,9 +1,12 @@
 'use strict';
 var mongoose = require('mongoose');
+var autopopulate = require('mongoose-autopopulate');
 
 var lineItemSchema = new mongoose.Schema({
   productId: {
-    type: mongoose.Schema.Types.ObjectId, ref: 'Product'
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product',
+    autopopulate: true
   },
   quantity: {
     type: Number,
@@ -16,20 +19,21 @@ var lineItemSchema = new mongoose.Schema({
     type: Number
   }
 });
+lineItemSchema.plugin(autopopulate);
 
 var orderSchema = new mongoose.Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId, ref: 'User'
+    type: mongoose.Schema.Types.ObjectId, ref: 'User', autopopulate: true
   },
   lineItems: [{
     type: mongoose.Schema.Types.ObjectId, ref: 'LineItem',
-    price: Number
+    price: Number, autopopulate: true
   }],
   shippingAddress: {
-    type: mongoose.Schema.Types.ObjectId, ref: 'Address'
+    type: mongoose.Schema.Types.ObjectId, ref: 'Address', autopopulate: true
   },
   billingAddress: {
-    type: mongoose.Schema.Types.ObjectId, ref: 'Address'
+    type: mongoose.Schema.Types.ObjectId, ref: 'Address', autopopulate: true
   },
   status: {
     type: String,
@@ -47,6 +51,7 @@ var orderSchema = new mongoose.Schema({
   timestamps: true
 }
 );
+orderSchema.plugin(autopopulate);
 
 orderSchema.pre('save', function(next) {
   var subtotal  = this.lineItems

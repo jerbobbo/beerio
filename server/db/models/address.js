@@ -7,7 +7,6 @@ var addressSchema = new mongoose.Schema({
   type: { type: String, enum: ['shipping', 'billing']},
   street: { type: String, required: true},
   city: {type: String, required: true},
-  email: {type: String, required: true},
   state: {
     type: String,
     enum: ['AL', 'AK', 'AR', 'AZ', 'CA', "CO", "CT", "DC", "DE", "FL", 
