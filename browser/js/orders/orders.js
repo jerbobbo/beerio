@@ -43,6 +43,7 @@ app.factory('OrderFactory', function($http) {
   orderObj.fetchAll = function() {
     return $http.get('/api/orders/')
       .then(function(response) {
+        console.log(response)
         return response.data;
       });
   };

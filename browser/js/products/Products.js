@@ -6,6 +6,9 @@ app.config(function($stateProvider) {
     resolve: {
       products: function(ProductFactory) {
         return ProductFactory.getAll();
+      },
+      categories: function(CategoryFactory){
+          return CategoryFactory.getAll();
       }
     }
   });
@@ -30,10 +33,26 @@ app.config(function($stateProvider) {
     controller: 'ProductDetailCtrl'
   });
 
+  $stateProvider.state('productsByCategory', {
+    url: '/category/:id/products',
+    templateUrl: '/js/products/products.html',
+    controller: 'ProductsCatCtrl',
+    resolve: {
+      products: function(CategoryFactory,$stateParams) {
+        return CategoryFactory.getProducts($stateParams.id)
+      },
+      categories: function(CategoryFactory){
+          return CategoryFactory.getAll();
+      }
+    }
+  });
+
 });
 
-app.controller('ProductCtrl', function($scope, $uibModal, products) {
+app.controller('ProductCtrl', function($scope, $uibModal, products,categories,CategoryFactory,ProductFactory) {
   $scope.products = products;
+  $scope.categories = categories;
+
   $scope.openModal = function(id) {
     $uibModal.open({
       templateUrl: 'js/products/product.detail.html',
@@ -48,6 +67,30 @@ app.controller('ProductCtrl', function($scope, $uibModal, products) {
       }
     });
   }
+
+});
+
+
+app.controller('ProductsCatCtrl', function($stateParams,$scope, products, categories, $uibModal,CategoryFactory,ProductFactory) {
+
+  $scope.products=products;
+  $scope.categories=categories;
+
+  $scope.openModal = function(id) {
+    $uibModal.open({
+      templateUrl: 'js/products/product.detail.html',
+      controller: 'ProductDetailCtrl',
+      resolve: {
+        product: function(ProductFactory) {
+          return ProductFactory.getOne(id);
+        },
+        reviews: function(ProductFactory) {
+          return ProductFactory.getReviews(id);
+        }
+      }
+    });
+  }
+
 });
 
 app.controller('ProductDetailCtrl', function($scope, product, reviews, CartFactory, ProductFactory) {

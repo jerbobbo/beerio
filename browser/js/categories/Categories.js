@@ -1,15 +1,12 @@
 
 
-
-
 app.factory('CategoryFactory', function($http) {
   var catObj = {};
 
   catObj.getAll = function() {
-    console.log('getting all cats');
+
     return $http.get('/api/categories/')
       .then(function(response) {
-        console.log(response)
         return response.data;
       });
   };
@@ -21,6 +18,13 @@ app.factory('CategoryFactory', function($http) {
       });
   };
 
+  catObj.getProducts = function(id){
+
+    return $http.get('/api/categories/' + id+'/products')
+      .then(function(response) {
+        return response.data;
+      });
+  }
 
   return catObj;
 });
