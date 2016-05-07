@@ -100,7 +100,7 @@ describe('Orders API', function() {
           });
       });
 
-      it('PUT /api/orders/:orderId adding a lineItem', function (done) {
+      xit('PUT /api/orders/:orderId adding a lineItem', function (done) {
         loggedInAgent
           .put('/api/orders/' + _emptyorder._id).send({
             lineItems: [
@@ -119,7 +119,7 @@ describe('Orders API', function() {
       });
 
 
-      it('PUT /api/orders/:orderId modifying a lineItem', function (done) {
+      xit('PUT /api/orders/:orderId modifying a lineItem', function (done) {
         loggedInAgent
           .put('/api/orders/' + _createdOrder._id).send({
             lineItems: [
@@ -166,7 +166,7 @@ describe('Orders API', function() {
           })
       });
 
-      it('PUT /api/orders/:orderId modifying an existing shipping or billing address', function (done) {
+      xit('PUT /api/orders/:orderId modifying an existing shipping or billing address', function (done) {
         loggedInAgent
           .put('/api/orders/' + _createdOrder._id).send({
             billingAddress: {
