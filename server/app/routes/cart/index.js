@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
   } else {
     Cart.findById(req.session.cart._id).populate('productId')
       .then(function(cart) {
-        res.json(cart);    
+        res.json(cart);
       });
   }
 });
