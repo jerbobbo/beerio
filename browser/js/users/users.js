@@ -1,8 +1,9 @@
 app.factory('UserFactory', function($http) {
-  var catObj = {};
+  var userObj = {};
 
-  catObj.getAll = function() {
+  userObj.getAll = function() {
     console.log('getting all cats');
+
     return $http.get('/api/users/')
       .then(function(response) {
         console.log(response)
@@ -10,13 +11,20 @@ app.factory('UserFactory', function($http) {
       });
   };
 
-  catObj.getOne = function(id) {
-    return $http.get('/api/user/' + id)
+  userObj.getOne = function(id) {
+    return $http.get('/api/users/' + id)
       .then(function(response) {
         return response.data;
       });
   };
 
+  userObj.add = function(user){
+    return $http.post('api/users', user)
+      .then(function(response){
+        console.log(response);
+        return response.data;
+      });
+  };
 
-  return catObj;
+  return userObj;
 });

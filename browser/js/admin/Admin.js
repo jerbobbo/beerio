@@ -44,24 +44,51 @@ app.config(function($stateProvider) {
   })
 
   $stateProvider.state('admin.userEdit', {
-    url: '/userAdd',
+    url: '/userEdit',
     templateUrl: '/js/admin/admin.userEdit.html',
     controller: 'AdminUserCtrl'
   })
 
 })
 
-app.controller('AdminCtrl', function($scope, products, isLoggedIn, ProductFactory) {
+app.controller('AdminCtrl', function($scope, products, users, isLoggedIn, ProductFactory) {
   $scope.products = products;
   console.log(isLoggedIn);
   $scope.isLoggedIn = isLoggedIn;
 
+  $scope.users=users;
+
+
+
 });
 
-app.controller('AdminUserCtrl', function($scope, users, isLoggedIn, UserFactory) {
+app.controller('AdminUserCtrl', function($scope,$state, users, isLoggedIn, UserFactory) {
   $scope.users = users;
   console.log(isLoggedIn);
   $scope.isLoggedIn = isLoggedIn;
+  $scope.adminColumns=['email','admin'];
+  $scope.select= function(type){
+    $scope.userType=type;
+  };
+
+  $scope.addUser= function(){
+    var _admin=false;
+    if($scope.userType=='Admin'){
+      _admin=true;
+    }
+
+    return UserFactory.add({
+            email:$scope.email,
+            password:$scope.password,
+            admin:_admin
+          })
+          .then(function(newUser){
+            $scope.newUser=newUser;
+            $scope.users.push(newUser);
+            $scope.success=true;
+            $state.go('admin.userEdit')
+          });
+  };
 
 });
 
@@ -119,6 +146,10 @@ app.controller('AdminProductCtrl', function($scope, $state, $uibModal, isLoggedI
             })
   };
 
-
-
 });
+
+
+
+
+
+

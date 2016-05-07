@@ -1,5 +1,5 @@
 'use strict';
-window.app = angular.module('FullstackGeneratedApp', ['fsaPreBuilt', 'ui.router', 'ui.bootstrap', 'ngAnimate']);
+window.app = angular.module('FullstackGeneratedApp', ['fsaPreBuilt', 'ui.router', 'ui.bootstrap', 'ngAnimate','ngMaterial','ngAria']);
 
 app.config(function ($urlRouterProvider, $locationProvider) {
     if (typeof TEST_MODE === 'undefined') {

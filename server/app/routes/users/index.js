@@ -15,9 +15,9 @@ router.get('/', function(req, res, next) {
 
 router.get('/:id', function(req, res, next) {
   User.findById(req.params.id)
-    .then(function(cat) {
-      console.log('cat: ', cat);
-      res.json(cat);
+    .then(function(user) {
+      console.log('user: ', user);
+      res.json(user);
     })
     .catch(function(err) {
       res.send(404).send(err);
@@ -25,9 +25,11 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
+  console.log(req.body);
   User.create(req.body)
-    .then(function(cat) {
-      res.json(cat);
+    .then(function(data) {
+      console.log(data)
+      res.json(data);
     })
     .catch(function(err) {
       res.json(err);
