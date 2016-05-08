@@ -35,12 +35,13 @@ describe('Address Model', function () {
         postal: '10019'
       })
       .then(function(address) {
+        console.log(address)
         _address = address;
-        done();
       })
+      done();
     });
 
-    it('the fake address was created', function () {
+    it('the fake address was created', function (done) {
       expect(_address).to.exist;
     });
   });

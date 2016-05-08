@@ -68,7 +68,7 @@ module.exports = function (app) {
                     }
                     var combinedArr = [];
                     for (var i = 0; i < loggedInCart.items.length; i++) {
-                        for (var i = 0; i < req.session.cart.items.length; i++) {
+                        for (var j = 0; j < req.session.cart.items.length; j++) {
                             if (loggedInCart.items[i]._id === req.session.cart.items[j]._id) {
                                 // take the greater of the two quantities
                                 if (loggedInCart.items[i].quantity > req.session.cart.items[j].quantity) {

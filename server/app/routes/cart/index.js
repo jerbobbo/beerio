@@ -7,13 +7,14 @@ router.get('/', function(req, res, next) {
   if (req.user) {
     Cart.findOne( {user: req.user._id} )
     .then(function(cart) {
+      console.log(cart)
       res.send(cart);
     })
     .catch(res.json);
   } else {
     Cart.findById(req.session.cart._id).populate('productId')
       .then(function(cart) {
-        res.json(cart);    
+        res.json(cart);
       });
   }
 });
@@ -21,14 +22,16 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   if (req.user) {
     var _item, _cart;
-    Cart.findOne({ user: req.user._id })
+    Cart.findOne({ user: req.user._id})
       .then(function(cart) {
+        console.log('found cart', cart)
         if (cart) return cart;
-        if (!cart) return Cart.create( {user: req.user._id } );
+        if (!cart) return Cart.create( {user: req.user._id, status: 'cart' } );
         return cart;
       })
       .then(function(cart) {
         _cart = cart;
+        console.log(cart)
         return CartItem.create({
           productId: req.body._id,
           quantity: req.body.quantity
@@ -115,6 +118,18 @@ router.delete('/:cartItemId', function(req, res, next) {
       res.send(cartItem);
     })
     .catch(res.json);
+  } else {
+    res.sendStatus(401);
+  }
+});
+
+router.delete('/remove/:cartId', function(req, res, next) {
+  if (req.user) {
+    Cart.findByIdAndRemove(req.params.cartId)
+      .then(function(removed_cart) {
+        res.json(removed_cart)
+      })
+      .catch(res.json);
   } else {
     res.sendStatus(401);
   }
