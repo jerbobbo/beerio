@@ -17,7 +17,7 @@
     // for important events about authentication flow.
     app.constant('AUTH_EVENTS', {
         loginSuccess: 'auth-login-success',
-        needsPassReset:'auth-needs-pass-reset',
+        //needsPassReset:'auth-needs-pass-reset',
         loginFailed: 'auth-login-failed',
         logoutSuccess: 'auth-logout-success',
         sessionTimeout: 'auth-session-timeout',
