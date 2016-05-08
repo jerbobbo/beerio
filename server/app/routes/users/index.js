@@ -16,7 +16,6 @@ router.get('/', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
   User.findById(req.params.id)
     .then(function(user) {
-      console.log('user: ', user);
       res.json(user);
     })
     .catch(function(err) {
@@ -25,10 +24,8 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  console.log(req.body);
   User.create(req.body)
     .then(function(data) {
-      console.log(data)
       res.json(data);
     })
     .catch(function(err) {
@@ -37,10 +34,8 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res) {
-  console.log(req);
   User.findByIdAndUpdate(req.params.id,{$set:req.body})
     .then(function(user) {
-      console.log('this is the user returned in the put route',user);
       res.json(user);
     })
     .catch(function(err) {

@@ -95,8 +95,9 @@
         this.login = function (credentials) {
             return $http.post('/login', credentials)
                 .then(onSuccessfulLogin)
-                .catch(function () {
-                    return $q.reject({ message: 'Invalid login credentials.' });
+                .catch(function (err) {
+                    console.log(err);
+                    return $q.reject({ message: err.data });
                 });
         };
 

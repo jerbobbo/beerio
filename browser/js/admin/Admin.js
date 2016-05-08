@@ -113,8 +113,7 @@ app.controller('AdminUserCtrl', function($scope,$state, users, isLoggedIn, UserF
   };
 
   $scope.blockUser=function(user){
-    console.log('wtf?',user);
-    return UserFactory.softDelete(user.id)
+    return UserFactory.softDelete(user._id)
             .then(function(){
               $state.reload();
             })

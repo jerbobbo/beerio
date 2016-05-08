@@ -2,11 +2,11 @@ app.factory('UserFactory', function($http) {
   var userObj = {};
 
   userObj.getAll = function() {
-    console.log('getting all cats');
+    // console.log('getting all cats');
 
     return $http.get('/api/users/')
       .then(function(response) {
-        console.log(response)
+        // console.log(response)
         return response.data;
       });
   };
@@ -38,13 +38,15 @@ app.factory('UserFactory', function($http) {
     };
 
   userObj.softDelete = function(id){
+    console.log(id);
     console.log('okokok');
       return $http({
             url: '/api/users/' + id,
             method: "PUT",
-            data: {deleted:true}
+            data: {"deleted":"true"}
         })
         .then(function(_user) {
+          console.log('user returned', _user)
           return _user.data;
         });
   }

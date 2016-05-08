@@ -14,6 +14,7 @@ module.exports = function (app) {
     var strategyFn = function (email, password, done) {
         User.findOne({ email: email })
             .then(function (user) {
+                console.log('this is the user logging in', user);
                 // user.correctPassword is a method from the User schema.
                 if (!user || !user.correctPassword(password)) {
                     done(null, false);
@@ -33,7 +34,7 @@ module.exports = function (app) {
           req.session.cart = cart;
           next();
         });
-        
+
       } else {
         next();
       }
@@ -49,6 +50,12 @@ module.exports = function (app) {
 
             if (!user) {
                 var error = new Error('Invalid login credentials.');
+                error.status = 401;
+                return next(error);
+            }
+
+            if(user.deleted){
+                var error = new Error('User has been deactiveated. Please contact your administrator.');
                 error.status = 401;
                 return next(error);
             }
