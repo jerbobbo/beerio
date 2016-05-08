@@ -18,13 +18,13 @@ describe('products route', function() {
     clearDB(done);
   });
 
-  xit('responds with 404 if route does not exist on api/products', function(done) {
+  it('responds with 404 if route does not exist on api/products', function(done) {
     agent
       .get('/api/products/kljasd')
       .expect(404, done);
   });
 
-  xit('responds with 200 and an array when retriving api/products', function(done) {
+  it('responds with 200 and an array when retriving api/products', function(done) {
     agent
       .get('/api/products')
       .expect(200).end(function(err, resp) {

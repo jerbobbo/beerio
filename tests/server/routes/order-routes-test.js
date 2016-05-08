@@ -48,12 +48,12 @@ describe('Orders API', function() {
           // console.log(product)
           _product = product;
           _address = {
-            type: 'shipping',
-            street: '500 9th ave',
-            city: 'new york',
-            state: 'NY',
-            country: 'USA',
-            postal: '10019'
+              type: 'shipping',
+              street: '500 9th ave',
+              city: 'new york',
+              state: 'NY',
+              country: 'USA',
+              postal: '10019'
           };
           _lineItem = {
             price: _product.price,
@@ -119,7 +119,7 @@ describe('Orders API', function() {
           })
       });
 
-
+      // disabled below tests, no need to change anything but status once an order is placed
       xit('PUT /api/orders/:orderId modifying a lineItem', function(done) {
         loggedInAgent
           .put('/api/orders/' + _createdOrder._id).send({

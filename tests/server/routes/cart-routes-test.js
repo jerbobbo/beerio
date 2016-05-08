@@ -83,7 +83,7 @@ describe('Cart routes', function(){
 
   describe('Unauthenticated Request Temporary Cart', function() {
 
-    xit('will return a cart cart', function(done){
+    it('will return a cart cart', function(done){
       agent
         .get('/api/cart')
         .expect(200)
@@ -94,7 +94,7 @@ describe('Cart routes', function(){
         });
     });
 
-    xit('should have one item in the cart', function (done) {
+    it('should have one item in the cart', function (done) {
       agent.get('/api/cart/')
         .expect(200)
         .end(function (err, response) {
@@ -105,7 +105,7 @@ describe('Cart routes', function(){
         });
     });
 
-    xit('able to add an item into the cart', function (done) {
+    it('able to add an item into the cart', function (done) {
       agent.post('/api/cart/')
         .send(_product)
         .expect(200)
@@ -116,11 +116,10 @@ describe('Cart routes', function(){
         });
     });
 
-    xit('should increment a quanitity that already exists in the cart', function (done) {
-      agent.put('/api/cart/' )
+    it('should increment a quanitity that already exists in the cart', function (done) {
+      agent.put('/api/cart/' + _cartItem._id )
         .send({
-          quantity: 3,
-          cartItemId: _cartItem._id 
+          quantity: 3
         })
         .expect(200)
         .end(function (err, response) {
@@ -133,7 +132,7 @@ describe('Cart routes', function(){
 
 
   });
-  // trying to write a test to log in and see if xit works
+  // trying to write a test to log in and see if it works
   // this test does not work right now
   describe('Unauthenticated to Authenticated Request', function () {
     var __cart, __loggedInAgent;
@@ -143,6 +142,7 @@ describe('Cart routes', function(){
           return Cart.findOne({items: res.body._id})
             .then(function(cart) {
               __cart = cart;
+              console.log(cart)
               return cart;
             })
         })
@@ -154,6 +154,7 @@ describe('Cart routes', function(){
           return __loggedInAgent.get('/api/cart').expect(200);
         })
         .then(function(res) {
+          console.log(res.body)
           expect(res.body.items.length).to.equal(__cart.items.length);
           done()
         })
@@ -176,7 +177,7 @@ describe('Cart routes', function(){
         });
     });
 
-    xit('should have one item in the cart', function (done) {
+    it('should have one item in the cart', function (done) {
       _loggedInAgent.get('/api/cart/')
         .expect(200)
         .end(function (err, response) {
@@ -187,7 +188,7 @@ describe('Cart routes', function(){
     });
 
 
-    xit('should add a Budweiser when POST route called with product ID', function (done) {
+    it('should add a Budweiser when POST route called with product ID', function (done) {
       _loggedInAgent.post('/api/cart/')
         .send(_product)
         .expect(200)
@@ -198,11 +199,10 @@ describe('Cart routes', function(){
         });
     });
 
-    xit('should increment a quanitity when POST route called a product that already exists in the cart', function (done) {
-      _loggedInAgent.put('/api/cart/')
+    it('should increment a quanitity when POST route called a product that already exists in the cart', function (done) {
+      _loggedInAgent.put('/api/cart/' + _cartItem._id )
         .send({
-          quantity: 3,
-          cartItemId: _cartItem._id 
+          quantity: 3
         })
         .expect(200)
         .end(function (err, response) {

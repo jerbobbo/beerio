@@ -5,12 +5,13 @@ var CartItem = require('mongoose').model('CartItem');
 
 router.get('/', function(req, res, next) {
   if (req.user) {
-    Cart.findOne( {user: req.user._id} )
-    .then(function(cart) {
-      console.log(cart)
-      res.send(cart);
+    Cart.findOne({
+      user: req.user._id
     })
-    .catch(res.json);
+      .then(function(cart) {
+        res.json(cart);
+      })
+      .catch(res.json);
   } else {
     Cart.findById(req.session.cart._id).populate('productId')
       .then(function(cart) {
@@ -22,16 +23,17 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   if (req.user) {
     var _item, _cart;
-    Cart.findOne({ user: req.user._id})
+    Cart.findOne({
+      user: req.user._id
+    })
       .then(function(cart) {
-        console.log('found cart', cart)
         if (cart) return cart;
-        if (!cart) return Cart.create( {user: req.user._id, status: 'cart' } );
-        return cart;
+        if (!cart) return Cart.create({
+          user: req.user._id
+        });
       })
       .then(function(cart) {
         _cart = cart;
-        console.log(cart)
         return CartItem.create({
           productId: req.body._id,
           quantity: req.body.quantity
@@ -75,52 +77,37 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:cartItemId', function(req, res, next) {
-  if (req.user) {
-    if (req.body.quantity < 0) {
-      throw('ERROR: No negative quantities')
-      res.sendStatus(400);
+  // exit early if quantity is negative
+  // if user exists
+  if (req.user || req.session.cart) {
+    if (req.body.quantity < 0 || req.body.quantity === 0) {
+      CartItem.remove({
+        _id: req.params.cartItemId
+      })
+        .then(function(cartItem) {
+          res.send(cartItem);
+        }, next)
+        .catch(res.json);
     };
     CartItem.findById(req.params.cartItemId).populate('productId')
-    .then(function(cartItem) {
-      cartItem.quantity = req.body.quantity;
-      return cartItem.save();
-    })
-    .then(function(cartItem) {
-      res.json(cartItem);
-    }, next)
-  } else {
-    var _cart, _cartItem;
-    Cart.findById(req.session.cart._id)
-    .then(function(cart) {
-      _cart = cart;
-      return CartItem.findById(req.body.cartItemId).populate('productId');
-    })
-    .then(function(cartItem) {
-      _cartItem = cartItem;
-      cartItem.quantity = req.body.quantity;
-      return cartItem.save();
-    })
-    .then(function(cartItem) {
-      _cart.items.push(cartItem);
-      req.session.cart = _cart;
-      return _cart.save();
-    })
-    .then(function(cart) {
-      res.json(_cartItem);
-    }, next)
+      .then(function(cartItem) {
+        cartItem.quantity = req.body.quantity;
+        return cartItem.save();
+      })
+      .then(function(cartItem) {
+        res.json(cartItem);
+      }, next)
   }
 });
 
 router.delete('/:cartItemId', function(req, res, next) {
-  if (req.user) {
-    CartItem.remove( {_id: req.params.cartItemId} )
+  CartItem.remove({
+    _id: req.params.cartItemId
+  })
     .then(function(cartItem) {
       res.send(cartItem);
     })
     .catch(res.json);
-  } else {
-    res.sendStatus(401);
-  }
 });
 
 router.delete('/remove/:cartId', function(req, res, next) {
