@@ -75,7 +75,7 @@ app.controller('AdminUserCtrl', function($scope,$state, users, isLoggedIn, UserF
   $scope.users = users;
   console.log(isLoggedIn);
   $scope.isLoggedIn = isLoggedIn;
-  $scope.adminColumns=['email','admin','deleted'];
+  $scope.adminColumns=['email','resetpass','admin','deleted'];
   $scope.select= function(type){
     $scope.userType=type;
   };
@@ -114,6 +114,13 @@ app.controller('AdminUserCtrl', function($scope,$state, users, isLoggedIn, UserF
 
   $scope.blockUser=function(user){
     return UserFactory.softDelete(user._id)
+            .then(function(){
+              $state.reload();
+            })
+  };
+
+  $scope.passReset=function(user){
+    return UserFactory.passReset(user._id)
             .then(function(){
               $state.reload();
             })

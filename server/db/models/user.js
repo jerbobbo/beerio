@@ -31,6 +31,10 @@ var schema = new mongoose.Schema({
     deleted:{
         type:Boolean,
         default:false
+    },
+    resetpass:{
+        type:Boolean,
+        default:false
     }
 });
 

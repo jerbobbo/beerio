@@ -38,8 +38,6 @@ app.factory('UserFactory', function($http) {
     };
 
   userObj.softDelete = function(id){
-    console.log(id);
-    console.log('okokok');
       return $http({
             url: '/api/users/' + id,
             method: "PUT",
@@ -49,7 +47,19 @@ app.factory('UserFactory', function($http) {
           console.log('user returned', _user)
           return _user.data;
         });
-  }
+  };
+
+  userObj.passReset = function(id){
+      return $http({
+            url: '/api/users/' + id,
+            method: "PUT",
+            data: {"resetpass":"true"}
+        })
+        .then(function(_user) {
+          console.log('user returned', _user)
+          return _user.data;
+        });
+  };
 
   return userObj;
 });

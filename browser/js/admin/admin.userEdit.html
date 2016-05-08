@@ -7,7 +7,7 @@
               <thead>
                 <tr>
                   <th ng-repeat="col in adminColumns">{{col}}</th>
-                  <th> Edit Details </th>
+                  <th> Pass Reset </th>
                   <th> Toggle User Type</th>
                   <th> Soft Delete </th>
                 </tr>
@@ -16,12 +16,14 @@
                 <tr ng-repeat="user in users">
 
                   <td ng-repeat="col in adminColumns">{{user[col]}}</td>
-                  <td>
-                    <a ng-click="openModal(product._id)" class="btn btn-default">Edit</a>
+                  <td><button ng-click="passReset(user)">
+                        O
+                      </button>
                   </td>
                   <td><button ng-click="toggleUserType(user)">
                         O
                       </button>
+                  </td>
                   <td><button ng-click="blockUser(user)">
                         X
                       </button>
