@@ -2,8 +2,19 @@
 
   <button ng-show="getLineItem(product._id) === null" type="button" class="btn btn-primary" ng-click="addToCart(product)">Add to cart</button>
   <div ng-show="getLineItem(product._id) !== null">
-  	<span>{{ label }}: <input ng-model="getLineItem(product._id).quantity"></input></span>
-  	<button type="button" ng-click="updateQty(getLineItem(product._id)._id, getLineItem(product._id).quantity)" class="btn btn-primary">update</button>
-  	<button type="button" class="btn btn-danger" ng-click="removeItem(getLineItem(product._id)._id)">remove</button>
+  	<div class="row getLineItemInput">
+      <div class="col-lg-1">&nbsp;</div>
+      <div class="col-lg-5">
+        {{ label }}:  
+      </div>
+      <div class="col-lg-4">
+       <input class="text-right" ng-model="getLineItem(product._id).quantity"></input>
+      </div>
+    </div>
+
+    <div class="button-cont">
+    	<button type="button" ng-click="updateQty(getLineItem(product._id)._id, getLineItem(product._id).quantity)" class="btn btn-primary">update</button>
+    	<button type="button" class="btn btn-danger" ng-click="removeItem(getLineItem(product._id)._id)">remove</button>
+    </div>
   </div>
 </div>
