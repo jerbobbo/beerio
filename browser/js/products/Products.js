@@ -39,7 +39,7 @@ app.config(function($stateProvider) {
     controller: 'ProductsCatCtrl',
     resolve: {
       products: function(CategoryFactory,$stateParams) {
-        return CategoryFactory.getProducts($stateParams.id)
+        return CategoryFactory.getProducts($stateParams.id);
       },
       categories: function(CategoryFactory){
           return CategoryFactory.getAll();
@@ -49,10 +49,11 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProductCtrl', function($scope, $uibModal, products,categories,CategoryFactory,ProductFactory) {
-  console.log(products)
+
+app.controller('ProductCtrl', function($scope, $uibModal, products,categories,CategoryFactory,ProductFactory,$state) {
   $scope.products = products;
   $scope.categories = categories;
+  $scope.state = $state;
 
   $scope.openModal = function(id) {
     $uibModal.open({
@@ -67,7 +68,7 @@ app.controller('ProductCtrl', function($scope, $uibModal, products,categories,Ca
         }
       }
     });
-  }
+  };
 
 });
 

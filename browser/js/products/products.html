@@ -1,20 +1,18 @@
 <div class="container">
-Filter by Category:
 
-<div class="btn-group" uib-dropdown is-open="status.isopen">
-                    <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
-                      Select Category <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                    	<li><a ui-sref="products">All</a></li>
-                      <li ng-repeat='cat in categories'role="menuitem"><a ui-sref="productsByCategory({id:cat._id})">{{cat.name}}</a></li>
+<div class="row">
+  <div ng-hide="state.current.name === 'home'" id="categoryFilter" class="col-sm-2">
+    Filter by Category:
+      <ul class="list-group" aria-labelledby="single-button">
+      	<li class="list-group-item" ui-sref-active="active"><a ui-sref="products">All</a></li>
+        <li class="list-group-item" ui-sref-active="active" ng-repeat='cat in categories'role="menuitem"><a ui-sref="productsByCategory({id:cat._id})">{{cat.name}}</a></li>
+      </ul>
+  </div>
 
-                    </ul>
-                  </div>
- <br><br>
-	<div ng-repeat="product in products">
+<div class="col-sm-10">
+  <div ng-repeat="product in products">
     <div ng-if="$index % 4 == 0" class="clearfix"></div>
-		<div ng-show="!product.deleted && product.available" class="col-lg-3 col-sm-6 productListing" >
+    <div ng-show="!product.deleted && product.available" class="col-lg-3 col-sm-6 productListing" >
       <div class="row">
       <div class="col-sm-12">
         <div class="panel panel-default">
@@ -23,10 +21,10 @@ Filter by Category:
           </div>
           <div class="panel-body">
             <div class="img-cont">
-              <img src="{{product.imageUrl || 'https://placebear.com/400/300'}}"
-              class="img-responsive center-block img-max-height">
+              <a ng-click="openModal(product._id)"><img src="{{product.imageUrl || 'https://placebear.com/400/300'}}"
+              class="img-responsive center-block img-max-height"></a>
             </div>
-            
+
             <hr>
             <div class="text-center">
               Price: <b>${{product.price}}</b>
@@ -39,7 +37,11 @@ Filter by Category:
         </div>
       </div>
       </div>
-		</div>
+    </div>
 
-	</div>
+  </div>
+</div>
+</div>
+
+
 </div>
