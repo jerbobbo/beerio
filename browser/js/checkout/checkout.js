@@ -13,9 +13,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				current: function(CheckoutFactory) {
 					return CheckoutFactory.getState();
 				},
-				order: function(CheckoutFactory) {
-					return CheckoutFactory.createOrder();
-				}
+				// order: function(CheckoutFactory) {
+				// 	return CheckoutFactory.createOrder();
+				// }
 			}
 		})
 		.state('checkout.payment', {
@@ -41,7 +41,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	});
 });
 
-app.controller('addressCtrl', function($scope, current, order) {
+app.controller('addressCtrl', function($scope, current) {
 	$scope.currentState = current;
 })
 
@@ -119,8 +119,9 @@ app.factory('CheckoutFactory', function($http) {
 	return {
 		placeOrder: function() {
 			_updateObj.status = 'complete';
-			return $http.put('/api/orders/' + _order._id, _updateObj)
+			return $http.post('/api/orders/', _updateObj)
 				.then(function(order) {
+					console.log(order)
 					return order.data;
 				})
 		},

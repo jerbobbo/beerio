@@ -117,10 +117,9 @@ describe('Cart routes', function(){
     });
 
     it('should increment a quanitity that already exists in the cart', function (done) {
-      agent.put('/api/cart/' )
+      agent.put('/api/cart/' + _cartItem._id )
         .send({
-          quantity: 3,
-          cartItemId: _cartItem._id 
+          quantity: 3
         })
         .expect(200)
         .end(function (err, response) {
@@ -137,12 +136,13 @@ describe('Cart routes', function(){
   // this test does not work right now
   describe('Unauthenticated to Authenticated Request', function () {
     var __cart, __loggedInAgent;
-    xit('should combine the two carts', function (done) {
+    it('should combine the two carts', function (done) {
       agent.post('/api/cart/').send(_product).expect(200)
         .then(function(res) {
           return Cart.findOne({items: res.body._id})
             .then(function(cart) {
               __cart = cart;
+              console.log(cart)
               return cart;
             })
         })
@@ -154,6 +154,7 @@ describe('Cart routes', function(){
           return __loggedInAgent.get('/api/cart').expect(200);
         })
         .then(function(res) {
+          console.log(res.body)
           expect(res.body.items.length).to.equal(__cart.items.length);
           done()
         })
@@ -181,7 +182,7 @@ describe('Cart routes', function(){
         .expect(200)
         .end(function (err, response) {
           if (err) return done(err);
-          expect(response.body.items.length).to.equal(0);
+          expect(response.body.items.length).to.equal(1);
           done();
         });
     });
@@ -199,10 +200,9 @@ describe('Cart routes', function(){
     });
 
     it('should increment a quanitity when POST route called a product that already exists in the cart', function (done) {
-      _loggedInAgent.put('/api/cart/')
+      _loggedInAgent.put('/api/cart/' + _cartItem._id )
         .send({
-          quantity: 3,
-          cartItemId: _cartItem._id 
+          quantity: 3
         })
         .expect(200)
         .end(function (err, response) {

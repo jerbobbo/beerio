@@ -39,7 +39,7 @@ app.config(function($stateProvider) {
     controller: 'ProductsCatCtrl',
     resolve: {
       products: function(CategoryFactory,$stateParams) {
-        return CategoryFactory.getProducts($stateParams.id)
+        return CategoryFactory.getProducts($stateParams.id);
       },
       categories: function(CategoryFactory){
           return CategoryFactory.getAll();
@@ -49,10 +49,21 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProductCtrl', function($scope, $uibModal, products,categories,CategoryFactory,ProductFactory) {
+
+app.controller('ProductCtrl', function($scope, $uibModal, $filter, $state, products,categories,CategoryFactory,ProductFactory) {
   $scope.products = products;
   $scope.categories = categories;
-
+  $scope.state = $state;
+  $scope.searchProduct = '';
+  
+  $scope.searchFor = function(input) {
+    $scope.$watch(function () {
+      return $scope.input;
+    }, function () {
+      $scope.filteredProducts = $filter('filter')($scope.products, $scope.searchValue);
+    });
+  };
+  
   $scope.openModal = function(id) {
     $uibModal.open({
       templateUrl: 'js/products/product.detail.html',
@@ -66,10 +77,9 @@ app.controller('ProductCtrl', function($scope, $uibModal, products,categories,Ca
         }
       }
     });
-  }
+  };
 
 });
-
 
 app.controller('ProductsCatCtrl', function($stateParams,$scope, products, categories, $uibModal,CategoryFactory,ProductFactory) {
 

@@ -23,7 +23,7 @@ lineItemSchema.plugin(autopopulate);
 
 var orderSchema = new mongoose.Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId, ref: 'User', autopopulate: true
+    type: mongoose.Schema.Types.ObjectId, ref: 'User'
   },
   lineItems: [{
     type: mongoose.Schema.Types.ObjectId, ref: 'LineItem',
