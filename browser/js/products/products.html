@@ -16,7 +16,7 @@ Filter by Category:
 		<div ng-show="!product.deleted && product.available" class="col-lg-3 col-sm-6 productListing" >
       <div class="row">
       <div class="col-sm-12">
-        <div class="panel panel-default ">
+        <div class="panel panel-default" ng-class="getLineItem(product._id) === null ? '' : 'addedToCart'">
           <div class="panel-heading">
             <h3 class="panel-title"><a ng-click="openModal(product._id)">{{product.name}}</a></h3>
           </div>
