@@ -1,5 +1,20 @@
 <div class="container">
+<div class="row">
+  <div class="col-xs-12">
+    <div class="col-sm-offset-2"></div>
+    <div class="col-xs-offset-2 col-xs-8">
+        <div class="input-group">
+            <input type="text" ng-change="searchFor(search)" ng-model="searchProduct" class="form-control" placeholder="Search for...">
+            <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Search</button>
+                        </span>
+        </div>
 
+    </div>
+    <div class="col-sm-offset-2"></div>
+</div>
+</div>
+<hr>
 <div class="row">
   <div ng-hide="state.current.name === 'home'" id="categoryFilter" class="col-sm-2">
     Filter by Category:
@@ -10,7 +25,7 @@
   </div>
 
 <div class="col-sm-10">
-  <div ng-repeat="product in products">
+  <div ng-repeat="product in products | filter:searchProduct">
     <div ng-if="$index % 4 == 0" class="clearfix"></div>
     <div ng-show="!product.deleted && product.available" class="col-lg-3 col-sm-6 productListing" >
       <div class="row">
