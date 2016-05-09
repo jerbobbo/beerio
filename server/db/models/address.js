@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var addressSchema = new mongoose.Schema({
   name: { type: String},
   type: { type: String, enum: ['shipping', 'billing']},
+  email: { type: String },
   street: { type: String, required: true},
   city: {type: String, required: true},
   state: {

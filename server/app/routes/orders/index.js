@@ -110,6 +110,11 @@ router.post('/', function(req, res, next) {
       return Order.create(updateObj);
     })
     .then(function(populatedOrder) {
+      if (populatedOrder.shippingAddress.email) {
+        sendgrid.mailTo(populatedOrder.shippingAddress.email);
+      } else if (req.user.email && !populatedOrder.shippingAddress.email) {
+        sendgrid.mailTo(req.user.email)
+      }
       res.json(populatedOrder);
     })
     .catch(console.error);
