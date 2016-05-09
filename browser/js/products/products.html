@@ -4,8 +4,8 @@
   <div ng-hide="state.current.name === 'home'" id="categoryFilter" class="col-sm-2">
     Filter by Category:
       <ul class="list-group" aria-labelledby="single-button">
-      	<li class="list-group-item" ui-sref-active="active"><a ui-sref="products">All</a></li>
-        <li class="list-group-item" ui-sref-active="active" ng-repeat='cat in categories'role="menuitem"><a ui-sref="productsByCategory({id:cat._id})">{{cat.name}}</a></li>
+      	<a ui-sref="products" ui-sref-active="active"><li class="list-group-item" ui-sref-active="active">All</li></a>
+        <a ng-repeat='cat in categories' ui-sref="productsByCategory({id:cat._id})" ui-sref-active="active"><li class="list-group-item" role="menuitem">{{cat.name}}</li></a>
       </ul>
   </div>
 

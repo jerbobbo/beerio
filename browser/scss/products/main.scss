@@ -50,10 +50,8 @@
   overflow-y: scroll;
 }
 
-.list-group-item.active {
-  background-color: #999;
-  border-color: #999;
-  a {
-    color: white;
-  }
+a.active {
+  color:black;
+  text-decoration: underline;
+
 }
