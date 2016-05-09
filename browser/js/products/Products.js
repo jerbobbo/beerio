@@ -49,11 +49,21 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProductCtrl', function($scope, $uibModal, products,categories,CategoryFactory,ProductFactory,$state) {
+
+app.controller('ProductCtrl', function($scope, $uibModal, $filter, $state, products,categories,CategoryFactory,ProductFactory) {
   $scope.products = products;
   $scope.categories = categories;
   $scope.state = $state;
-
+  $scope.searchProduct = '';
+  
+  $scope.searchFor = function(input) {
+    $scope.$watch(function () {
+      return $scope.input;
+    }, function () {
+      $scope.filteredProducts = $filter('filter')($scope.products, $scope.searchValue);
+    });
+  };
+  
   $scope.openModal = function(id) {
     $uibModal.open({
       templateUrl: 'js/products/product.detail.html',
@@ -70,7 +80,6 @@ app.controller('ProductCtrl', function($scope, $uibModal, products,categories,Ca
   };
 
 });
-
 
 app.controller('ProductsCatCtrl', function($stateParams,$scope, products, categories, $uibModal,CategoryFactory,ProductFactory) {
 

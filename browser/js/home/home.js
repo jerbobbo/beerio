@@ -5,10 +5,7 @@ app.config(function ($stateProvider) {
         controller: 'ProductCtrl',
         resolve: {
           products: function(ProductFactory) {
-            return ProductFactory.getAll()
-            .then(function(_products) {
-              return _products.slice(0,12);
-            });
+            return ProductFactory.getAll();
           },
           categories: function(CategoryFactory){
               return CategoryFactory.getAll();
