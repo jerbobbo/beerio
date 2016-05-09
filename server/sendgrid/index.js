@@ -1,5 +1,5 @@
 var path = require('path');
-var SENDGRID_KEY = require(path.join(__dirname, '../env')).SENDGRID.emailKey;
+var SENDGRID_KEY = require(path.join(__dirname, '../env')).SENDGRID.emailKey || process.env.SENDGRID_KEY;
 var sendgrid = require('sendgrid')(SENDGRID_KEY);
 
 
