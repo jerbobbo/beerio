@@ -62,9 +62,16 @@ module.exports = function (app) {
                     if (!loggedInCart) {
                         return Cart.findById(req.session.cart._id)
                             .then(function(cart) {
+                                if (!cart) {
+                                    return Cart.create({user: req.session._id})
+                                } else {
+                                    return cart;
+                                }
+                            })
+                            .then(function(cart) {
                                 cart.user = req.user;
                                 return cart.save();
-                            });
+                            })
                     }
                     var combinedArr = [];
                     for (var i = 0; i < loggedInCart.items.length; i++) {
