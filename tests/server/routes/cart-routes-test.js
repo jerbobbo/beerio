@@ -136,7 +136,7 @@ describe('Cart routes', function(){
   // this test does not work right now
   describe('Unauthenticated to Authenticated Request', function () {
     var __cart, __loggedInAgent;
-    xit('should combine the two carts', function (done) {
+    it('should combine the two carts', function (done) {
       agent.post('/api/cart/').send(_product).expect(200)
         .then(function(res) {
           return Cart.findOne({items: res.body._id})
@@ -182,7 +182,7 @@ describe('Cart routes', function(){
         .expect(200)
         .end(function (err, response) {
           if (err) return done(err);
-          expect(response.body.items.length).to.equal(0);
+          expect(response.body.items.length).to.equal(1);
           done();
         });
     });

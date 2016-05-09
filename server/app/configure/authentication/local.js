@@ -84,14 +84,13 @@ module.exports = function (app) {
                             combinedArr.push(req.session.cart.items[j]);
                         }
                     }
-                    console.log(combinedArr)
-                    console.log('================FOUND CART==========', loggedInCart)
-                    loggedInCart.items = combinedArr;
+                    if (loggedInCart.items.length < combinedArr.length) {
+                        loggedInCart.items = combinedArr;
+                    }
                     req.session.cart = null;
                     return loggedInCart.save()
                 })
                 .then(function(finishedCart) {
-                    console.log('finished', finishedCart)
                     res.status(200).send({
                         user: user.sanitize()
                     });

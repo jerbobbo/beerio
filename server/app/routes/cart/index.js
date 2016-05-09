@@ -54,7 +54,13 @@ router.post('/', function(req, res, next) {
   } else {
     Cart.findById(req.session.cart._id)
       .then(function(unauthorizedCart) {
-        _cart = unauthorizedCart;
+        if (unauthorizedCart) return unauthorizedCart;
+        if (!unauthorizedCart) return Cart.create({
+          user: req.session.cart._id
+        });
+      })
+      .then(function(cart) {
+        _cart = cart;
         return CartItem.create({
           productId: req.body._id,
           quantity: req.body.quantity
