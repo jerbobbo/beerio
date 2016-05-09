@@ -10,16 +10,25 @@
             <li ng-show="isLoggedIn() && adminAccess()">
                 <a ui-sref="admin">Admin</a>
             </li>
-        </ul>
-        <div class="pull-right">
-            <cart-status></cart-status>
-            <button ng-show="user" ui-sref="checkout.address" class="btn cart-button"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</button>
-            <button ng-show="!user" ui-sref="login" class="btn login-button">Login</button>
-            <div ng-show="user" class="welcome">
-                <span>Welcome, {{ user.email }}!</span>
-                <a ng-click="logout()">Logout</a>
-            </div>
-        </div>
-    </div>
 
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li class="text-left">
+                <small><cart-status></cart-status></small>
+            </li>
+            <li>
+                <button ng-show="user" ui-sref="checkout.address" class="btn cart-button"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</button>
+            </li>
+            <li>
+                <button ng-show="!user" ui-sref="login" class="btn login-button">Login</button>
+                <div ng-show="user" class="welcome">
+                    <span>Welcome, {{ user.email }}!</span>
+                    <a ng-click="logout()">Logout</a>
+                </div>
+
+            </li>
+        </ul>
+
+    </div>
 </nav>
