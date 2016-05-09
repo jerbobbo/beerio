@@ -115,6 +115,14 @@ app.factory('CartFactory', function($http, $rootScope) {
   };
 
   cartObj.addToCart = function(product) {
+
+    var search = _cartCache.find(function(cartItem) {
+      return cartItem.productId._id === product._id
+    });
+
+    if (search) {
+      return this.updateQty(search._id, search.quantity+1)
+    }
     return $http.post('/api/cart/', product)
       .then(function(resp) {
         _cartCache.push(resp.data);
