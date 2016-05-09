@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 
 
 var addressSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  name: { type: String},
   type: { type: String, enum: ['shipping', 'billing']},
   street: { type: String, required: true},
   city: {type: String, required: true},

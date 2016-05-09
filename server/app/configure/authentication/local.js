@@ -69,9 +69,9 @@ module.exports = function (app) {
                     var combinedArr = [];
                     for (var i = 0; i < loggedInCart.items.length; i++) {
                         for (var j = 0; j < req.session.cart.items.length; j++) {
-                            if (loggedInCart.items[i]._id === req.session.cart.items[j]._id) {
+                            if (loggedInCart.items[i]._id === req.session.cart.items[j]._id ||  req.session.cart.items[j].productId == loggedInCart.items[i].productId._id) {
                                 // take the greater of the two quantities
-                                if (loggedInCart.items[i].quantity > req.session.cart.items[j].quantity) {
+                                if (loggedInCart.items[i].quantity >= req.session.cart.items[j].quantity) {
                                     combinedArr.push(loggedInCart.items[i]);
                                     break;
                                 }
@@ -80,11 +80,13 @@ module.exports = function (app) {
                                     break;
                                 }
                             }
-                            combinedArr.push(req.session.cart.items[j]);
                             combinedArr.push(loggedInCart.items[i]);
+                            combinedArr.push(req.session.cart.items[j]);
                         }
                     }
-                    loggedInCart.items = combinedArr;
+                    if (loggedInCart.items.length < combinedArr.length) {
+                        loggedInCart.items = combinedArr;
+                    }
                     req.session.cart = null;
                     return loggedInCart.save()
                 })

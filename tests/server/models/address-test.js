@@ -25,8 +25,8 @@ describe('Address Model', function () {
   describe('verify it works', function () {
     // populate a fake address
     var _address;
-    beforeEach(function (done) {
-      Address.create({
+    before(function (done) {
+      _address = new Address({
         type: 'shipping',
         street: '500 9th ave',
         city: 'new york',
@@ -34,14 +34,10 @@ describe('Address Model', function () {
         country:'USA',
         postal: '10019'
       })
-      .then(function(address) {
-        console.log(address)
-        _address = address;
-      })
       done();
     });
 
-    it('the fake address was created', function (done) {
+    it('the fake address was created', function () {
       expect(_address).to.exist;
     });
   });
