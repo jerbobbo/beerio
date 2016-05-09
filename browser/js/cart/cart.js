@@ -45,7 +45,7 @@ app.controller('CartCtrl', function($scope, $uibModal, CartFactory, ProductFacto
       .then(function(_cart) {
         $scope.cart = _cart;
         $scope.cartInfo = CartFactory.getInfo();
-        $scope.isInCart = CartFactory.isInCart;    
+        $scope.isInCart = CartFactory.isInCart;
       })
   })
 
