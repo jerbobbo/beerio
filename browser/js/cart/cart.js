@@ -62,7 +62,7 @@ app.controller('CartCtrl', function($scope, $uibModal, CartFactory, ProductFacto
 });
 
 
-app.factory('CartFactory', function($http) {
+app.factory('CartFactory', function($http, $rootScope) {
   var _cartCache = [];
   var _cartInfo = {
     subtotal: 0,

@@ -10,3 +10,5 @@ router.get('/', function(req, res, next) {
   })
   .catch(res.json);
 });
+
+module.exports = router;
