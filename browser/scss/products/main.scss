@@ -1,0 +1,52 @@
+.productListing {
+  .img-cont {
+    height: 240px;
+    max-height: 240px;
+
+    img {
+      height: 240px;
+    }
+  }
+  .panel-heading {
+    min-height: 55px;
+    max-height: 55px;
+  }
+  .panel {
+    margin-bottom: 56px;
+  }
+  .addedToCart {
+    margin-bottom: 10px;
+  }
+}
+
+.red {
+  color: red;
+}
+
+.modal-dialog {
+  .img-cont img {
+    margin: 0 auto;
+  }
+
+  h3 {
+    margin-top: 0;
+  }
+
+  .showReviewForm {
+    margin-bottom: 20px;
+  }
+}
+
+.averageRating span:focus, .averageRating i:focus {
+  outline: none;
+}
+
+.getLineItemInput {
+  input {
+    width: 100%;  
+  } 
+}
+
+.button-cont {
+  margin-top: 20px;
+}

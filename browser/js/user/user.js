@@ -47,8 +47,6 @@ app.factory('UserFactory', function($http) {
     UserFactory.createUser = function(user) {
         return $http.post('/api/user/', user)
             .then(function(response) {
-                console.log('created user: ', response.data);
-                debugger;
                 return response.data;
             })
     };

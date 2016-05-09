@@ -1,6 +1,8 @@
 'use strict';
 var mongoose = require('mongoose');
-var autopopulate = require('mongoose-autopopulate')
+var autopopulate = require('mongoose-autopopulate');
+var findOrCreate = require('mongoose-findorcreate');
+
 // creating separate models so we can address saving 
 // for price variability
 var cartItemSchema = new mongoose.Schema({
@@ -25,6 +27,7 @@ var cartSchema = new mongoose.Schema({
   }]
 })
 cartSchema.plugin(autopopulate);
+cartSchema.plugin(findOrCreate);
 
 mongoose.model('CartItem', cartItemSchema);
 mongoose.model('Cart', cartSchema);

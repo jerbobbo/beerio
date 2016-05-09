@@ -1,68 +1,110 @@
 
-      <div class="modal-dialog">
+<div class="modal-dialog">
+
+
+  <div class="containter">
+    <div class="row">
+      <div class="col-lg-12">
         <div class="row">
-          <div class="col-md-6">
+        <div class="col-md-1">&nbsp;</div>
+        <div class="col-md-5 text-align-center center-block">
+          <div class="img-cont">
             <img src="{{product.imageUrl || 'https://placebear.com/400/300'}}"
-            class="img-responsive">
-          </div>
-          <div class="col-md-6">
-          <div class="unavailable" ng-show="!product.available">
-              <h4> Currently Unavailable</h4>
-              <img src='http://www.cathybragg.com/images/out_of_stock.png'>
+          class="img-responsive">
           </div>
 
-            <h3>{{product.name}}</h3>
-
-            <h4>categories: <span ng-repeat="cat in product.category">{{cat.name}} </span></h4>
-            <h4>price: {{product.price}}</h4>
-            <h4>brewer: {{product.brewer}}</h4>
-            <h4>style: {{product.style}}</h4>
-            <h4>abv: {{product.abv}}</h4>
-            <h4>ratings: {{product.ratings}}</h4>
-            <h4>scoreOverall: {{product.scoreOverall}}</h4>
-            <h4>scoreCategory: {{product.scoreCategory}}</h4>
-            <h4>reviews: {{product.reviews}}</h4>
-            <p>description:{{product.description}}</p>
-            <add-to-cart product="product" label="Qty in Cart"></add-to-cart>
-            <h5>Average User Rating<uib-rating ng-model="avgReview" read-only="true"></h5></uib-rating>
-            <div>
-              <button class="btn btn-info" style="margin-top:30px" ng-click="toggleReview()">Write a Review</button>
+          <br>
+          <div class="priceDescription col-lg-11">
+            <div class="row">
+              <div class="pull-left"><b>Price:</b></div> <div class="pull-right"><span class="red">${{product.price}}</span></div></div>
+            <div class="row">
+              <div class="pull-left"><b>Brewer:</b></div> <div class="pull-right">{{product.brewer}}</div></div>
+            <div class="row">
+              <div class="pull-left"><b>Style:</b></div> <div class="pull-right">{{product.style}}</div></div>
+            <div class="row">
+              <div class="pull-left"><b>ABV:</b></div> <div class="pull-right">{{product.abv}}</div>
             </div>
-            <div>
-              <form ng-show="showReviewForm">
-                <div class="form-group">
-                  <label># of stars</label>
-                  <uib-rating ng-model="newReview.stars"></uib-rating>
-                </div>
-                <div class="form-group">
-                  <textarea class="form-control" rows="3" ng-model="newReview.body"></textarea>
-                </div>
-                <div>
-                  <button class="btn btn-primary btn-small pull-right" ng-click="addReview(product, newReview)">save</button>
-                </div>
-
-              </form>
-            </div>
-            <div class="clearfix">
-
-            </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">Reviews</h3>
-              </div>
-              <div class="panel-body" ng-repeat="review in reviews | orderBy:'-_id' | limitTo:reviewLimit">
-                <h5>{{ review.userId.email }}</h5>
-                <uib-rating ng-model="review.stars" read-only="true"></uib-rating>
-                <p>
-                  {{ review.body }}
-                </p>
-              </div>
-              <div class="panel-body" ng-show="reviewLimit === 3 && numReviews() > 3">
-                <h5><a ng-click="toggleReviewLimit()">View All Reviews</a></h5>
+            <div class="row">
+              <div><b>Categories:</b>
+                <span ng-repeat="cat in product.category">{{cat.name}}</span>
               </div>
             </div>
           </div>
         </div>
+        <div class="col-md-5 center-block">
+          <div class="unavailable" ng-show="!product.available">
+              <div> Currently Unavailable</div>
+              <img src='http://www.cathybragg.com/images/out_of_stock.png'>
+          </div>
+
+          <h3>{{product.name}}</h3>
+
+
+          <div>
+            <div class="pull-left">
+              <b>Description:</b>
+            </div>
+            <br/>
+            {{product.description}}
+          </div>
+
+          <br/>
+
+          <add-to-cart product="product" label="Qty in Cart"></add-to-cart>
+
+          <br />
+          <div class="averageRating"><b>Average User Rating</b><uib-rating ng-model="avgReview" data-readonly="true"></div></uib-rating>
+          <div>
+            <button class="btn btn-info" style="margin-top:30px" ng-click="toggleReview()">Write a Review</button>
+          </div>
+
+          <br/>
+
+          <div class="showReviewForm">
+            <form ng-show="showReviewForm">
+              <div class="form-group">
+                <label># of stars</label>
+                <uib-rating ng-model="newReview.stars"></uib-rating>
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" rows="3" ng-model="newReview.body"></textarea>
+              </div>
+              <div class="form-group clearfix">
+                <button class="btn btn-primary btn-small pull-right" ng-click="addReview(product, newReview)">save</button>
+              <div class="panel-body" ng-show="currReviewLimit === reviewLimit && numReviews() > reviewLimit">
+                <h5><a ng-click="toggleReviewLimit()">View All Reviews</a></h5>
+              </div>
+
+            </form>
+          </div>
+          <div class="clearfix">
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Reviews</h3>
+            </div>
+            <div class="panel-body" ng-repeat="review in reviews | orderBy:'-_id' | limitTo:reviewLimit">
+              <h5>{{ review.userId.email }}</h5>
+              <uib-rating ng-model="review.stars" data-readonly="true"></uib-rating>
+              <p>
+                {{ review.body }}
+              </p>
+            </div>
+            <div class="panel-body" ng-show="reviewLimit === 3 && numReviews() > 3">
+              <h5><a ng-click="toggleReviewLimit()">View All Reviews</a></h5>
+            </div>
+          </div>
+
+
+            </div>
+          </div>
+        </div>
+        </div>
+
+
       </div>
     </div>
+
   </div>
+</div>
