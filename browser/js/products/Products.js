@@ -50,7 +50,7 @@ app.config(function($stateProvider) {
 });
 
 
-app.controller('ProductCtrl', ["$scope", "$uibModal", "$filter", "$state", "products","categories","CategoryFactory","ProductFactory", function($scope, $uibModal, $filter, $state, products,categories,CategoryFactory,ProductFactory) {
+app.controller('ProductCtrl', function($scope, $uibModal, $filter, $state, products,categories,CategoryFactory,ProductFactory) {
   $scope.products = products;
   $scope.categories = categories;
   $scope.state = $state;
@@ -79,8 +79,7 @@ app.controller('ProductCtrl', ["$scope", "$uibModal", "$filter", "$state", "prod
     });
   };
 
-}]);
-
+});
 
 app.controller('ProductsCatCtrl', function($stateParams,$scope, products, categories, $uibModal,CategoryFactory,ProductFactory) {
 
