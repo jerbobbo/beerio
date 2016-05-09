@@ -12,7 +12,7 @@
             <img src="{{product.imageUrl || 'https://placebear.com/400/300'}}"
           class="img-responsive">
           </div>
-          
+
           <br>
           <div class="priceDescription col-lg-11">
             <div class="row">
@@ -39,7 +39,7 @@
 
           <h3>{{product.name}}</h3>
 
-          
+
           <div>
             <div class="pull-left">
               <b>Description:</b>
@@ -49,7 +49,7 @@
           </div>
 
           <br/>
-          
+
           <add-to-cart product="product" label="Qty in Cart"></add-to-cart>
 
           <br />
@@ -71,6 +71,8 @@
               </div>
               <div class="form-group clearfix">
                 <button class="btn btn-primary btn-small pull-right" ng-click="addReview(product, newReview)">save</button>
+              <div class="panel-body" ng-show="currReviewLimit === reviewLimit && numReviews() > reviewLimit">
+                <h5><a ng-click="toggleReviewLimit()">View All Reviews</a></h5>
               </div>
 
             </form>
@@ -84,7 +86,7 @@
             </div>
             <div class="panel-body" ng-repeat="review in reviews | orderBy:'-_id' | limitTo:reviewLimit">
               <h5>{{ review.userId.email }}</h5>
-              <uib-rating ng-model="review.stars" read-only="true"></uib-rating>
+              <uib-rating ng-model="review.stars" data-read-only="true"></uib-rating>
               <p>
                 {{ review.body }}
               </p>
@@ -101,7 +103,7 @@
         </div>
 
 
-      </div>  
+      </div>
     </div>
 
   </div>

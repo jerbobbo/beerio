@@ -36,10 +36,10 @@ app.config(function($stateProvider) {
   $stateProvider.state('productsByCategory', {
     url: '/category/:id/products',
     templateUrl: '/js/products/products.html',
-    controller: 'ProductsCatCtrl',
+    controller: 'ProductCtrl',
     resolve: {
       products: function(CategoryFactory,$stateParams) {
-        return CategoryFactory.getProducts($stateParams.id)
+        return CategoryFactory.getProducts($stateParams.id);
       },
       categories: function(CategoryFactory){
           return CategoryFactory.getAll();
@@ -50,50 +50,27 @@ app.config(function($stateProvider) {
 });
 
 app.controller('ProductCtrl', function($scope, $uibModal, products,categories,CategoryFactory,ProductFactory, CartFactory) {
+
   $scope.products = products;
   $scope.categories = categories;
+  console.log($scope.homePageLimit);
 
-  $scope.getLineItem = function(productId) {
-    return CartFactory.getLineItem(productId)
+  $scope.getLineItem = CartFactory.getLineItem;
+
+  $scope.openModal = function(id) {
+    $uibModal.open({
+      templateUrl: 'js/products/product.detail.html',
+      controller: 'ProductDetailCtrl',
+      resolve: {
+        product: function(ProductFactory) {
+          return ProductFactory.getOne(id);
+        },
+        reviews: function(ProductFactory) {
+          return ProductFactory.getReviews(id);
+        }
+      }
+    });
   };
-
-  $scope.openModal = function(id) {
-    $uibModal.open({
-      templateUrl: 'js/products/product.detail.html',
-      controller: 'ProductDetailCtrl',
-      resolve: {
-        product: function(ProductFactory) {
-          return ProductFactory.getOne(id);
-        },
-        reviews: function(ProductFactory) {
-          return ProductFactory.getReviews(id);
-        }
-      }
-    });
-  }
-
-});
-
-
-app.controller('ProductsCatCtrl', function($stateParams,$scope, products, categories, $uibModal,CategoryFactory,ProductFactory) {
-
-  $scope.products=products;
-  $scope.categories=categories;
-
-  $scope.openModal = function(id) {
-    $uibModal.open({
-      templateUrl: 'js/products/product.detail.html',
-      controller: 'ProductDetailCtrl',
-      resolve: {
-        product: function(ProductFactory) {
-          return ProductFactory.getOne(id);
-        },
-        reviews: function(ProductFactory) {
-          return ProductFactory.getReviews(id);
-        }
-      }
-    });
-  }
 
 });
 
@@ -103,6 +80,7 @@ app.controller('ProductDetailCtrl', function($scope, product, reviews, CartFacto
   $scope.newReview = {};
   $scope.newReview.productId = $scope.product._id;
   $scope.reviewLimit = 3;
+  $scope.currReviewLimit = 3;
   $scope.reviews = reviews;
 
   $scope.toggleReview = function() {
@@ -110,8 +88,8 @@ app.controller('ProductDetailCtrl', function($scope, product, reviews, CartFacto
   };
 
   $scope.toggleReviewLimit = function() {
-    if($scope.reviewLimit === 3) $scope.reviewLimit = $scope.reviews.length;
-    else $scope.reviewLimit = 3;
+    if($scope.currReviewLimit === $scope.reviewLimit) $scope.currReviewLimit = $scope.reviews.length;
+    else $scope.currReviewLimit = $scope.reviewLimit;
   };
 
   $scope.addReview = function(product, review) {
@@ -217,7 +195,7 @@ app.factory('ProductFactory', function($http) {
             url: '/api/products/' + product.data._id,
             method: "PUT",
             data: {available:false}
-           })
+          });
         })
         .then(function(product) {
           console.log(product)
