@@ -49,9 +49,13 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProductCtrl', function($scope, $uibModal, products,categories,CategoryFactory,ProductFactory) {
+app.controller('ProductCtrl', function($scope, $uibModal, products,categories,CategoryFactory,ProductFactory, CartFactory) {
   $scope.products = products;
   $scope.categories = categories;
+
+  $scope.getLineItem = function(productId) {
+    return CartFactory.getLineItem(productId)
+  };
 
   $scope.openModal = function(id) {
     $uibModal.open({
