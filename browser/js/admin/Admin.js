@@ -86,12 +86,17 @@ app.controller('AdminUserCtrl', function($scope,$state, users, isLoggedIn, UserF
       _admin=true;
     }
 
-    return UserFactory.add({
+    return UserFactory.createUser({
             email:$scope.email,
             password:$scope.password,
             admin:_admin
           })
           .then(function(newUser){
+            console.log(newUser)
+            newUser.admin=_admin;
+            newUser.deleted=false;
+            newUser.resetpass=false;
+
             $scope.newUser=newUser;
             $scope.users.push(newUser);
             $scope.success=true;
