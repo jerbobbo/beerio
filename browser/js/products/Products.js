@@ -1,3 +1,4 @@
+//why uppercase file name?
 app.config(function($stateProvider) {
   $stateProvider.state('products', {
     url: '/products',
@@ -18,7 +19,7 @@ app.config(function($stateProvider) {
     templateUrl: '/js/products/product.detail.html',
     controller:'ProductDetailCtrl',
     resolve: {
-      product: function(ProductFactory,$stateParams) {
+      product: function(ProductFactory, $stateParams) {
         return ProductFactory.getOne($stateParams.id);
       },
       reviews: function(ProductFactory, $stateParams) {
@@ -38,8 +39,8 @@ app.config(function($stateProvider) {
     templateUrl: '/js/products/products.html',
     controller: 'ProductsCatCtrl',
     resolve: {
-      products: function(CategoryFactory,$stateParams) {
-        return CategoryFactory.getProducts($stateParams.id)
+      products: function(CategoryFactory, $stateParams) {
+        return CategoryFactory.getProducts($stateParams.id);
       },
       categories: function(CategoryFactory){
           return CategoryFactory.getAll();
@@ -49,11 +50,18 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProductCtrl', function($scope, $uibModal, products,categories,CategoryFactory,ProductFactory) {
+//think about logical separation of files
+// products.states.js
+// product.ctrl.js
+// products.ctrl.js
+// etc.
+app.controller('ProductCtrl', function($scope, $uibModal, products, categories, CategoryFactory, ProductFactory) {
   $scope.products = products;
   $scope.categories = categories;
 
   $scope.openModal = function(id) {
+    //i see this modal logic (or similar logic) in two places-- wonder if this should be in another factory/service
+    // ProductModalsFactory.openDetail() 
     $uibModal.open({
       templateUrl: 'js/products/product.detail.html',
       controller: 'ProductDetailCtrl',
@@ -115,7 +123,7 @@ app.controller('ProductDetailCtrl', function($scope, product, reviews, CartFacto
     .then(function(newReview) {
       $scope.reviews.unshift(newReview);
       $scope.avgReview = getAvgReview();
-      $scope.newReview = {};
+      $scope.newReview = {};//is there a method we should call here.. like resetReview(){ $scope.newReview = {}; }
     });
   };
 
@@ -139,7 +147,7 @@ app.controller('ProductDetailCtrl', function($scope, product, reviews, CartFacto
 
 app.controller('ProductDetailModalCtrl', function($scope, product, CartFactory, ProductFactory,$state,$uibModalInstance,categories) {
   $scope.product = product;
-  $scope.categories=categories;
+  $scope.categories = categories;
 
   $scope.editProduct = function(product){
     return ProductFactory.update(product)
@@ -183,11 +191,7 @@ app.factory('ProductFactory', function($http) {
     },
 
     add: function(product) {
-      return $http({
-            url: '/api/products/',
-            method: "POST",
-            data: product
-      })
+      return $http.post('/api/products/', product)
         .then(function(_product) {
           return _product.data;
         });
@@ -202,11 +206,9 @@ app.factory('ProductFactory', function($http) {
 
     softDelete: function(id){
       //note - soft delete also sets available to false
-      return $http({
-            url: '/api/products/' + id,
-            method: "PUT",
-            data: {deleted:true}
-        })
+      //does - this need to be done in two calls?
+      //is there a dependency that one needs to be done before the other?
+      return $http.put('/api/products/' + id, {deleted:true})
         .then(function(product) {
           console.log(product)
           return $http({
@@ -221,8 +223,9 @@ app.factory('ProductFactory', function($http) {
         });
     },
 
-    toggle: function(id,available){
+    toggle: function(id, available){
       if(available){
+        //if you are returning, then why do you need the else?
         return $http({
             url: '/api/products/' + id,
             method: "PUT",

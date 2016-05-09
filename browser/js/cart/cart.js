@@ -1,3 +1,6 @@
+//think about separting this out
+// cart.states.js
+// cart.ctrl.js
 app.config(function($stateProvider) {
   $stateProvider.state('cart', {
     url: '/cart',
@@ -11,6 +14,7 @@ app.controller('CartCtrl', function($scope, $uibModal, CartFactory, ProductFacto
   $scope.cartInfo = CartFactory.getInfo();
   $scope.isInCart = CartFactory.isInCart;
 
+  //if you need this.. why not pass it in with resolve
   CartFactory.fetchCart()
     .then(function(_cart) {
       $scope.cart = _cart;
@@ -40,6 +44,8 @@ app.controller('CartCtrl', function($scope, $uibModal, CartFactory, ProductFacto
   };
 
 
+  //i know it's trickier-- but you might be able to avoid this by having a singleton cart object
+  //on a $digest cycle - the ui will be updated if it depends on an object that changes
   $scope.$on('refreshCart', function(ev) {
     CartFactory.fetchCart()
       .then(function(_cart) {
@@ -54,7 +60,7 @@ app.controller('CartCtrl', function($scope, $uibModal, CartFactory, ProductFacto
     if (qty === 0) {
       return CartFactory.removeItem(lineItem._id);
     }
-    qty += Number(dir);
+    qty += Number(dir);//can dir be passed in a number?
     return CartFactory.updateQty(lineItem._id, qty);
   };
 
@@ -152,7 +158,7 @@ app.factory('CartFactory', function($http, $rootScope) {
         _cartInfo.numberOfItems = 0
         console.log(deleted_cart);
         return deleted_cart;
-      })
+      });
   };
 
   return cartObj;
