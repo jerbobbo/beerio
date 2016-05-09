@@ -9,7 +9,7 @@
       </ul>
   </div>
 
-<div class="col-sm-10">
+<div ng-class="{'col-sm-12': state.current.name === 'home', 'col-sm-10': state.current.name !== 'home'}">
   <div ng-repeat="product in products">
     <div ng-if="$index % 4 == 0" class="clearfix"></div>
     <div ng-show="!product.deleted && product.available" class="col-lg-3 col-sm-6 productListing" >
