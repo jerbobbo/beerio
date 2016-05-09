@@ -49,7 +49,8 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProductCtrl', function($scope, $uibModal, products,categories,CategoryFactory,ProductFactory, CartFactory) {
+app.controller('ProductCtrl', ['$scope', '$uibModal', 'products','categories','CategoryFactory','ProductFactory', 'CartFactory', 
+  function($scope, $uibModal, products,categories,CategoryFactory,ProductFactory, CartFactory) {
   $scope.products = products;
   $scope.categories = categories;
 
@@ -72,10 +73,10 @@ app.controller('ProductCtrl', function($scope, $uibModal, products,categories,Ca
     });
   }
 
-});
+}]);
 
 
-app.controller('ProductsCatCtrl', function($stateParams,$scope, products, categories, $uibModal,CategoryFactory,ProductFactory) {
+app.controller('ProductsCatCtrl', ['$stateParams','$scope', 'products', 'categories', '$uibModal','CategoryFactory','ProductFactory', function($stateParams,$scope, products, categories, $uibModal,CategoryFactory,ProductFactory) {
 
   $scope.products=products;
   $scope.categories=categories;
@@ -95,9 +96,9 @@ app.controller('ProductsCatCtrl', function($stateParams,$scope, products, catego
     });
   }
 
-});
+}]);
 
-app.controller('ProductDetailCtrl', function($scope, product, reviews, CartFactory, ProductFactory) {
+app.controller('ProductDetailCtrl', ['$scope', 'product', 'reviews', 'CartFactory', 'ProductFactory',function($scope, product, reviews, CartFactory, ProductFactory) {
   $scope.product = product;
   $scope.showReviewForm = false;
   $scope.newReview = {};
@@ -139,9 +140,10 @@ app.controller('ProductDetailCtrl', function($scope, product, reviews, CartFacto
 
   $scope.avgReview = getAvgReview();
 
-});
+}]);
 
-app.controller('ProductDetailModalCtrl', function($scope, product, CartFactory, ProductFactory,$state,$uibModalInstance,categories) {
+app.controller('ProductDetailModalCtrl', ['$scope', 'product', 'CartFactory', 'ProductFactory','$state','$uibModalInstance','categories', 
+  function($scope, product, CartFactory, ProductFactory,$state,$uibModalInstance,categories) {
   $scope.product = product;
   $scope.categories=categories;
 
@@ -164,7 +166,7 @@ app.controller('ProductDetailModalCtrl', function($scope, product, CartFactory, 
 
   };
 
-});
+}]);
 
 app.factory('ProductFactory', function($http) {
   var productObj;
