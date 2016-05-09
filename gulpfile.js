@@ -115,8 +115,17 @@ gulp.task('buildJSProduction', function () {
         .pipe(concat('main.js'))
         .pipe(babel())
         .pipe(ngAnnotate())
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(gulp.dest('./public'));
+
+        // .pipe(plumber())
+        // .pipe(sourcemaps.init())
+        // .pipe(concat('main.js'))
+        // .pipe(babel({
+        //     presets: ['es2015']
+        // }))
+        // .pipe(sourcemaps.write())
+        // .pipe(gulp.dest('./public'));
 });
 
 gulp.task('buildProduction', ['buildCSSProduction', 'buildJSProduction']);
