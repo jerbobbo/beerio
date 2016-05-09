@@ -86,7 +86,7 @@
             </div>
             <div class="panel-body" ng-repeat="review in reviews | orderBy:'-_id' | limitTo:reviewLimit">
               <h5>{{ review.userId.email }}</h5>
-              <uib-rating ng-model="review.stars" data-read-only="true"></uib-rating>
+              <uib-rating ng-model="review.stars" data-readonly="true"></uib-rating>
               <p>
                 {{ review.body }}
               </p>
