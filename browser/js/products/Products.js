@@ -50,6 +50,7 @@ app.config(function($stateProvider) {
 });
 
 app.controller('ProductCtrl', function($scope, $uibModal, products,categories,CategoryFactory,ProductFactory) {
+  console.log(products)
   $scope.products = products;
   $scope.categories = categories;
 
