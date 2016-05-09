@@ -1,6 +1,6 @@
 describe('Cart factory', function() {
   beforeEach(module('FullstackGeneratedApp'));
-  var $httpBackend, $controller, CartFactory, $controller;
+  var $httpBackend, $controller, CartFactory;
   beforeEach('Get tools', inject(function(_$httpBackend_, _CartFactory_, _$controller_) {
     $httpBackend = _$httpBackend_;
     CartFactory  = _CartFactory_;
