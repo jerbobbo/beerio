@@ -1,35 +1,33 @@
-      
-<div class="panel-body">
-  <div class="panel-heading">
-    <div class="row panel-title">
-        Order #{{ order._id }}
-
-        <span class="pull-right text-right">
-          <div>Order date: {{order.createdAt | date:'dd-MM-yyyy'}}</div>
-          <div>SubTotal: ${{order.subtotal}}</div>
-          <div>Total: ${{order.total}} </div>
-        </span>
-    </div>
-  </div>
-  <div ng-repeat="lineItem in order.lineItems">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title"><a ui-sref="product({id: lineItem.productId._id})">{{lineItem.productId.name}}</a>
-        </h3>
-      </div>
-      <div class="panel-body">
-
-        <div class="pull-left">
-          <img ng-src="{{lineItem.productId.imageUrl}}">
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">
+        <div class="row">
+          Order #{{ order._id }}
+          <span class="pull-right text-right">
+            <div>Order date: {{order.createdAt | date:'dd-MM-yyyy'}}</div>
+            <div>SubTotal: ${{order.subtotal}}</div>
+            <div>Total: ${{order.total}} </div>
+          </span>
         </div>
-        <div class="pull-right">
-          <div>Quantity: {{lineItem.quantity}}</div>
-
-          <div>Price: ${{lineItem.price}}</div>
-        </div>
-        
       </div>
     </div>
+    <div ng-repeat="lineItem in order.lineItems">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><a ui-sref="product({id: lineItem.productId._id})">{{lineItem.productId.name}}</a>
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="pull-left">
+            <img ng-src="{{lineItem.productId.imageUrl}}" style="height:5em;">
+          </div>
+          <div class="pull-right">
+            <div>Quantity: {{lineItem.quantity}}</div>
+            <div>Price: ${{lineItem.price}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  
 </div>
