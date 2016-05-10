@@ -127,6 +127,7 @@ app.factory('CartFactory', function($http, $rootScope) {
       .then(function(resp) {
         _cartCache.push(resp.data);
         _updateInfo();
+        $rootScope.$broadcast('itemAdded');
         return resp.data;
       });
   };
@@ -139,6 +140,7 @@ app.factory('CartFactory', function($http, $rootScope) {
       .then(function(resp) {
         _cartCache[_findInCart(lineItemId)].quantity = qty;
         _updateInfo();
+        $rootScope.$broadcast('itemAdded');
         return resp.data;
       });
   };

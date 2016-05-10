@@ -1,4 +1,35 @@
-<div ng-show="cartInfo.numberOfItems > 0">
+<!-- <div ng-show="cartInfo.numberOfItems > 0">
   <small>{{ cartInfo.numberOfItems }} items in cart,</small>
   <small>subtotal: {{ cartInfo.subtotal }}</small>
+</div> -->
+
+
+<div class="cartButtonCont">
+  <div class="btn cart-button" ng-click="showDropdown(cartInfo)">
+
+
+    <span class="glyphicons glyphicons-beer"></span>
+    <img src="/assets/images/beer-1.svg" width="35" height="35">
+<!--     <img src="/assets/images/beer-2.svg" width="35" height="35">
+    <img src="/assets/images/beer.svg" width="35" height="35">
+    <img src="/assets/images/beer-4.svg" width="35" height="35">
+    <img src="/assets/images/beer3.svg" width="35" height="35">
+    <img src="/assets/images/barrel.svg" width="35" height="35"> -->
+  </div>
+
+  <div class="counterCont" ng-class="{pulsate: pulsate}">
+    {{ cartInfo.numberOfItems }}
+  </div>
+
+  <div class="cartButtonDropdown" ng-show="show">
+    <div class="clearfix">
+      <div class="pull-left">Cart Subtotal: </div>
+      <div class="pull-right"><span class="subtotal">$ {{ cartInfo.subtotal }}</span></div>
+      
+    </div>
+    <button ui-sref="checkout.address" class="btn btn-primary">Proceed to checkout</button>
+  </div>
 </div>
+
+
+

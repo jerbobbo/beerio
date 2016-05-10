@@ -1,34 +1,38 @@
 <nav class="navbar navbar-static-top">
     <div class="container">
-        <div class="navbar-header">
-            <fullstack-logo></fullstack-logo>
+        <div class="row">
+            <div class="col-xs-6">
+            <ul class="nav navbar-nav">
+                <li>
+                    <fullstack-logo></fullstack-logo>    
+                </li>
+                <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
+                    <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label}}</a>
+                </li>
+                <li ng-show="isLoggedIn() && adminAccess()">
+                    <a ui-sref="admin">Admin</a>
+                </li>
+
+            </ul>
+            </div>
+            
+            <div class="col-xs-6">
+            <ul class="nav navbar-nav navbar-right text-right" style="height: 50px;line-height: 50px;">
+                <li>
+                    <button ng-show="!user" ui-sref="login" class="btn login-button">Login</button>
+                    <div ng-show="user" class="welcome">
+                        <span>Welcome, {{ user.email }}!</span>
+                        <a ng-click="logout()">Logout</a>
+                    </div>
+
+                </li>
+
+                <li>
+                    <cart-status></cart-status>
+                </li>
+            </ul>
+            </div>
         </div>
-        <ul class="nav navbar-nav">
-            <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
-                <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label}}</a>
-            </li>
-            <li ng-show="isLoggedIn() && adminAccess()">
-                <a ui-sref="admin">Admin</a>
-            </li>
-
-        </ul>
-
-        <ul class="nav navbar-nav navbar-right">
-            <li class="text-left">
-                <small><cart-status></cart-status></small>
-            </li>
-            <li>
-                <button ng-show="user" ui-sref="checkout.address" class="btn cart-button"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</button>
-            </li>
-            <li>
-                <button ng-show="!user" ui-sref="login" class="btn login-button">Login</button>
-                <div ng-show="user" class="welcome">
-                    <span>Welcome, {{ user.email }}!</span>
-                    <a ng-click="logout()">Logout</a>
-                </div>
-
-            </li>
-        </ul>
 
     </div>
 </nav>

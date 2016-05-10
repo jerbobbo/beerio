@@ -1,6 +1,6 @@
 app.config(function($stateProvider) {
   $stateProvider.state('products', {
-    url: '/products',
+    url: '/beers',
     templateUrl: '/js/products/products.html',
     controller: 'ProductCtrl',
     resolve: {
@@ -14,7 +14,7 @@ app.config(function($stateProvider) {
   });
 
   $stateProvider.state('product', {
-    url: '/product/:id',
+    url: '/beer/:id',
     templateUrl: '/js/products/product.detail.html',
     controller:'ProductDetailCtrl',
     resolve: {
