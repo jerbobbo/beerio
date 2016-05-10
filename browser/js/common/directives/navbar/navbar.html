@@ -1,21 +1,25 @@
-<nav class="navbar navbar-static-top">
+<nav class="navbar navbar-fixed-top">
     <div class="container">
         <div class="row">
             <div class="col-xs-6">
-            <ul class="nav navbar-nav">
-                <li>
-                    <fullstack-logo></fullstack-logo>    
-                </li>
-                <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
-                    <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label}}</a>
-                </li>
-                <li ng-show="isLoggedIn() && adminAccess()">
-                    <a ui-sref="admin">Admin</a>
-                </li>
-
-            </ul>
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                ☰
+              </button>
+              <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <fullstack-logo></fullstack-logo>
+                    </li>
+                    <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
+                        <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label}}</a>
+                    </li>
+                    <li ng-show="isLoggedIn() && adminAccess()">
+                        <a ui-sref="admin">Admin</a>
+                    </li>
+                </ul>
             </div>
-            
+            </div>
+
             <div class="col-xs-6">
             <ul class="nav navbar-nav navbar-right text-right" style="height: 50px;line-height: 50px;">
                 <li>
