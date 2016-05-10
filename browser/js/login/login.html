@@ -1,4 +1,3 @@
-
 <div class="container">
     <div class="col-lg-6 center-block" style="float: none;">
         <form id="login-form" name="loginForm" ng-submit="loginForm.$valid && sendLogin(login)" class="row">
@@ -6,7 +5,6 @@
             <alert type="danger" ng-show="error">
                 {{ error }}
             </alert>
-
             <div class="form-group">
                 <label for="email">Email address</label>
                 <input type="text" ng-model="login.email" class="form-control" id="email" placeholder="Enter email">
@@ -18,9 +16,8 @@
             <div class="pull-right">
                 Don't have an account? <a ui-sref="userCreate">Create a user</a>
             </div>
-            
             <div class="pull-left">
-                <button type="submit" class="btn btn-default">Submit</button> 
+                <button type="submit" class="btn btn-default">Submit</button>
             </div>
         </form>
     </div>
