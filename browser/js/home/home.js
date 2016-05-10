@@ -1,6 +1,6 @@
 app.config(function ($stateProvider) {
     $stateProvider.state('home', {
-        url: '/',
+        url: '/beers',
         templateUrl: '/js/products/products.html',
         controller: 'ProductCtrl',
         resolve: {

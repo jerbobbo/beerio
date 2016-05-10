@@ -13,7 +13,7 @@ app.config(function ($urlRouterProvider, $locationProvider) {
         window.location.reload();
     });
 
-    $urlRouterProvider.when('/', '/products');
+    $urlRouterProvider.when('/', '/beers');
 });
 
 // This app.run is for controlling access to specific states.
