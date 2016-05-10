@@ -74,7 +74,10 @@ app.controller('checkOutCtrl', function($scope, $state, CheckoutFactory, CartFac
 	 	CheckoutFactory.placeOrder()
 	 		.then(function(order) {
 	 			$scope.cart = [];
+	 			CheckoutFactory.setIdx(++stateIdx);
+				$scope.currentState = CheckoutFactory.getState();
 	 			CartFactory.clear()
+	 			$state.go($scope.currentState.state)
 	 		})
 	}
 });
