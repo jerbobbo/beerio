@@ -1,3 +1,6 @@
+.btn {
+  font-size: 18px;
+}
 navbar {
 
   display: block;
@@ -15,13 +18,18 @@ navbar {
     margin-top: 5px;
     margin-right: 20px;
     width: 40px;
+    img {
+      display: inline-block;
+    }
   }
 
   a {
     color: black;
-    font-size: 16px;
+    font-size: 18px;
   }
-
+  .nav > li {
+    display: inline-block;
+  }
   .nav > li > a {
     cursor: pointer;
     transition: color 0.2s;
@@ -38,15 +46,47 @@ navbar {
   }
   .cart-button {
     border: 1px solid black;
-    margin-top: 10px;
     background: none;
     outline: none !important;
-    margin-right: 20px;
+  }
+  .cartButtonCart {
+    position: relative;
+  }
+  .counterCont {
+    font-size: 15px;
+    font-family: arial, sans-serif;
+    position: absolute;
+    right: -7px;
+    bottom: -5px;
+    background-color: rgb(221,44,0);
+    color: #FFFFFF;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 2px 6px;
+    line-height: 20px;
+    font-weight: bold;
+
+    &.pulsate {
+      -webkit-animation: pulsate 1.5s ease-out;
+      -webkit-animation-iteration-count: 1;
+    }
+  }
+
+  .cartButtonDropdown {
+    background-color: white;
+    position: absolute;
+    padding: 20px;
+    bottom: -164px;
+    border: 1px solid black;
+    left: -182px;
+
+    .subtotal {
+      color: red;
+      font-weight: bold;
+    }
   }
   .login-button {
-    float: right;
     border: 1px solid black;
-    margin-top: 10px;
     background: none;
     outline: none !important;
     margin-right: 20px;
@@ -66,4 +106,10 @@ navbar {
     }
   }
 
+}
+
+@-webkit-keyframes pulsate {
+    0% {-webkit-transform: scale(1,1); }
+    50% {-webkit-transform: scale(1.3, 1.3); }
+    100% {-webkit-transform: scale(1, 1); }
 }

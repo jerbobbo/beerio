@@ -33,6 +33,7 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
                 AuthService.getLoggedInUser().then(function (user) {
                     console.log('set user:', user);
                     scope.user = user;
+                    if (!user) { return }
                     if(user.resetpass){
                         passReset(user)
                     }
