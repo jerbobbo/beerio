@@ -20,5 +20,21 @@ module.exports = {
 			}
 			console.log(json);
 		});
+	},
+	mailToReset: function(to, token) {
+
+		var email = new sendgrid.Email({
+			to: to,
+			from: 'w00t@beer.io',
+			subject: 'Password reset for beer.io',
+			text: 'Use this link for "http://localhost:1337/passreset/' + token + '" password reset.'
+		});
+
+		sendgrid.send(email, function(err, json) {
+			if (err) {
+				return console.error(err);
+			}
+			console.log(json);
+		});
 	}
 }

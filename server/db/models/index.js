@@ -8,3 +8,4 @@ require('./product');
 require('./cart');
 require('./review');
 require('./category');
+require('./token');

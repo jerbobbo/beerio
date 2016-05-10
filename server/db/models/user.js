@@ -33,9 +33,8 @@ var schema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
-    resetpass:{
-        type:Boolean,
-        default:false
+    resettoken: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'Token'
     }
 });
 

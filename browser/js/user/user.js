@@ -75,6 +75,7 @@ app.factory('UserFactory', function($http) {
             data: user
       })
         .then(function(_user) {
+          debugger;
           console.log('update put on user response:', _user);
           return _user.data;
         });

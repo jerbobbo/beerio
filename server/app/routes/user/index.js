@@ -1,6 +1,8 @@
 'use strict';
 var router = require('express').Router();
 var User = require('mongoose').model('User');
+var Token = require('mongoose').model('Token');
+var sendgrid = require('../../../sendgrid');
 
 router.get('/', function(req, res, next) {
   User.find({})
@@ -10,6 +12,31 @@ router.get('/', function(req, res, next) {
     .catch(function(err) {
       res.json(err);
     }, next);
+});
+
+router.put('/forgot/password', function(req,res,next) {
+  // send the email address...
+  // do a look up with email address to the user model
+  var _user, _token;
+  User.findOne({email: req.body.email})
+    .then(function(user) {
+      console.log('did it find hit here?');
+      if (!user) { next() }
+      _user = user;
+      return Token.create({})
+    })
+    .then(function(token) {
+      console.log('token was created!', token);
+      _token = token;
+      _user.token = token._id;
+      return _user.save();
+    })
+    .then(function(response) {
+      sendgrid.mailToReset('antkim003@gmail.com', _token._id);
+      console.log('email was sent!');
+      res.json({msg: 'email sent'});
+    })
+    .catch(console.error);
 });
 
 router.get('/:id', function(req, res, next) {
@@ -60,5 +87,6 @@ router.delete('/:id', function(req, res, next) {
       res.json(err);
     }, next);
 });
+
 
 module.exports = router;
