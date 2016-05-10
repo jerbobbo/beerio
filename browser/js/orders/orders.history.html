@@ -1,7 +1,7 @@
 <div class="container">
   <div ng-repeat="order in orders">
-    <div class="col-sm-12 panel panel-default">
-      <div class="row panel-title">
+    <div class="panel panel-default">
+      <div class="panel-title">
         Order #<a ui-sref="order({orderId: order._id})">{{ order._id }}</a>
         <span class="pull-right text-right">
           <div>Order date: {{order.createdAt | date:'dd-MM-yyyy'}}</div>
