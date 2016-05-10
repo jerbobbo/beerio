@@ -16,7 +16,7 @@
 </div>
 <hr>
 <div class="row">
-  <div ng-hide="state.current.name === 'home'" id="categoryFilter" class="col-sm-2">
+  <div ng-hide="state.current.name === 'beers'" id="categoryFilter" class="col-sm-2">
     Filter by Category:
       <ul class="list-group" aria-labelledby="single-button">
       	<a ui-sref="products" ui-sref-active="active"><li class="list-group-item" ui-sref-active="active">All</li></a>
@@ -24,7 +24,7 @@
       </ul>
   </div>
 
-<div ng-class="{'col-sm-12': state.current.name === 'home', 'col-sm-10': state.current.name !== 'home'}">
+<div class="col-sm-10">
   <div ng-repeat="product in products | filter:searchProduct">
     <div ng-if="$index % 4 == 0" class="clearfix"></div>
     <div ng-show="!product.deleted && product.available" class="col-lg-3 col-sm-6 productListing" >
