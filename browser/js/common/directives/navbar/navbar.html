@@ -10,9 +10,7 @@
             <li ng-show="isLoggedIn() && adminAccess()">
                 <a ui-sref="admin">Admin</a>
             </li>
-
         </ul>
-
         <ul class="nav navbar-nav navbar-right">
             <li class="text-left">
                 <small><cart-status></cart-status></small>
@@ -26,9 +24,7 @@
                     <span>Welcome, {{ user.email }}!</span>
                     <a ng-click="logout()">Logout</a>
                 </div>
-
             </li>
         </ul>
-
     </div>
 </nav>
