@@ -100,8 +100,6 @@ converter.on("end_parsed", function(jsonArray) {
     Category.remove({}).then(function(){
             seedCats(uniqueCats).then(function(){
             var productArray=catReplace(jsonArray,catKV);
-            console.log(productArray);
-            debugger;
             runSeed(productArray);
         })
     })
