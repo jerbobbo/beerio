@@ -30,7 +30,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url: '/complete',
 		templateUrl: 'js/checkout/complete.html'
 		})
-	$urlRouterProvider.when('/checkout', '/checkout/address').otherwise('/checkout/address');
+
+	$urlRouterProvider.when('/checkout', '/checkout/address')
+	.otherwise('/checkout/address');
 }).run(function($rootScope, $urlRouter, $location, $state) {
 	// intercept each state change
 	$rootScope.$on('$locationChangeSuccess', function(e, toState, toParams) {
@@ -49,11 +51,11 @@ app.controller('checkOutCtrl', function($scope, $state, CheckoutFactory, CartFac
 	var stateIdx = 0;
 	var currentOrder;
 	$scope.currentState = CheckoutFactory.getState();
-	
+
 	if ($scope.currentState.state != $state.current.name) {
-		$state.go($scope.currentState.state);	
+		$state.go($scope.currentState.state);
 	}
-	
+
 	$scope.next = function(info, form) {
 		if (info && form.$valid) {
 			currentOrder = CheckoutFactory.getOrder();
@@ -78,6 +80,7 @@ app.controller('checkOutCtrl', function($scope, $state, CheckoutFactory, CartFac
 				$scope.currentState = CheckoutFactory.getState();
 	 			CartFactory.clear()
 	 			$state.go($scope.currentState.state)
+	 			CheckoutFactory.setIdx(0)
 	 		})
 	}
 });
@@ -128,7 +131,7 @@ app.factory('CheckoutFactory', function($http) {
 					return order.data;
 				})
 		},
-		
+
 		getState: function() {
 			return _states[_stateIdx];
 		},

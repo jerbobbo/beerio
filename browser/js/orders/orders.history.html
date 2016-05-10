@@ -3,7 +3,7 @@
     <div class="panel panel-default">
       <div class="panel-title">
         Order #<a ui-sref="order({orderId: order._id})">{{ order._id }}</a>
-        <span class="pull-right text-right">
+        <span class="text-right">
           <div>Order date: {{order.createdAt | date:'dd-MM-yyyy'}}</div>
           <div>Total: ${{order.total}} </div>
         </span>
