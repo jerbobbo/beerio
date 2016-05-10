@@ -80,6 +80,7 @@ app.controller('checkOutCtrl', function($scope, $state, CheckoutFactory, CartFac
 				$scope.currentState = CheckoutFactory.getState();
 	 			CartFactory.clear()
 	 			$state.go($scope.currentState.state)
+	 			CheckoutFactory.setIdx(0)
 	 		})
 	}
 });
