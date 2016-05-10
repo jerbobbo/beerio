@@ -26,7 +26,16 @@ var schema = new mongoose.Schema({
         id: String
     },
     admin:{
-        type:Boolean
+        type:Boolean,
+        default:false
+    },
+    deleted:{
+        type:Boolean,
+        default:false
+    },
+    resetpass:{
+        type:Boolean,
+        default:false
     }
 });
 

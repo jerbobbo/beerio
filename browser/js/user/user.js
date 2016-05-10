@@ -33,7 +33,7 @@ app.controller('UserCtrl', function ($scope, UserFactory, $state) {
                         return;
                     }
                     $scope.error = 'Invalid User credentials.';
-                });            
+                });
         } else {
             $scope.error = 'Please fill in all the fields.';
         }
@@ -50,6 +50,59 @@ app.factory('UserFactory', function($http) {
                 return response.data;
             })
     };
+
+    UserFactory.getAll = function() {
+    // console.log('getting all cats');
+
+    return $http.get('/api/user/')
+      .then(function(response) {
+        // console.log(response)
+        return response.data;
+      });
+  };
+
+  UserFactory.getOne = function(id) {
+    return $http.get('/api/user/' + id)
+      .then(function(response) {
+        return response.data;
+      });
+  };
+
+  UserFactory.update = function(user){
+      return $http({
+            url: '/api/user/' + user._id,
+            method: "PUT",
+            data: user
+      })
+        .then(function(_user) {
+          console.log('update put on user response:', _user);
+          return _user.data;
+        });
+    };
+
+  UserFactory.softDelete = function(id){
+      return $http({
+            url: '/api/user/' + id,
+            method: "PUT",
+            data: {"deleted":"true"}
+        })
+        .then(function(_user) {
+          console.log('user returned', _user)
+          return _user.data;
+        });
+  };
+
+  UserFactory.passReset = function(id){
+      return $http({
+            url: '/api/user/' + id,
+            method: "PUT",
+            data: {"resetpass":"true"}
+        })
+        .then(function(_user) {
+          console.log('user returned', _user)
+          return _user.data;
+        });
+  };
 
     return UserFactory;
 });

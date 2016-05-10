@@ -10,6 +10,9 @@ app.config(function($stateProvider) {
       categories: function(CategoryFactory){
         return CategoryFactory.getAll();
       },
+      users: function(UserFactory){
+        return UserFactory.getAll();
+      },
       orders: function(OrderFactory){
         return OrderFactory.getAdminAll();
       },
@@ -43,6 +46,12 @@ app.config(function($stateProvider) {
     controller: 'AdminUserCtrl'
   })
 
+  $stateProvider.state('admin.userEdit', {
+    url: '/userEdit',
+    templateUrl: '/js/admin/admin.userEdit.html',
+    controller: 'AdminUserCtrl'
+  })
+
   $stateProvider.state('admin.orders', {
     url: '/orders',
     templateUrl: '/js/admin/admin.orders.html',
@@ -51,11 +60,76 @@ app.config(function($stateProvider) {
 
 })
 
-app.controller('AdminCtrl', function($scope, products, isLoggedIn, ProductFactory) {
+app.controller('AdminCtrl', function($scope, products, users, isLoggedIn, ProductFactory) {
   $scope.products = products;
   console.log(isLoggedIn);
   $scope.isLoggedIn = isLoggedIn;
 
+  $scope.users=users;
+
+
+
+});
+
+app.controller('AdminUserCtrl', function($scope,$state, users, isLoggedIn, UserFactory) {
+  $scope.users = users;
+  console.log(isLoggedIn);
+  $scope.isLoggedIn = isLoggedIn;
+  $scope.adminColumns=['email','resetpass','admin','deleted'];
+  $scope.select= function(type){
+    $scope.userType=type;
+  };
+
+  $scope.addUser= function(){
+    var _admin=false;
+    if($scope.userType=='Admin'){
+      _admin=true;
+    }
+
+    return UserFactory.createUser({
+            email:$scope.email,
+            password:$scope.password,
+            admin:_admin
+          })
+          .then(function(newUser){
+            console.log(newUser)
+            newUser.admin=_admin;
+            newUser.deleted=false;
+            newUser.resetpass=false;
+
+            $scope.newUser=newUser;
+            $scope.users.push(newUser);
+            $scope.success=true;
+            $state.go('admin.userEdit')
+          });
+  };
+
+  $scope.toggleUserType= function(user){
+    var _admin;
+
+    if(!user.admin){
+      _admin=true;
+    } else if (user.admin){
+      _admin=false;
+    }
+    user.admin=_admin;
+
+    return UserFactory.update(user);
+  };
+
+  $scope.blockUser=function(user){
+    return UserFactory.softDelete(user._id)
+            .then(function(){
+              $state.reload();
+            })
+  };
+
+  $scope.passReset=function(user){
+    return UserFactory.passReset(user._id)
+            .then(function(){
+              $state.reload();
+            })
+  };
 
 });
 
@@ -171,6 +245,10 @@ app.controller('AdminProductCtrl', function($scope, $state, $uibModal, isLoggedI
             })
   };
 
-
-
 });
+
+
+
+
+
+

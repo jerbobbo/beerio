@@ -17,6 +17,7 @@
     // for important events about authentication flow.
     app.constant('AUTH_EVENTS', {
         loginSuccess: 'auth-login-success',
+        //needsPassReset:'auth-needs-pass-reset',
         loginFailed: 'auth-login-failed',
         logoutSuccess: 'auth-logout-success',
         sessionTimeout: 'auth-session-timeout',
@@ -57,6 +58,16 @@
             return data.user;
         }
 
+        // function checkPR(user){
+        //     if(user.resetpass){
+        //         $rootScope.$broadcast(AUTH_EVENTS.needsPassReset);
+        //         return data.user;
+        //     } else {
+        //         $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+        //         return data.user;
+        //     }
+        // }
+
         // Uses the session factory to see if an
         // authenticated user is currently registered.
         this.isAuthenticated = function () {
@@ -95,8 +106,14 @@
         this.login = function (credentials) {
             return $http.post('/login', credentials)
                 .then(onSuccessfulLogin)
-                .catch(function () {
-                    return $q.reject({ message: 'Invalid login credentials.' });
+                // .then(checkPR)
+                .catch(function (err) {
+                    console.log(err);
+                    var _message;
+                    if(err.data){
+                        _message=err.data
+                    };
+                    return $q.reject({ message: _message });
                 });
         };
 

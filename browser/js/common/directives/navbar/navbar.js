@@ -32,7 +32,11 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
 
             var setUser = function () {
                 AuthService.getLoggedInUser().then(function (user) {
+                    console.log('set user:', user);
                     scope.user = user;
+                    if(user.resetpass){
+                        passReset(user)
+                    }
                 });
             };
 
@@ -40,9 +44,14 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
                 scope.user = null;
             };
 
+            var passReset = function (_user) {
+                $state.go('passreset',{user:_user});
+            };
+
             setUser();
 
             $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
+            //$rootScope.$on(AUTH_EVENTS.needsPassReset, passReset);
             $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);
             $rootScope.$on(AUTH_EVENTS.sessionTimeout, removeUser);
 
