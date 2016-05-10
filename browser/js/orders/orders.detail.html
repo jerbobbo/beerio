@@ -1,7 +1,9 @@
       
-<div class="panel-body">
+<div class="panel panel-default">
   <div class="panel-heading">
-    <div class="row panel-title">
+    <div class="panel-title">
+      <div class="row">
+        
         Order #{{ order._id }}
 
         <span class="pull-right text-right">
@@ -9,6 +11,7 @@
           <div>SubTotal: ${{order.subtotal}}</div>
           <div>Total: ${{order.total}} </div>
         </span>
+      </div>
     </div>
   </div>
   <div ng-repeat="lineItem in order.lineItems">
@@ -20,7 +23,7 @@
       <div class="panel-body">
 
         <div class="pull-left">
-          <img ng-src="{{lineItem.productId.imageUrl}}">
+          <img ng-src="{{lineItem.productId.imageUrl}}" style="height:5em;">
         </div>
         <div class="pull-right">
           <div>Quantity: {{lineItem.quantity}}</div>
