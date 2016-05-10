@@ -6,6 +6,8 @@ var Address = require('mongoose').model('Address');
 var _ = require('lodash');
 var sendgrid = require('../../../sendgrid');
 var Promise = require('bluebird');
+var cronjob = require('../../../cronjob');
+
 var createLineItem = function(product) {
   return LineItem.create(product);
 }
@@ -111,11 +113,15 @@ router.post('/', function(req, res, next) {
       return Order.create(updateObj);
     })
     .then(function(populatedOrder) {
+      var subj = 'Thanks for buying from beer.io!';
+      var body = 'Your order is on its way. Get ready.';
       if (_currentEmail && populatedOrder.status === 'complete') {
         console.log('sending email.. ', _currentEmail)
-        sendgrid.mailTo(_currentEmail)
+        sendgrid.mailTo(_currentEmail, subj, body);
+        setTimeout(sendgrid.mailTo(_currentEmail, 'Beer.io - It\'s on the way', 'Enjoy!'), 1200000);
       } else if (req.user.email && populatedOrder.status === 'complete') {
-        sendgrid.mailTo(req.user.email)
+        sendgrid.mailTo(req.user.email, subj, body);
+        setTimeout(sendgrid.mailTo(_currentEmail, 'Beer.io - It\'s on the way', 'Enjoy!'), 1200000);
       }
       res.json(populatedOrder);
     })

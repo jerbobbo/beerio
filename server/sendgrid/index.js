@@ -5,13 +5,13 @@ var sendgrid = require('sendgrid')(SENDGRID_KEY);
 
 
 module.exports = {
-	mailTo: function(to) {
+	mailTo: function(to, subj, body) {
 
 		var email = new sendgrid.Email({
 			to: to,
 			from: 'w00t@beer.io',
-			subject: 'Thanks for buying from beer.io!',
-			text: 'Your order is on its way. Get ready.'
+			subject: subj,
+			text: body
 		});
 
 		sendgrid.send(email, function(err, json) {
