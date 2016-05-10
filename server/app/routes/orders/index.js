@@ -75,6 +75,7 @@ router.post('/', function(req, res, next) {
     user: req.user,
     status: status
   };
+  var _currentEmail = shippingAddress.email || req.user.email;
   if (_.isEmpty(lineItems)) {
     throw "POST: /api/orders requires items in cart";
   }
@@ -110,6 +111,12 @@ router.post('/', function(req, res, next) {
       return Order.create(updateObj);
     })
     .then(function(populatedOrder) {
+      if (_currentEmail && populatedOrder.status === 'complete') {
+        console.log('sending email.. ', _currentEmail)
+        sendgrid.mailTo(_currentEmail)
+      } else if (req.user.email && populatedOrder.status === 'complete') {
+        sendgrid.mailTo(req.user.email)
+      }
       res.json(populatedOrder);
     })
     .catch(console.error);
@@ -118,7 +125,9 @@ router.post('/', function(req, res, next) {
 // edit status
 router.put('/:orderId', function(req, res, next) {
   if (req.body.status) {
-    Order.findByIdAndUpdate(req.params.orderId, req.body, {new: true})
+    Order.findByIdAndUpdate(req.params.orderId, req.body, {
+      new: true
+    })
       .then(function(order) {
         res.json(order)
       })
