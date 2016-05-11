@@ -10,3 +10,6 @@ To get started:
 3. npm run start-dev
 
 in browser navigate to localhost:1337
+
+
+OR, just check it out live here: https://beer-io.herokuapp.com
