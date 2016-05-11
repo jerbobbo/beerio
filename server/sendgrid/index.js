@@ -27,7 +27,7 @@ module.exports = {
 			to: to,
 			from: 'w00t@beer.io',
 			subject: 'Password reset for beer.io',
-			text: 'Use this link for "http://localhost:1337/passreset/' + token + '" password reset.'
+			text: 'Use this link for "http://beer-io.herokuapp.com/passreset/' + token + '" password reset.'
 		});
 
 		sendgrid.send(email, function(err, json) {
